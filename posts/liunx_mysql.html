@@ -40,9 +40,8 @@
 <meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_mysql/mysql12.png">
 <meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_mysql/mysql13.png">
 <meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_mysql/mysql14.png">
-<meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_mysql/mysql15.png">
 <meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_mysql/mysql16.png">
-<meta property="og:updated_time" content="2020-06-02T09:49:20.662Z">
+<meta property="og:updated_time" content="2020-06-02T10:02:15.681Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Liunx服务器安装Mysql实操记录">
 <meta name="twitter:description" content="作者：彭老师 日期：2020-06-02 类型：Java 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    服务器、操作工具  485配置：4核CPU，8G内存，5M带宽 工具：Xshell_5.0.0.37、Xftp_5.0.1028   1、安装Mysql到/usr/local/mysql-5.7.24-linux-glibc2.12-x86_64目录软件包已上传移动后删">
@@ -513,7 +512,6 @@
 
 <h4 id="14、登录数据库，接着三步操作"><a href="#14、登录数据库，接着三步操作" class="headerlink" title="14、登录数据库，接着三步操作"></a>14、登录数据库，接着三步操作</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> mysql</span><br><span class="line"><span class="keyword">update</span> <span class="keyword">user</span> <span class="keyword">set</span> host = <span class="string">'%'</span> <span class="keyword">where</span> <span class="keyword">user</span> = <span class="string">'root'</span>;</span><br><span class="line"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span><br></pre></td></tr></table></figure>
 
-<img src="/posts/liunx_mysql/mysql15.png">
 <img src="/posts/liunx_mysql/mysql16.png">
 
 
