@@ -17,24 +17,25 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>使用android-gpuimage的一些问题总结 | 西门博客 - 让技术更透明、让开发更简单！</title>
-  <meta name="description" content="说明：本文源于闲蛋，如需转载请带上链接或注明出处！   前言android-gpuimage虽然可以实现滤镜的效果，但遇到稍微复杂的需求，框架本身的bug和一些缺陷就暴露出来了，而且这个项目最后一个版本是1.4.1，已经2年没维护过了，提issues也没人讨论，这里总结一些遇到的问题和解决办法。 1、Demo跑起来就有些bugandroid-gpuimage-support 重写了更友好的示例">
+  <title>老司机常规翻车，关于高版本9.0+请求失效 | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="作者：彭老师 日期：2020-06-22 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    在android9.0+版本，由于安全性高了，所有不做处理http将不能使用服务器请求不管是正式环境还是测试环境，把http改为https，说实话不现实，第一很多老项目难以重构，第二添加证书很多后台开发者根本不会将就下，做兼容吧  由于 Android P 限制了">
 <meta name="keywords" content="android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用android-gpuimage的一些问题总结">
-<meta property="og:url" content="https://www.cmonbaby.com/posts/android_gpuimage_support.html">
+<meta property="og:title" content="老司机常规翻车，关于高版本9.0+请求失效">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/android_request9.html">
 <meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
-<meta property="og:description" content="说明：本文源于闲蛋，如需转载请带上链接或注明出处！   前言android-gpuimage虽然可以实现滤镜的效果，但遇到稍微复杂的需求，框架本身的bug和一些缺陷就暴露出来了，而且这个项目最后一个版本是1.4.1，已经2年没维护过了，提issues也没人讨论，这里总结一些遇到的问题和解决办法。 1、Demo跑起来就有些bugandroid-gpuimage-support 重写了更友好的示例">
+<meta property="og:description" content="作者：彭老师 日期：2020-06-22 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    在android9.0+版本，由于安全性高了，所有不做处理http将不能使用服务器请求不管是正式环境还是测试环境，把http改为https，说实话不现实，第一很多老项目难以重构，第二添加证书很多后台开发者根本不会将就下，做兼容吧  由于 Android P 限制了">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://www.cmonbaby.com/posts/android_gpuimage_support/1.gif">
-<meta property="og:image" content="https://www.cmonbaby.com/posts/android_gpuimage_support/2.jpg">
-<meta property="og:updated_time" content="2020-06-02T04:31:54.613Z">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/android_request9/request9_01.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/android_request9/request9_02.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/android_request9/request9_03.png">
+<meta property="og:updated_time" content="2020-06-22T03:15:00.295Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用android-gpuimage的一些问题总结">
-<meta name="twitter:description" content="说明：本文源于闲蛋，如需转载请带上链接或注明出处！   前言android-gpuimage虽然可以实现滤镜的效果，但遇到稍微复杂的需求，框架本身的bug和一些缺陷就暴露出来了，而且这个项目最后一个版本是1.4.1，已经2年没维护过了，提issues也没人讨论，这里总结一些遇到的问题和解决办法。 1、Demo跑起来就有些bugandroid-gpuimage-support 重写了更友好的示例">
-<meta name="twitter:image" content="https://www.cmonbaby.com/posts/android_gpuimage_support/1.gif">
+<meta name="twitter:title" content="老司机常规翻车，关于高版本9.0+请求失效">
+<meta name="twitter:description" content="作者：彭老师 日期：2020-06-22 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    在android9.0+版本，由于安全性高了，所有不做处理http将不能使用服务器请求不管是正式环境还是测试环境，把http改为https，说实话不现实，第一很多老项目难以重构，第二添加证书很多后台开发者根本不会将就下，做兼容吧  由于 Android P 限制了">
+<meta name="twitter:image" content="https://www.cmonbaby.com/posts/android_request9/request9_01.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://www.cmonbaby.com/posts/android_gpuimage_support.html">
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/android_request9.html">
   
     <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
   
@@ -325,14 +326,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-android_gpuimage_support" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-android_request9" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      使用android-gpuimage的一些问题总结
+      老司机常规翻车，关于高版本9.0+请求失效
     </h1>
   
 
@@ -340,8 +341,8 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/posts/android_gpuimage_support.html" class="article-date">
-	  <time datetime="2018-06-28T13:32:39.000Z" itemprop="datePublished">2018-06-28</time>
+	<a href="/posts/android_request9.html" class="article-date">
+	  <time datetime="2020-06-22T12:45:37.000Z" itemprop="datePublished">2020-06-22</time>
 	</a>
 </span>
         
@@ -366,7 +367,7 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/android_gpuimage_support.html#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/android_request9.html#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
@@ -374,38 +375,29 @@
       
         <blockquote>
 <ul>
-<li>说明：本文源于<a href="https://xiandan.in" target="_blank" rel="noopener">闲蛋</a>，如需转载请带上链接或注明出处！</li>
+<li>作者：彭老师</li>
+<li>日期：2020-06-22</li>
+<li>类型：Android</li>
+<li>说明：本文源于<a href="https://www.cmonbaby.com">彭老师</a>手写摘要，如需转载请带上链接或注明出处！</li>
 </ul>
 </blockquote>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h3><p>android-gpuimage虽然可以实现滤镜的效果，但遇到稍微复杂的需求，框架本身的bug和一些缺陷就暴露出来了，而且这个项目最后一个版本是1.4.1，已经2年没维护过了，提issues也没人讨论，这里总结一些遇到的问题和解决办法。</p>
-<h6 id="1、Demo跑起来就有些bug"><a href="#1、Demo跑起来就有些bug" class="headerlink" title="1、Demo跑起来就有些bug"></a>1、Demo跑起来就有些bug</h6><p><a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a> 重写了更友好的示例</p>
-<img src="/posts/android_gpuimage_support/1.gif">
+<hr>
+<h3 id="在android9-0-版本，由于安全性高了，所有不做处理http将不能使用"><a href="#在android9-0-版本，由于安全性高了，所有不做处理http将不能使用" class="headerlink" title="在android9.0+版本，由于安全性高了，所有不做处理http将不能使用"></a>在android9.0+版本，由于安全性高了，所有不做处理http将不能使用</h3><h4 id="服务器请求不管是正式环境还是测试环境，把http改为https，说实话不现实，第一很多老项目难以重构，第二添加证书很多后台开发者根本不会"><a href="#服务器请求不管是正式环境还是测试环境，把http改为https，说实话不现实，第一很多老项目难以重构，第二添加证书很多后台开发者根本不会" class="headerlink" title="服务器请求不管是正式环境还是测试环境，把http改为https，说实话不现实，第一很多老项目难以重构，第二添加证书很多后台开发者根本不会"></a>服务器请求不管是正式环境还是测试环境，把http改为https，说实话不现实，第一很多老项目难以重构，第二添加证书很多后台开发者根本不会</h4><h4 id="将就下，做兼容吧"><a href="#将就下，做兼容吧" class="headerlink" title="将就下，做兼容吧"></a>将就下，做兼容吧</h4><blockquote>
+<ul>
+<li>由于 Android P 限制了明文流量的网络请求，非加密的流量请求都会被系统禁止掉</li>
+<li>如果当前应用的请求是 htttp 请求，而非 https，这样就会导系统禁止当前应用进行该请求</li>
+<li>如果 WebView 的 url 用 http 协议，同样会出现加载失败，</li>
+<li>https 不受影响</li>
+</ul>
+</blockquote>
+<h3 id="（1）：在清单文件中设置networkSecurityConfig属性"><a href="#（1）：在清单文件中设置networkSecurityConfig属性" class="headerlink" title="（1）：在清单文件中设置networkSecurityConfig属性"></a>（1）：在清单文件中设置networkSecurityConfig属性</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">...</span> &gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">application</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:networkSecurityConfig</span>=<span class="string">"@xml/network_security_config"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h6 id="2、异步调用getBitmapWithFilterApplied有时候是黑色"><a href="#2、异步调用getBitmapWithFilterApplied有时候是黑色" class="headerlink" title="2、异步调用getBitmapWithFilterApplied有时候是黑色"></a>2、异步调用<code>getBitmapWithFilterApplied</code>有时候是黑色</h6><p>在子线程调用<code>getBitmapWithFilterApplied</code>，出来的bitmap是全黑的，但是在主线程就不会有问题。</p>
-<p>预览设置的Filter对象跟生成的Filter需要是不同的对象，<a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a> 增加了<code>GPUImageOutput</code>，可以更方便的输出Bitmap或文件。<br>这里示例RxJava2的调用方式，自定义Filter建议手动创建新对象然后<code>setFilter</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">new GPUImageOutput(gpuimage)</span><br><span class="line">		//.setFilter()//这里需要新创建的Filter</span><br><span class="line">        .setFilterByClass(filter)//这里可以跟预览Filter用同一个对象</span><br><span class="line">        .getFilterBitmap(GPUImageRxJava2Adapter.&lt;Bitmap&gt;create())</span><br><span class="line">        .subscribeOn(Schedulers.io())</span><br><span class="line">        .observeOn(AndroidSchedulers.mainThread())</span><br><span class="line">        .subscribe(new SimpleLoadingDialogObserver&lt;Bitmap&gt;(v.getContext()) &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onNext(Bitmap bitmap) &#123;</span><br><span class="line">                super.onNext(bitmap);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+<img src="/posts/android_request9/request9_01.png">
 
-<h6 id="3、RxJava的支持"><a href="#3、RxJava的支持" class="headerlink" title="3、RxJava的支持"></a>3、RxJava的支持</h6><p>使用<a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a>的<code>GPUImageOutput</code>，添加了RxJava1和RxJava2的支持</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">new GPUImageOutput(gpuImage)</span><br><span class="line">        .setFilter(filter)</span><br><span class="line">        .setOutputFormat(Bitmap.CompressFormat.JPEG)//输出格式</span><br><span class="line">        .setQuality(80)//输出质量</span><br><span class="line">        .setOutputFile(outputFile)</span><br><span class="line">        .outputFilterBitmap(GPUImageRxJava2Adapter.&lt;File&gt;create())//这里可以切换RxJava1和RxJava2</span><br><span class="line">        .subscribeOn(Schedulers.io())</span><br><span class="line">        .observeOn(AndroidSchedulers.mainThread())</span><br><span class="line">        .subscribe(new SimpleLoadingDialogObserver&lt;File&gt;(this) &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onNext(File file) &#123;</span><br><span class="line">                super.onNext(file);</span><br><span class="line">                Toast.makeText(MainActivity.this, &quot;保存成功-&gt;&quot; + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="（2）：在res-xml文件夹下创建network-security-config-xml"><a href="#（2）：在res-xml文件夹下创建network-security-config-xml" class="headerlink" title="（2）：在res/xml文件夹下创建network_security_config.xml"></a>（2）：在res/xml文件夹下创建network_security_config.xml</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">network-security-config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">base-config</span> <span class="attr">cleartextTrafficPermitted</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">trust-anchors</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">certificates</span> <span class="attr">src</span>=<span class="string">"system"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">trust-anchors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">base-config</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">network-security-config</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h6 id="4、用TextureView来预览GPUImage的效果"><a href="#4、用TextureView来预览GPUImage的效果" class="headerlink" title="4、用TextureView来预览GPUImage的效果"></a>4、用TextureView来预览GPUImage的效果</h6><p><a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a>添加了支持GPUImage的TextureView</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;jp.co.cyberagent.android.gpuimage.view.GPUImageTextureView</span><br><span class="line">    android:id=&quot;@+id/texture&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot; /&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-<h6 id="5、多次设置GPUImageFilterGroup背景会出现错乱"><a href="#5、多次设置GPUImageFilterGroup背景会出现错乱" class="headerlink" title="5、多次设置GPUImageFilterGroup背景会出现错乱"></a>5、多次设置<code>GPUImageFilterGroup</code>背景会出现错乱</h6><p>当<code>ScaleType</code>为<code>CENTER_INSIDE</code>的时候，在使用GPUImageFilterGroup添加多个Filter的时候，首次<code>setFilter(group)</code>不会有问题，再设置就会背景出现错乱（单个Filter不会出现这种情况）</p>
-<img src="/posts/android_gpuimage_support/2.jpg">
-
-<p>暂时弄了2种办法：<br>&nbsp;&nbsp;&nbsp;&nbsp;1、ZongwenSun在 <a href="https://github.com/cats-oss/android-gpuimage/issues/395#issuecomment-442725618" target="_blank" rel="noopener">#395</a> 提到在<code>GPUImageFilter.onDraw</code>中添加<code>GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);</code>，可以解决。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;2、通过图片来动态改变View的宽高</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GPUImageTextureView textureView = new GPUImageTextureView(context);</span><br><span class="line">textureView.setScaleType(GPUImage.ScaleType.VIEW_FIT_CENTER);</span><br></pre></td></tr></table></figure>
-
-<h6 id="6、GPUImageFilterGroup有时会出现IndexOutOfBoundsException"><a href="#6、GPUImageFilterGroup有时会出现IndexOutOfBoundsException" class="headerlink" title="6、GPUImageFilterGroup有时会出现IndexOutOfBoundsException"></a>6、<code>GPUImageFilterGroup</code>有时会出现<code>IndexOutOfBoundsException</code></h6><p>添加多个Filter后，频繁改变子Filter的属性，会导致<code>GPUImageFilterGroup</code>的<code>onDraw</code>方法内出现<code>IndexOutOfBoundsException</code>。
-猜测是线程问题，目前只能<code>try-catch</code>掉，已经在<a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a>做相应处理，暂时没有找到更好的解决办法，。</p>
-<h6 id="7、GPUImageFilterGroup出现ConcurrentModificationException"><a href="#7、GPUImageFilterGroup出现ConcurrentModificationException" class="headerlink" title="7、GPUImageFilterGroup出现ConcurrentModificationException"></a>7、<code>GPUImageFilterGroup</code>出现<code>ConcurrentModificationException</code></h6><p>GPUImageFilterGroup里的Filter集合遍历都是用的<code>foreach</code>，增删子Filter时就会出现此异常，换成<code>for循环</code>即可。<br>已在<a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a>修复</p>
-<h6 id="8、改变GPUImageFilterGroup子Filter属性不刷新"><a href="#8、改变GPUImageFilterGroup子Filter属性不刷新" class="headerlink" title="8、改变GPUImageFilterGroup子Filter属性不刷新"></a>8、改变<code>GPUImageFilterGroup</code>子Filter属性不刷新</h6><p>调用<code>requestRender</code>没有刷新子Filter的效果，保险一点的办法是重新调用<code>setFilter</code></p>
-<h6 id="9、GPUImageTwoInputFilter让输入源不仅支持Bitmap还支持Filter"><a href="#9、GPUImageTwoInputFilter让输入源不仅支持Bitmap还支持Filter" class="headerlink" title="9、GPUImageTwoInputFilter让输入源不仅支持Bitmap还支持Filter"></a>9、<code>GPUImageTwoInputFilter</code>让输入源不仅支持Bitmap还支持Filter</h6><p><a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a>提供了<code>GPUImageTwoInputFilter2</code>，调用<code>setSecondFilter(filter)</code>可以将滤镜作为输入源传入，需要注意的是要放一个GPUImageFilter在它的前面，否则可能回出现输入源的尺寸问题。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GPUImageFilterGroup group=new GPUImageFilterGroup();</span><br><span class="line">group.addFilter(new GPUImageFilter());</span><br><span class="line">group.addFilter(new GPUImageTwoInputFilter2());</span><br></pre></td></tr></table></figure>
+<img src="/posts/android_request9/request9_02.png">
+<img src="/posts/android_request9/request9_03.png">
       
     </div>
     <div class="article-footer">
@@ -414,7 +406,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://www.cmonbaby.com/posts/android_gpuimage_support.html" title="使用android-gpuimage的一些问题总结" target="_blank" rel="external">https://www.cmonbaby.com/posts/android_gpuimage_support.html</a>
+      <a href="https://www.cmonbaby.com/posts/android_request9.html" title="老司机常规翻车，关于高版本9.0+请求失效" target="_blank" rel="external">https://www.cmonbaby.com/posts/android_request9.html</a>
     </li>
     
     <li class="post-copyright-license">
@@ -460,13 +452,9 @@
   
   <ul class="pager pull-left">
     
-    <li class="prev">
-      <a href="/posts/android_assetfile.html" title="AssetFile - 像File一样操作Asset资源"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
-    </li>
-    
     
     <li class="next">
-      <a href="/posts/android_chrome_webview_debug.html" title="无需插件用Chrome调试WebView加载的网页"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/posts/android_fast_dev.html" title="实战：5天重写京东某项目"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
