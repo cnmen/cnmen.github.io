@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.cmonbaby.com/posts/simon_framework.html</loc>
+    
+    <lastmod>2020-06-23T06:44:20.389Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.cmonbaby.com/posts/android_request9.html</loc>
     
     <lastmod>2020-06-22T03:15:00.295Z</lastmod>
@@ -142,14 +149,14 @@
   </url>
   
   <url>
-    <loc>https://www.cmonbaby.com/posts/android_question.html</loc>
+    <loc>https://www.cmonbaby.com/posts/netease_modular_question.html</loc>
     
     <lastmod>2020-06-02T04:31:54.631Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.cmonbaby.com/posts/netease_modular_question.html</loc>
+    <loc>https://www.cmonbaby.com/posts/android_question.html</loc>
     
     <lastmod>2020-06-02T04:31:54.631Z</lastmod>
     
@@ -194,13 +201,6 @@
     <loc>https://www.cmonbaby.com/posts/eventbus_network.html</loc>
     
     <lastmod>2020-06-02T04:31:54.618Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.cmonbaby.com/posts/simon_framework.html</loc>
-    
-    <lastmod>2020-06-02T04:31:54.617Z</lastmod>
     
   </url>
   
@@ -275,14 +275,14 @@
   </url>
   
   <url>
-    <loc>https://www.cmonbaby.com/posts/liunx_www.html</loc>
+    <loc>https://www.cmonbaby.com/posts/liunx_hexo.html</loc>
     
     <lastmod>2020-06-02T04:31:54.590Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.cmonbaby.com/posts/liunx_hexo.html</loc>
+    <loc>https://www.cmonbaby.com/posts/liunx_www.html</loc>
     
     <lastmod>2020-06-02T04:31:54.590Z</lastmod>
     
