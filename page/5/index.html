@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="西门博客CMONBABY.COM-专业的技术平台，为您提供更详细、更权威的高端前沿技术资源。覆盖领域有java、android、音视频、高级ui、架构师、ndk、性能优化、flutter、kotlin、设计模式、数据结构算法，致学无止境。">
+<meta name="keywords" content="安卓,android开发,java,java开发,音视频,高级ui,架构师,ndk,性能优化,flutter,kotlin,设计模式,数据结构算法">
+<meta property="og:type" content="website">
+<meta property="og:title" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:url" content="https://www.cmonbaby.com/page/5/index.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="西门博客CMONBABY.COM-专业的技术平台，为您提供更详细、更权威的高端前沿技术资源。覆盖领域有java、android、音视频、高级ui、架构师、ndk、性能优化、flutter、kotlin、设计模式、数据结构算法，致学无止境。">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta name="twitter:description" content="西门博客CMONBABY.COM-专业的技术平台，为您提供更详细、更权威的高端前沿技术资源。覆盖领域有java、android、音视频、高级ui、架构师、ndk、性能优化、flutter、kotlin、设计模式、数据结构算法，致学无止境。">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/page/5/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">40</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">40</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/NetEase/" style="font-size: 13.67px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/wx_pay.html" class="title">微信支付踩坑记</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-07-03T08:18:37.000Z" itemprop="datePublished">2020-07-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/android_request9.html" class="title">老司机常规翻车，关于高版本9.0+请求失效</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-22T12:45:37.000Z" itemprop="datePublished">2020-06-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/android_fast_dev.html" class="title">实战：5天重写京东某项目</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-19T12:45:37.000Z" itemprop="datePublished">2020-06-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/android_umeng.html" class="title">Android10收不到友盟推送</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-05T05:45:37.000Z" itemprop="datePublished">2020-06-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/liunx_mysql.html" class="title">Liunx服务器安装Mysql实操记录</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-02T04:15:37.000Z" itemprop="datePublished">2020-06-02</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  <main class="main" role="main">
+  
+  
+    <div class="content">
+  <article id="post-android_supportsrtl_analysis" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/posts/android_supportsrtl_analysis.html">Android AndroidManifest.xml文件的android:supportsRtl属性详解</a>
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/android_supportsrtl_analysis.html" class="article-date">
+	  <time datetime="2016-05-11T03:07:57.000Z" itemprop="datePublished">2016-05-11</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/android/">android</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/android/">android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/android_supportsrtl_analysis.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>说明：本文源于<a href="https://xiandan.in" target="_blank" rel="noopener">闲蛋</a>，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<p>Android Studio新建工程的AndroidManifest文件里会有一个supportsRtl属性，并且默认是true，去看了看官网对android:supportsRtl的解释</p>
+<p>官网原文链接：<br><a href="https://developer.android.google.cn/guide/topics/manifest/application-element?hl=zh-cn" target="_blank" rel="noopener">https://developer.android.google.cn/guide/topics/manifest/application-element</a></p>
+<blockquote>
+<p>Declares whether your application is willing to support &gt;right-to-left (RTL) layouts.</p>
+<p>If set to true and targetSdkVersion is set to 17 or higher, various RTL APIs will be activated and used by the system so your app can display RTL layouts. If set to false or if targetSdkVersion is set to 16 or lower, the RTL APIs will be ignored or will have no effect and your app will behave the same regardless of the layout direction ass ociated to the user’s Locale choice (your layouts will always be left-to-right).</p>
+<p>The default value of this attribute is false.</p>
+<p>This attribute was added in API level 17.</p>
+</blockquote>
+<p>结合Google翻译和自己的理解翻译一下</p>
+<blockquote>
+<p>声明你的application是否愿意支持<code>从右到左</code>（原来RTL就是right-to-left 的缩写）的布局。</p>
+<p>如果设置为true，targetSdkVersion设置为17或更高，各种RTL的API将被激活，系统使用您的应用程序可以显示RTL布局。如果targetSdkVersion设置为16或更低的设置为false，RTL的API将被忽略或没有影响您的应用程序将具有相同的行为无论对用户现场的选择相关的布局方向（你的布局会从左至右）。</p>
+<p>此属性的默认值是false。</p>
+<p>此属性被添加到API 17。</p>
+</blockquote>
+<p>最后一句也说了，这个属性是<code>Android4.2</code>以后才有的，并且默认是false，低版本并不支持这个属性。</p>
+<p>那这个从右到左的布局是什么样的，经常玩机的朋友应该有发现，在设置-开发人员选项，有一个<code>强制使用从右到左的布局方向</code>，如图</p>
+<img src="/posts/android_supportsrtl_analysis/1.jpg" width="300">
+
+<p>打开<code>强制使用从右到左的布局方向</code>，原先在左边的文字被放到右边去了，在右边的开关，也被放到左边了，看到这个就明白了这个属性的意思了吧</p>
+<img src="/posts/android_supportsrtl_analysis/2.jpg" width="300">
+
+
+<p>为了证明这个属性，再弄个Demo试试</p>
+<p>当<code>android:supportsRtl</code>为<code>false</code>的时候，即使手机开启了强制从右到左，app的布局也不会改变，如图</p>
+<img src="/posts/android_supportsrtl_analysis/3.jpg" width="300">
+
+
+<p>当<code>android:supportsRtl</code>为<code>true</code>的时候，并且手机也开启了强制从右到左的开关，那么布局就会从右到左来排列了，如图</p>
+<img src="/posts/android_supportsrtl_analysis/4.jpg" width="300">
+
+
+
+
+
+
+
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/android_supportsrtl_analysis.html" title="Android AndroidManifest.xml文件的android:supportsRtl属性详解" target="_blank" rel="external">https://www.cmonbaby.com/posts/android_supportsrtl_analysis.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+</div>
+
+
+
+  
+
+  
+    
+    <nav class="bar bar-footer clearfix" data-stick-bottom>
+        <div class="bar-inner">
+        <ul class="pager pull-left">
+            
+            <li class="prev">
+                <a href="/page/4/">
+                    <i class="icon icon-angle-left"></i>
+                    上一页
+                </a>
+            </li>
+            
+            
+            <li class="next disabled">
+                <a href="javascript:;">
+                    下一页
+                    <i class="icon icon-angle-right"></i>                    
+                </a>
+            </li>
+            
+        </ul>
+        <div class="total-article bar-right">Page 5 of 5</div>
+        </div>
+    </nav>
+    
+ 
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle=tooltip data-placement=top><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 彭锡
+        
+        <div class="publishby">
+        	<a href="http://www.beian.miit.gov.cn" target="_blank"> 湘ICP备14013300号-2
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
