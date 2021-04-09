@@ -18,13 +18,13 @@
   
   
   <title>地震事件：安卓jenter换源maven，解决方案参考（一） | 西门博客 - 让技术更透明、让开发更简单！</title>
-  <meta name="description" content="作者：彭老师 日期：2021-04-09 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    谷歌官方、Android Studio支持的Jcenter，突如其来的一篇公告让我措手不及，上图：  #### 事情在2020过年那会暴露的（邮件我没细看），我是上周升级某框架时，才发现问题的严重性！   #### Bintray明显是更新好了，项目依赖去找不到">
+  <meta name="description" content="作者：彭老师 日期：2021-04-09 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    谷歌官方、Android Studio支持的Jcenter，突如其来的一篇公告让我措手不及，上图：  事情在2020过年那会暴露的（邮件我没细看），我是上周升级某框架时，才发现问题的严重性！  Bintray明显是更新好了，项目依赖去找不到  果断墙bintray">
 <meta name="keywords" content="android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="地震事件：安卓jenter换源maven，解决方案参考（一）">
 <meta property="og:url" content="https://www.cmonbaby.com/posts/jcenter_maven_01.html">
 <meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
-<meta property="og:description" content="作者：彭老师 日期：2021-04-09 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    谷歌官方、Android Studio支持的Jcenter，突如其来的一篇公告让我措手不及，上图：  #### 事情在2020过年那会暴露的（邮件我没细看），我是上周升级某框架时，才发现问题的严重性！   #### Bintray明显是更新好了，项目依赖去找不到">
+<meta property="og:description" content="作者：彭老师 日期：2021-04-09 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    谷歌官方、Android Studio支持的Jcenter，突如其来的一篇公告让我措手不及，上图：  事情在2020过年那会暴露的（邮件我没细看），我是上周升级某框架时，才发现问题的严重性！  Bintray明显是更新好了，项目依赖去找不到  果断墙bintray">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://www.cmonbaby.com/posts/jcenter_maven_01/jcenter_maven_01.png">
 <meta property="og:image" content="https://www.cmonbaby.com/posts/jcenter_maven_01/jcenter_maven_02.png">
@@ -37,10 +37,10 @@
 <meta property="og:image" content="https://www.cmonbaby.com/posts/jcenter_maven_01/jcenter_maven_07.png">
 <meta property="og:image" content="https://www.cmonbaby.com/posts/jcenter_maven_01/jcenter_maven_08.png">
 <meta property="og:image" content="https://www.cmonbaby.com/posts/jcenter_maven_01/jcenter_maven_09.png">
-<meta property="og:updated_time" content="2021-04-09T04:10:12.866Z">
+<meta property="og:updated_time" content="2021-04-09T04:19:52.532Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="地震事件：安卓jenter换源maven，解决方案参考（一）">
-<meta name="twitter:description" content="作者：彭老师 日期：2021-04-09 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    谷歌官方、Android Studio支持的Jcenter，突如其来的一篇公告让我措手不及，上图：  #### 事情在2020过年那会暴露的（邮件我没细看），我是上周升级某框架时，才发现问题的严重性！   #### Bintray明显是更新好了，项目依赖去找不到">
+<meta name="twitter:description" content="作者：彭老师 日期：2021-04-09 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    谷歌官方、Android Studio支持的Jcenter，突如其来的一篇公告让我措手不及，上图：  事情在2020过年那会暴露的（邮件我没细看），我是上周升级某框架时，才发现问题的严重性！  Bintray明显是更新好了，项目依赖去找不到  果断墙bintray">
 <meta name="twitter:image" content="https://www.cmonbaby.com/posts/jcenter_maven_01/jcenter_maven_01.png">
   <!-- Canonical links -->
   <link rel="canonical" href="https://www.cmonbaby.com/posts/jcenter_maven_01.html">
@@ -391,29 +391,30 @@
 </blockquote>
 <hr>
 <h3 id="谷歌官方、Android-Studio支持的Jcenter，突如其来的一篇公告让我措手不及，上图："><a href="#谷歌官方、Android-Studio支持的Jcenter，突如其来的一篇公告让我措手不及，上图：" class="headerlink" title="谷歌官方、Android Studio支持的Jcenter，突如其来的一篇公告让我措手不及，上图："></a>谷歌官方、Android Studio支持的Jcenter，突如其来的一篇公告让我措手不及，上图：</h3><img src="/posts/jcenter_maven_01/jcenter_maven_01.png">
-<br>
-#### 事情在2020过年那会暴露的（邮件我没细看），我是上周升级某框架时，才发现问题的严重性！
-<img src="/posts/jcenter_maven_01/jcenter_maven_02.png">
-<br>
-#### Bintray明显是更新好了，项目依赖去找不到
-<img src="/posts/jcenter_maven_01/jcenter_maven_03.png">
-<br>
-#### 果断墙bintray.com，发现顶部提示这么一句话：
-<img src="/posts/jcenter_maven_01/jcenter_maven_10.jpg">
-<br>
-##### 翻译过来就是：
-* 注意：所有Bintray服务将被弃用，您的帐户将在2021年5月1日被禁用。了解更多。
----
-* 进去的网页我就没截图了，网址：
-https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/
----
 
+<h4 id="事情在2020过年那会暴露的（邮件我没细看），我是上周升级某框架时，才发现问题的严重性！"><a href="#事情在2020过年那会暴露的（邮件我没细看），我是上周升级某框架时，才发现问题的严重性！" class="headerlink" title="事情在2020过年那会暴露的（邮件我没细看），我是上周升级某框架时，才发现问题的严重性！"></a>事情在2020过年那会暴露的（邮件我没细看），我是上周升级某框架时，才发现问题的严重性！</h4><img src="/posts/jcenter_maven_01/jcenter_maven_02.png">
+
+<h4 id="Bintray明显是更新好了，项目依赖去找不到"><a href="#Bintray明显是更新好了，项目依赖去找不到" class="headerlink" title="Bintray明显是更新好了，项目依赖去找不到"></a>Bintray明显是更新好了，项目依赖去找不到</h4><img src="/posts/jcenter_maven_01/jcenter_maven_03.png">
+
+<h4 id="果断墙bintray-com，发现顶部提示这么一句话："><a href="#果断墙bintray-com，发现顶部提示这么一句话：" class="headerlink" title="果断墙bintray.com，发现顶部提示这么一句话："></a>果断墙bintray.com，发现顶部提示这么一句话：</h4><img src="/posts/jcenter_maven_01/jcenter_maven_10.jpg">
+
+<h4 id="翻译过来就是："><a href="#翻译过来就是：" class="headerlink" title="翻译过来就是："></a>翻译过来就是：</h4><ul>
+<li>注意：所有Bintray服务将被弃用，您的帐户将在2021年5月1日被禁用。了解更多。</li>
+</ul>
+<hr>
+<ul>
+<li>进去的网页我就没截图了，网址：<br><a href="https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/" target="_blank" rel="noopener">https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/</a></li>
+</ul>
+<hr>
 <h4 id="发觉事情蹊跷后，马上度娘看下。查了好久才找到同样翻车的伙计，上图："><a href="#发觉事情蹊跷后，马上度娘看下。查了好久才找到同样翻车的伙计，上图：" class="headerlink" title="发觉事情蹊跷后，马上度娘看下。查了好久才找到同样翻车的伙计，上图："></a>发觉事情蹊跷后，马上度娘看下。查了好久才找到同样翻车的伙计，上图：</h4><img src="/posts/jcenter_maven_01/jcenter_maven_04.png">
-<br>
-> * 总结下：
-> * 它对Java社区的影响是巨大的，尤其是`Android`社区，它意味着五月之后很多构建会直接失败。但是我发现好像国内没什么人关心，毕竟人类的本质是拖延症吧
-> * <font color="#0099ff" size="4" face="黑体">重点：五月之后很多构建会直接失败</font>
 
+<blockquote>
+<ul>
+<li>总结下：</li>
+<li>它对Java社区的影响是巨大的，尤其是<code>Android</code>社区，它意味着五月之后很多构建会直接失败。但是我发现好像国内没什么人关心，毕竟人类的本质是拖延症吧</li>
+<li><font color="#0099ff" size="4" face="黑体">重点：五月之后很多构建会直接失败</font></li>
+</ul>
+</blockquote>
 <blockquote>
 <ul>
 <li><font color="#0099ff" size="4" face="黑体">说人话就是：<br>  如果你的项目中，有任何一个第三方库来源于<code>jcenter</code>。
