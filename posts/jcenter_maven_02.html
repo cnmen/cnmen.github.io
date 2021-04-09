@@ -27,7 +27,8 @@
 <meta property="og:description" content="作者：彭老师 日期：2021-04-09 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    接上篇：地震事件：安卓jenter换源maven，解决方案参考（一）  项目根目录（非app目录） 创建：javadocs.gradle 创建：maven.gradle 创建：simon.gradle （随意命名）   javadocs.gradle代码如下：//">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://www.cmonbaby.com/posts/jcenter_maven_02/jcenter_maven_13.png">
-<meta property="og:updated_time" content="2021-04-09T02:23:18.455Z">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/jcenter_maven_02/jcenter_maven_20.png">
+<meta property="og:updated_time" content="2021-04-09T03:43:23.157Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="地震事件：安卓jenter换源maven，解决方案参考（二）">
 <meta name="twitter:description" content="作者：彭老师 日期：2021-04-09 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    接上篇：地震事件：安卓jenter换源maven，解决方案参考（一）  项目根目录（非app目录） 创建：javadocs.gradle 创建：maven.gradle 创建：simon.gradle （随意命名）   javadocs.gradle代码如下：//">
@@ -404,6 +405,22 @@
 
 <h4 id="PS：如果gradle环境没配置，请度娘～"><a href="#PS：如果gradle环境没配置，请度娘～" class="headerlink" title="PS：如果gradle环境没配置，请度娘～"></a>PS：如果gradle环境没配置，请度娘～</h4><hr>
 <h3 id="以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！"><a href="#以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！" class="headerlink" title="以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！"></a>以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！</h3><img src="/posts/jcenter_maven_02/jcenter_maven_13.png">
+
+<h3 id="补充：备份现有的第三方库"><a href="#补充：备份现有的第三方库" class="headerlink" title="补充：备份现有的第三方库"></a>补充：备份现有的第三方库</h3><img src="/posts/jcenter_maven_02/jcenter_maven_20.png">
+<blockquote>
+<ul>
+<li>.m2是本地打包的库</li>
+<li>.gradle里面的是远程下载库</li>
+<li>远程库：.gradle/caches/modules-2/files-2.1</li>
+<li>本地库：.m2/repository</li>
+<li><h4 id="理解："><a href="#理解：" class="headerlink" title="理解："></a>理解：</h4></li>
+<li>远程库：不是你自己写的框架，从网络下载的</li>
+<li>本地库，指定是你自己写了框架，打包jar / aar。准备或者已经上传到全球中央仓库</li>
+<li><h4 id="备份："><a href="#备份：" class="headerlink" title="备份："></a>备份：</h4></li>
+<li>远程库：.gradle/caches/modules-2/files-2.1</li>
+</ul>
+</blockquote>
+
       
     </div>
     <div class="article-footer">
