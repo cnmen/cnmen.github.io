@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.cmonbaby.com/posts/jcenter_maven_02.html</loc>
+    <lastmod>2021-04-09</lastmod>
+  </url>  <url>
+    <loc>https://www.cmonbaby.com/posts/jcenter_maven_01.html</loc>
+    <lastmod>2021-04-09</lastmod>
+  </url>  <url>
     <loc>https://www.cmonbaby.com/posts/android_fast_dev.html</loc>
     <lastmod>2020-07-04</lastmod>
   </url>  <url>
@@ -49,19 +55,19 @@
     <loc>https://www.cmonbaby.com/posts/netease_skin.html</loc>
     <lastmod>2020-06-02</lastmod>
   </url>  <url>
-    <loc>https://www.cmonbaby.com/posts/netease_modular_question.html</loc>
+    <loc>https://www.cmonbaby.com/posts/android_question.html</loc>
     <lastmod>2020-06-02</lastmod>
   </url>  <url>
-    <loc>https://www.cmonbaby.com/posts/android_question.html</loc>
+    <loc>https://www.cmonbaby.com/posts/netease_modular_question.html</loc>
     <lastmod>2020-06-02</lastmod>
   </url>  <url>
     <loc>https://www.cmonbaby.com/posts/android_code_button.html</loc>
     <lastmod>2020-06-02</lastmod>
   </url>  <url>
-    <loc>https://www.cmonbaby.com/posts/images_compress.html</loc>
+    <loc>https://www.cmonbaby.com/posts/android_chrome_webview_debug.html</loc>
     <lastmod>2020-06-02</lastmod>
   </url>  <url>
-    <loc>https://www.cmonbaby.com/posts/android_chrome_webview_debug.html</loc>
+    <loc>https://www.cmonbaby.com/posts/images_compress.html</loc>
     <lastmod>2020-06-02</lastmod>
   </url>  <url>
     <loc>https://www.cmonbaby.com/posts/android_emulator.html</loc>
