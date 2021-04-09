@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://www.cmonbaby.com/posts/jcenter_maven_02/jcenter_maven_13.png">
 <meta property="og:image" content="https://www.cmonbaby.com/posts/jcenter_maven_02/jcenter_maven_20.png">
-<meta property="og:updated_time" content="2021-04-09T03:43:23.157Z">
+<meta property="og:updated_time" content="2021-04-09T04:10:12.866Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="地震事件：安卓jenter换源maven，解决方案参考（二）">
 <meta name="twitter:description" content="作者：彭老师 日期：2021-04-09 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    接上篇：地震事件：安卓jenter换源maven，解决方案参考（一）  项目根目录（非app目录） 创建：javadocs.gradle 创建：maven.gradle 创建：simon.gradle （随意命名）   javadocs.gradle代码如下：//">
@@ -395,7 +395,7 @@
 
 <h3 id="simon-gradle代码如下："><a href="#simon-gradle代码如下：" class="headerlink" title="simon.gradle代码如下："></a>simon.gradle代码如下：</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">// 生成maven配置</span><br><span class="line">apply from: '../maven.gradle'</span><br><span class="line"></span><br><span class="line">// 生成JavaDocs</span><br><span class="line">apply from: '../javadocs.gradle'</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">task simon &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println "Release $&#123;version&#125;"</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">simon.dependsOn(install)</span><br></pre></td></tr></table></figure>
 
-<h3 id="最后-4-个步骤非常关键！！！"><a href="#最后-4-个步骤非常关键！！！" class="headerlink" title="最后 4 个步骤非常关键！！！"></a>最后 4 个步骤非常关键！！！</h3><h4 id="1、在根目录的build-gradle中配置："><a href="#1、在根目录的build-gradle中配置：" class="headerlink" title="1、在根目录的build.gradle中配置："></a>1、在根目录的build.gradle中配置：</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">        classpath 'com.android.tools.build:gradle:3.5.4'</span><br><span class="line"></span><br><span class="line">        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'</span><br><span class="line"></span><br><span class="line">        // NOTE: Do not place your application dependencies here; they belong</span><br><span class="line">        // in the individual module build.gradle files</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="最后-4-个步骤非常关键！！！"><a href="#最后-4-个步骤非常关键！！！" class="headerlink" title="最后 4 个步骤非常关键！！！"></a><font color="#0099ff" size="6" face="黑体">最后 4 个步骤非常关键！！！</font></h3><h4 id="1、在根目录的build-gradle中配置："><a href="#1、在根目录的build-gradle中配置：" class="headerlink" title="1、在根目录的build.gradle中配置："></a>1、在根目录的build.gradle中配置：</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">        classpath 'com.android.tools.build:gradle:3.5.4'</span><br><span class="line"></span><br><span class="line">        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'</span><br><span class="line"></span><br><span class="line">        // NOTE: Do not place your application dependencies here; they belong</span><br><span class="line">        // in the individual module build.gradle files</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="2、在根目录的local-properties中配置："><a href="#2、在根目录的local-properties中配置：" class="headerlink" title="2、在根目录的local.properties中配置："></a>2、在根目录的local.properties中配置：</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">SNAPSHOT_REPOSITORY_URL=http://192.168.x.y:port/nexus/repository/maven-snapshots/</span><br><span class="line">RELEASE_REPOSITORY_URL=http://192.168.x.y:port/nexus/repository/maven-releases/</span><br><span class="line"></span><br><span class="line">NEXUS_USERNAME=admin</span><br><span class="line">NEXUS_PASSWORD=xxxyyyzzz</span><br></pre></td></tr></table></figure>
 
@@ -404,18 +404,22 @@
 <h4 id="4、在Android-Studio-IDEA-中，找到-logcat-旁边的-Terminal，输入命令行："><a href="#4、在Android-Studio-IDEA-中，找到-logcat-旁边的-Terminal，输入命令行：" class="headerlink" title="4、在Android Studio / IDEA 中，找到 logcat 旁边的 Terminal，输入命令行："></a>4、在Android Studio / IDEA 中，找到 logcat 旁边的 Terminal，输入命令行：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">gradle simon</span><br></pre></td></tr></table></figure>
 
 <h4 id="PS：如果gradle环境没配置，请度娘～"><a href="#PS：如果gradle环境没配置，请度娘～" class="headerlink" title="PS：如果gradle环境没配置，请度娘～"></a>PS：如果gradle环境没配置，请度娘～</h4><hr>
-<h3 id="以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！"><a href="#以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！" class="headerlink" title="以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！"></a>以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！</h3><img src="/posts/jcenter_maven_02/jcenter_maven_13.png">
+<h4 id="以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！"><a href="#以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！" class="headerlink" title="以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！"></a>以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！</h4><img src="/posts/jcenter_maven_02/jcenter_maven_13.png">
 
-<h3 id="补充：备份现有的第三方库"><a href="#补充：备份现有的第三方库" class="headerlink" title="补充：备份现有的第三方库"></a>补充：备份现有的第三方库</h3><img src="/posts/jcenter_maven_02/jcenter_maven_20.png">
+<hr>
+<h3 id="补充：备份现有的第三方库"><a href="#补充：备份现有的第三方库" class="headerlink" title="补充：备份现有的第三方库"></a><font color="#0099ff" size="6" face="黑体">补充：备份现有的第三方库</font></h3><img src="/posts/jcenter_maven_02/jcenter_maven_20.png">
+
+<hr>
 <blockquote>
 <ul>
+<li><h4 id="解释："><a href="#解释：" class="headerlink" title="解释："></a>解释：</h4></li>
 <li>.m2是本地打包的库</li>
 <li>.gradle里面的是远程下载库</li>
 <li>远程库：.gradle/caches/modules-2/files-2.1</li>
 <li>本地库：.m2/repository</li>
 <li><h4 id="理解："><a href="#理解：" class="headerlink" title="理解："></a>理解：</h4></li>
 <li>远程库：不是你自己写的框架，从网络下载的</li>
-<li>本地库，指定是你自己写了框架，打包jar / aar。准备或者已经上传到全球中央仓库</li>
+<li>本地库，指的是你自己写了框架，打包jar / aar。准备或者已经上传到全球中央仓库</li>
 <li><h4 id="备份："><a href="#备份：" class="headerlink" title="备份："></a>备份：</h4></li>
 <li>远程库：.gradle/caches/modules-2/files-2.1</li>
 </ul>
