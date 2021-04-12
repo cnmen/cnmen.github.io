@@ -36,7 +36,11 @@
 <meta property="og:image" content="https://www.cmonbaby.com/posts/sonatype_maven/sonatype_maven_08.png">
 <meta property="og:image" content="https://www.cmonbaby.com/posts/sonatype_maven/sonatype_maven_09.png">
 <meta property="og:image" content="https://www.cmonbaby.com/posts/sonatype_maven/sonatype_maven_10.png">
-<meta property="og:updated_time" content="2021-04-12T02:48:29.482Z">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/sonatype_maven/sonatype_maven_20.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/sonatype_maven/sonatype_maven_21.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/sonatype_maven/sonatype_maven_22.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/sonatype_maven/sonatype_maven_23.png">
+<meta property="og:updated_time" content="2021-04-12T13:34:29.199Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="maven中央仓库申请与sonatype操作">
 <meta name="twitter:description" content="作者：彭老师 日期：2021-04-12 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    接上篇：地震事件：安卓jenter换源maven，解决方案参考（二）  注册：https://issues.sonatype.org/ 创建：问题会话 审核：留言 加密：gpg对称加密 上传：jar / aar 上传maven">
@@ -426,6 +430,20 @@
 
 <hr>
 <img src="/posts/sonatype_maven/sonatype_maven_10.png">
+
+<hr>
+<h3 id="补充：gpg加密命令和用法"><a href="#补充：gpg加密命令和用法" class="headerlink" title="补充：gpg加密命令和用法"></a>补充：gpg加密命令和用法</h3><h4 id="生成asc文件，因为maven服务器需要-asc加密文件，作为作者本人上传唯一校验"><a href="#生成asc文件，因为maven服务器需要-asc加密文件，作为作者本人上传唯一校验" class="headerlink" title="生成asc文件，因为maven服务器需要.asc加密文件，作为作者本人上传唯一校验"></a>生成asc文件，因为maven服务器需要.asc加密文件，作为作者本人上传唯一校验</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -a --export email@qq.com &gt; public_key_sender.asc</span><br><span class="line">gpg -a --export-secret-key email@qq.com &gt; private_key_sender.asc</span><br></pre></td></tr></table></figure>
+
+<h4 id="导出公钥、私钥"><a href="#导出公钥、私钥" class="headerlink" title="导出公钥、私钥"></a>导出公钥、私钥</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -o xxx-public.gpg -a --export xxx@email.com</span><br><span class="line">gpg -o xxx-private.gpg --export-secret-keys xxx@email.com</span><br></pre></td></tr></table></figure>
+
+<h3 id="更新：上传maven（上述最后一张错误图，往下接着看）"><a href="#更新：上传maven（上述最后一张错误图，往下接着看）" class="headerlink" title="更新：上传maven（上述最后一张错误图，往下接着看）"></a>更新：上传maven（上述最后一张错误图，往下接着看）</h3><h4 id="不要跟我一样傻帽兮兮的等了足足2天！！！maven针对jar不会审核"><a href="#不要跟我一样傻帽兮兮的等了足足2天！！！maven针对jar不会审核" class="headerlink" title="不要跟我一样傻帽兮兮的等了足足2天！！！maven针对jar不会审核"></a>不要跟我一样傻帽兮兮的等了足足2天！！！maven针对jar不会审核</h4><img src="/posts/sonatype_maven/sonatype_maven_20.png">
+
+<h4 id="准备发布时，发现问题："><a href="#准备发布时，发现问题：" class="headerlink" title="准备发布时，发现问题："></a>准备发布时，发现问题：</h4><img src="/posts/sonatype_maven/sonatype_maven_21.png">
+
+<h4 id="已更新gpg代码：地震事件：安卓jenter换源maven，解决方案参考（二）"><a href="#已更新gpg代码：地震事件：安卓jenter换源maven，解决方案参考（二）" class="headerlink" title="已更新gpg代码：地震事件：安卓jenter换源maven，解决方案参考（二）"></a>已更新gpg代码：<a href="https://www.cmonbaby.com/posts/jcenter_maven_02.html">地震事件：安卓jenter换源maven，解决方案参考（二）</a></h4><h5 id="正确的姿势为："><a href="#正确的姿势为：" class="headerlink" title="正确的姿势为："></a>正确的姿势为：</h5><img src="/posts/sonatype_maven/sonatype_maven_22.png">
+
+<h4 id="发布成功后，搜索"><a href="#发布成功后，搜索" class="headerlink" title="发布成功后，搜索"></a>发布成功后，搜索</h4><img src="/posts/sonatype_maven/sonatype_maven_23.png">
+
       
     </div>
     <div class="article-footer">
