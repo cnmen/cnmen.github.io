@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>听说你还在用工具类来判断网络状态？试试这个吧，像使用EventBus一样简单优雅 | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="作者：夜比昼长 日期：2019-06-23 类型：Android 说明：本文源于 夜比昼长，如需转载请带上链接或注明出处！    前言无意中在 掘金 发现一篇技术文献，开始很震惊，后来很欣慰！ 有感而发，同样也非常感谢 夜比昼长 这位同学的文章和开源精神！（6400+阅读量） 这样的技术希望能被更多的求学者发现和传播，在这里 彭老师 发下学习的视频链接，算是锦上添花！ 即时网络监听架构，让用户">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="听说你还在用工具类来判断网络状态？试试这个吧，像使用EventBus一样简单优雅">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/eventbus_network.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="作者：夜比昼长 日期：2019-06-23 类型：Android 说明：本文源于 夜比昼长，如需转载请带上链接或注明出处！    前言无意中在 掘金 发现一篇技术文献，开始很震惊，后来很欣慰！ 有感而发，同样也非常感谢 夜比昼长 这位同学的文章和开源精神！（6400+阅读量） 这样的技术希望能被更多的求学者发现和传播，在这里 彭老师 发下学习的视频链接，算是锦上添花！ 即时网络监听架构，让用户">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2023-10-09T07:23:45.308Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="听说你还在用工具类来判断网络状态？试试这个吧，像使用EventBus一样简单优雅">
+<meta name="twitter:description" content="作者：夜比昼长 日期：2019-06-23 类型：Android 说明：本文源于 夜比昼长，如需转载请带上链接或注明出处！    前言无意中在 掘金 发现一篇技术文献，开始很震惊，后来很欣慰！ 有感而发，同样也非常感谢 夜比昼长 这位同学的文章和开源精神！（6400+阅读量） 这样的技术希望能被更多的求学者发现和传播，在这里 彭老师 发下学习的视频链接，算是锦上添花！ 即时网络监听架构，让用户">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/eventbus_network.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-eventbus_network" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      听说你还在用工具类来判断网络状态？试试这个吧，像使用EventBus一样简单优雅
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/eventbus_network.html" class="article-date">
+	  <time datetime="2019-06-22T18:15:37.000Z" itemprop="datePublished">2019-06-23</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/android/">android</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/android/">android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/eventbus_network.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>作者：夜比昼长</li>
+<li>日期：2019-06-23</li>
+<li>类型：Android</li>
+<li>说明：本文源于 <a href="https://juejin.im/post/5ce0c238e51d4510595d90cb" target="_blank" rel="noopener">夜比昼长</a>，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>无意中在 <strong>掘金</strong> 发现一篇技术文献，开始很震惊，后来很欣慰！</p>
+<p>有感而发，同样也非常感谢 <strong>夜比昼长</strong> 这位同学的文章和开源精神！<a href="https://juejin.im/post/5ce0c238e51d4510595d90cb" target="_blank" rel="noopener">（6400+阅读量）</a></p>
+<p>这样的技术希望能被更多的求学者发现和传播，在这里 <strong>彭老师</strong> 发下学习的视频链接，算是锦上添花！</p>
+<h2 id="即时网络监听架构，让用户体验飞起来"><a href="#即时网络监听架构，让用户体验飞起来" class="headerlink" title="即时网络监听架构，让用户体验飞起来"></a><a href="https://study.163.com/course/courseLearn.htm?courseId=1209046860&share=2&shareId=1024134767#/learn/live?lessonId=1278567399&courseId=1209046860" target="_blank" rel="noopener">即时网络监听架构，让用户体验飞起来</a></h2><h2 id="基本操作，先举栗子🌰"><a href="#基本操作，先举栗子🌰" class="headerlink" title="基本操作，先举栗子🌰"></a>基本操作，先举栗子🌰</h2><p>在项目中总是会有需要判断网络状态的地方，我们常用的方法就是抽出一个工具类，我顺手就是一个栗子🌰： </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//判断网络是否可用</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isNetworkAvailable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ConnectivityManager connectivityManager = (ConnectivityManager)</span><br><span class="line">                getApplication()</span><br><span class="line">                .getSystemService(Context.CONNECTIVITY_SERVICE);</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">boolean</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>细致的你当然还会再写一个判断网络类型的方法，反手再来一个栗子🌰： </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//返回当前网络类型</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> NetType <span class="title">getNetType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ConnectivityManager connectivityManager = (ConnectivityManager)</span><br><span class="line">        getApplication()</span><br><span class="line">        .getSystemService(Context.CONNECTIVITY_SERVICE);</span><br><span class="line">        ...</span><br><span class="line">        ...</span><br><span class="line">    <span class="keyword">return</span> NetType;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们就会在相应的操作前进行判断网络的判断： </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (NetworkUtils.isNetworkAvailable()) &#123;</span><br><span class="line">	doSomething();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	doSomething();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (NetworkUtils.getNetType()== xxx) &#123;</span><br><span class="line">	doSomething();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	doSomething();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="这样做会有什么问题呢？"><a href="#这样做会有什么问题呢？" class="headerlink" title="这样做会有什么问题呢？"></a>这样做会有什么问题呢？</h2><blockquote>
+<p>1、首先最直观的，不够优雅，代码判断量太多，如果你的操作是需要频繁的监听网络状态，那么过多的 <code>if / else</code> 肯定会让后面维护变的眼花缭乱。 </p>
+</blockquote>
+<blockquote>
+<p>2、以上方法只能在网络操作之前判断网络状态，若用户在网络正常情况下发起操作而中间改变网络，比如下载中途突然丢失网络，则此时无法做出相应的控制。</p>
+</blockquote>
+<blockquote>
+<p>3、无法只针对某种网络类型进行监听，比如只想监听用户切换到 WiFi 网络时做出响应。</p>
+</blockquote>
+<blockquote>
+<p>4、程序多处需要进行网络监听处理时，不能同时接收网络变化，必须逐个地方手动处理。</p>
+</blockquote>
+<h2 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h2><p>接下来就是本文的重点，如何通过 <a href="https://github.com/sunyatas/NetStatusBus" target="_blank" rel="noopener">NetStatusBus</a> 这个库来解决以上问题，让你的网络状态监听变得前所未有的简单粗暴。 </p>
+<h3 id="通过以下方式来使用-NetStatusBus"><a href="#通过以下方式来使用-NetStatusBus" class="headerlink" title="通过以下方式来使用 NetStatusBus"></a>通过以下方式来使用 NetStatusBus</h3><p>####1、通过 Gradle 添加依赖：</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">implementation <span class="string">'com.sunchen:netstatusbus:0.1.4'</span></span><br></pre></td></tr></table></figure>
+
+<p>####2、Application 中初始化 NetStatusBus：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 尽可能早的进行这一步操作, 建议在 Application 中完成初始化操作</span></span><br><span class="line">NetStatusBus.getInstance().init(<span class="keyword">this</span>);</span><br></pre></td></tr></table></figure>
+
+<p>####3、根据你的生命周期来注册和注销订阅者，例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onStart();</span><br><span class="line">    NetStatusBus.getInstance().register(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onStop();</span><br><span class="line">    NetStatusBus.getInstance().unregister(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>####4、声明你的订阅方法，在该方法中可以监听到网络状态的变更：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@NetSubscribe</span>()</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSometing</span><span class="params">(NetType netType)</span> </span>&#123;</span><br><span class="line">   	<span class="comment">//netType 会返回当前的网络类型为 NetType.WIFI 还是 NetType.MOBILE 或者NetType.NONE</span></span><br><span class="line">    Log.d(Constrants.LOG_TAG, netType.name());</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>到这里就已经结束了，你的所有网络操作已经都可以清晰优雅的在订阅方法中进行处理了，当然你也可以继续往下看。 </p>
+<h3 id="特别说明"><a href="#特别说明" class="headerlink" title="特别说明"></a>特别说明</h3><p>订阅方法<strong>可以选填</strong>一个<code>NetType</code>参数，可以通过<code>NetType</code>的值来判断当前网络类型。</p>
+<p><code>@NetSubscribe</code>中可以指定 <code>mode</code>用来设置订阅的模式，<code>mode</code>类型如下：</p>
+<p><code>Mode.AUTO</code>：这是默认值，任何网络状态发生变化，该类型订阅者都会被调用。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//所有网络变化都会被调用，可以通过 NetType 来判断当前网络具体状态</span></span><br><span class="line"><span class="meta">@NetSubscribe</span>(mode = Mode.AUTO)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">netChange</span><span class="params">(NetType netType)</span> </span>&#123;</span><br><span class="line">    Log.d(Constrants.LOG_TAG, netType.name());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Mode.WIFI</code>：由 WIFI 改变引发的网络状态变化的情况下（wifi连接和断开），该类型订阅者会被调用。 </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 当 wifi 连接和失去连接时都被调用</span></span><br><span class="line"><span class="meta">@NetSubscribe</span>(mode = Mode.WIFI)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">wifiChange</span><span class="params">(NetType netType)</span> </span>&#123;</span><br><span class="line">    Log.d(Constrants.LOG_TAG, netType.name());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Mode.WIFI_CONNECT</code>: 仅在 WIFI 成功连接后，该类型订阅者会被调用。 </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 只有当 wifi 连接时都被调用</span></span><br><span class="line"><span class="meta">@NetSubscribe</span>(mode = Mode.WIFI_CONNECT)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">wifiChange</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Log.d(Constrants.LOG_TAG, <span class="string">"连接到wifi网络"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Mode.MOBILE</code>: 由移动网络改变引发的网络状态变化的情况时（移动网络连接和断开），该类型订阅者会被回调。 </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 当移动网络连接和失去连接时都会被调用</span></span><br><span class="line"><span class="meta">@NetSubscribe</span>(mode = Mode.MOBILE)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">netChange</span><span class="params">(NetType netType)</span> </span>&#123;</span><br><span class="line">    Log.d(Constrants.LOG_TAG, netType.name());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Mode.MOBILE _CONNECT</code>: 仅在移动网络成功连接后，会被回调。 </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 当移动网络连接时调用</span></span><br><span class="line"><span class="meta">@NetSubscribe</span>(mode = Mode.MOBILE _CONNECT)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">netChange</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Log.d(Constrants.LOG_TAG, <span class="string">"连接到移动网络"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Mode.NONE</code>: 只有当网络丢失时，该类型订阅者才会被回调。 </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 只有当网络丢失时，该类型订阅者才会被回调。</span></span><br><span class="line"><span class="meta">@NetSubscribe</span>(mode = Mode.NONE)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">netChange</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Log.d(Constrants.LOG_TAG, <span class="string">"失去网络"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="它的原理是什么"><a href="#它的原理是什么" class="headerlink" title="它的原理是什么"></a>它的原理是什么</h2><p>有人会觉得，我用个库爽就行了管它的原理干什么？ </p>
+<p>你放心，我只是小小的描述一下实现方式。</p>
+<p>原理简单来说，就是在全局初始化的时候就绑定对网络的变化监听。然后将进行注册的父类所有的订阅方法保存至集合中，这里涉及到一些方法的校验，最后在网络状态发生改变时利用 Java 反射机制遍历执行所有订阅方法。熟悉 <a href="https://github.com/greenrobot/EventBus" target="_blank" rel="noopener">EventBus</a> 的小伙伴已经看出来了这里借鉴了一小部分 EventBus 的思想。</p>
+<p>回到第一步，那么具体是如何绑定对网络状态变化的监听呢？</p>
+<p>以前我们是通过注册广播来实现绑定网络变更的监听，在Android 7.0 以后，Google 基于性能和安全原因对广播进行了很多限制，比如监听网络变更的广播 <code>android.net.conn.CONNECTIVITY_CHANGE</code> 使用静态注册的方式则无法生效，而动态注册的方式虽然可以生效但毕竟不是最优解。</p>
+<p>同样出于性能和安全，以及拥抱变化的角度，最终我们还是使用官方推荐的方式，利用 <a href="https://developer.android.com/reference/android/net/ConnectivityManager.NetworkCallback" target="_blank" rel="noopener">ConnectivityManager.NetworkCallback</a> 来进行网络变化的监听，这是在Android 5.0即android api 21推出的API，目前Android 5.0以上的市场占有率在 85%以上，随着国内各大厂商正在积极的推进适配普及Android Q，这个比例还会进一步增大，所以个人人认为无需过于担心低版本适配。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>好的，这就关于 <a href="https://github.com/sunyatas/NetStatusBus" target="_blank" rel="noopener">NetStatusBus</a> 这个库的内容，希望可以对你有帮助，喜欢的话请不吝点赞，感谢。 </p>
+<hr>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/eventbus_network.html" title="听说你还在用工具类来判断网络状态？试试这个吧，像使用EventBus一样简单优雅" target="_blank" rel="external">https://www.cmonbaby.com/posts/eventbus_network.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/images_compress.html" title="开源一个 Android 图片压缩框架"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/sql.html" title="全网最全Oracle学习，SQL语法笔记"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>微信支付踩坑记 | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="作者：彭老师 日期：2020-07-03 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    上次做微信支付模糊记得是2015年，虽然阔别这么久至少心里有底。但没想到这么坑！无论你看与不看这篇文章，相信你都见过下面4个页面。并且逐字阅读很多遍了1、https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chap">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信支付踩坑记">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/wx_pay.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="作者：彭老师 日期：2020-07-03 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    上次做微信支付模糊记得是2015年，虽然阔别这么久至少心里有底。但没想到这么坑！无论你看与不看这篇文章，相信你都见过下面4个页面。并且逐字阅读很多遍了1、https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chap">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/wx_pay/wxpay_01.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/wx_pay/wxpay_02.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/wx_pay/wxpay_03.jpg">
+<meta property="og:updated_time" content="2023-10-09T07:23:45.429Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信支付踩坑记">
+<meta name="twitter:description" content="作者：彭老师 日期：2020-07-03 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    上次做微信支付模糊记得是2015年，虽然阔别这么久至少心里有底。但没想到这么坑！无论你看与不看这篇文章，相信你都见过下面4个页面。并且逐字阅读很多遍了1、https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chap">
+<meta name="twitter:image" content="https://www.cmonbaby.com/posts/wx_pay/wxpay_01.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/wx_pay.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-wx_pay" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      微信支付踩坑记
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/wx_pay.html" class="article-date">
+	  <time datetime="2020-07-03T08:18:37.000Z" itemprop="datePublished">2020-07-03</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/android/">android</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/android/">android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/wx_pay.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>作者：彭老师</li>
+<li>日期：2020-07-03</li>
+<li>类型：Android</li>
+<li>说明：本文源于<a href="https://www.cmonbaby.com">彭老师</a>手写摘要，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="上次做微信支付模糊记得是2015年，虽然阔别这么久至少心里有底。但没想到这么坑！"><a href="#上次做微信支付模糊记得是2015年，虽然阔别这么久至少心里有底。但没想到这么坑！" class="headerlink" title="上次做微信支付模糊记得是2015年，虽然阔别这么久至少心里有底。但没想到这么坑！"></a>上次做微信支付模糊记得是2015年，虽然阔别这么久至少心里有底。但没想到这么坑！</h3><p>无论你看与不看这篇文章，相信你都见过下面4个页面。并且逐字阅读很多遍了<br>1、<a href="https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=11_1" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=11_1</a><br>2、<a href="https://developers.weixin.qq.com/doc/oplatform/Downloads/Android_Resource.html" target="_blank" rel="noopener">https://developers.weixin.qq.com/doc/oplatform/Downloads/Android_Resource.html</a><br>3、<a href="https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_5" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_5</a><br>4、<a href="https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_12&amp;index=2" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_12&amp;index=2</a></p>
+<h4 id="然并卵，根本无从下手！"><a href="#然并卵，根本无从下手！" class="headerlink" title="然并卵，根本无从下手！"></a>然并卵，根本无从下手！</h4><blockquote>
+<ul>
+<li>总结下：</li>
+<li>WeChatOpenSdkSample这个项目所谓的Demo根本没有支付模块</li>
+<li>wechat_sdk_sample_android这个项目还是Eclipse的</li>
+</ul>
+</blockquote>
+<h4 id="请注意：以上两个项目都有用！！！后面会说到"><a href="#请注意：以上两个项目都有用！！！后面会说到" class="headerlink" title="请注意：以上两个项目都有用！！！后面会说到"></a>请注意：以上两个项目都有用！！！后面会说到</h4><p>介绍下思路：能不能弄到一个<code>Jar</code>包，然后调用Api不就得了</p>
+<h3 id="1、参考WeChatOpenSdkSample项目中的build-gradle，在自己项目对应加入："><a href="#1、参考WeChatOpenSdkSample项目中的build-gradle，在自己项目对应加入：" class="headerlink" title="1、参考WeChatOpenSdkSample项目中的build.gradle，在自己项目对应加入："></a>1、参考<code>WeChatOpenSdkSample</code>项目中的<code>build.gradle</code>，在自己项目对应加入：</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>可能会编译不通过，亲猜发现是集成了友盟Umeng。所以改下：<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">compileOnly 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="2、参考wechat-sdk-sample-android项目中的WXPayEntryActivity，复制到自己项目对应目录（切记：项目包名-wxapi-WXPayEntryActivity）"><a href="#2、参考wechat-sdk-sample-android项目中的WXPayEntryActivity，复制到自己项目对应目录（切记：项目包名-wxapi-WXPayEntryActivity）" class="headerlink" title="2、参考wechat_sdk_sample_android项目中的WXPayEntryActivity，复制到自己项目对应目录（切记：项目包名.wxapi.WXPayEntryActivity）"></a>2、参考<code>wechat_sdk_sample_android</code>项目中的<code>WXPayEntryActivity</code>，复制到自己项目对应目录（切记：项目包名.wxapi.WXPayEntryActivity）</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xyz.xyz.wxapi;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.app.Activity;</span><br><span class="line"><span class="keyword">import</span> android.app.AlertDialog;</span><br><span class="line"><span class="keyword">import</span> android.content.Intent;</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.cmonbaby.utils.show.LogUtils;</span><br><span class="line"><span class="keyword">import</span> com.cmonbaby.utils.show.ToastUtils;</span><br><span class="line"><span class="keyword">import</span> com.xyz.xyz.R;</span><br><span class="line"><span class="keyword">import</span> com.xyz.xyz.common.utils.Constance;</span><br><span class="line"><span class="keyword">import</span> com.tencent.mm.opensdk.constants.ConstantsAPI;</span><br><span class="line"><span class="keyword">import</span> com.tencent.mm.opensdk.modelbase.BaseReq;</span><br><span class="line"><span class="keyword">import</span> com.tencent.mm.opensdk.modelbase.BaseResp;</span><br><span class="line"><span class="keyword">import</span> com.tencent.mm.opensdk.openapi.IWXAPI;</span><br><span class="line"><span class="keyword">import</span> com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;</span><br><span class="line"><span class="keyword">import</span> com.tencent.mm.opensdk.openapi.WXAPIFactory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WXPayEntryActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> <span class="keyword">implements</span> <span class="title">IWXAPIEventHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"MicroMsg.SDKSample.WXPayEntryActivity"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> IWXAPI api;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        <span class="comment">// 界面自由发挥，跟支付流程无关</span></span><br><span class="line">        setContentView(R.layout.pay_result);</span><br><span class="line"></span><br><span class="line">        api = WXAPIFactory.createWXAPI(<span class="keyword">this</span>, Constance.APP_ID);</span><br><span class="line">        api.handleIntent(getIntent(), <span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onNewIntent</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onNewIntent(intent);</span><br><span class="line">        setIntent(intent);</span><br><span class="line">        api.handleIntent(intent, <span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReq</span><span class="params">(BaseReq req)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResp</span><span class="params">(BaseResp resp)</span> </span>&#123;</span><br><span class="line">        LogUtils.e(TAG, <span class="string">"onPayFinish, errCode = "</span> + resp.errCode);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) &#123;</span><br><span class="line">            AlertDialog.Builder builder = <span class="keyword">new</span> AlertDialog.Builder(<span class="keyword">this</span>);</span><br><span class="line">            builder.setTitle(<span class="string">"提示"</span>);</span><br><span class="line">            builder.setMessage(getString(R.string.pay_result_callback_msg, String.valueOf(resp.errCode)));</span><br><span class="line">            builder.show();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 判断resultStatus 为“0”则代表支付成功，具体状态码代表含义可参考接口文档</span></span><br><span class="line">            <span class="keyword">if</span> (resp.errCode == <span class="number">0</span>) &#123;</span><br><span class="line">                ToastUtils.show(<span class="keyword">this</span>, <span class="string">"支付成功"</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (resp.errCode == -<span class="number">1</span>) &#123;</span><br><span class="line">                <span class="comment">// -1为支付失败，包括用户主动取消支付，或者系统返回的错误</span></span><br><span class="line">                ToastUtils.show(<span class="keyword">this</span>, <span class="string">"支付失败"</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (resp.errCode == -<span class="number">2</span>) &#123;</span><br><span class="line">                <span class="comment">// -2为取消支付，或者系统返回的错误</span></span><br><span class="line">                ToastUtils.show(<span class="keyword">this</span>, <span class="string">"取消支付"</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 其他为系统返回的错误</span></span><br><span class="line">                ToastUtils.show(<span class="keyword">this</span>, <span class="string">"支付错误"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="然后很天真，后面的代码简直不要太简单，分分钟打爆它！！！"><a href="#然后很天真，后面的代码简直不要太简单，分分钟打爆它！！！" class="headerlink" title="然后很天真，后面的代码简直不要太简单，分分钟打爆它！！！"></a>然后很天真，后面的代码简直不要太简单，分分钟打爆它！！！</h3><p>看到微信有那么一段介绍：<a href="https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_5" target="_blank" rel="noopener">https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=8_5</a></p>
+<blockquote>
+<ul>
+<li>调起支付</li>
+<li>商户服务器生成支付订单，先调用统一下单API(详见第7节)生成预付单，获取到prepay_id后将参数再次签名传输给APP发起支付。以下是调起微信支付的关键代码：</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">IWXAPI api;</span><br><span class="line">PayReq request = <span class="keyword">new</span> PayReq();</span><br><span class="line">request.appId = <span class="string">"wxd930ea5d5a258f4f"</span>;</span><br><span class="line">request.partnerId = <span class="string">"1900000109"</span>;</span><br><span class="line">request.prepayId= <span class="string">"1101000000140415649af9fc314aa427"</span>,;</span><br><span class="line">request.packageValue = <span class="string">"Sign=WXPay"</span>;</span><br><span class="line">request.nonceStr= <span class="string">"1101000000140429eb40476f8896f4c9"</span>;</span><br><span class="line">request.timeStamp= <span class="string">"1398746574"</span>;</span><br><span class="line">request.sign= <span class="string">"7FFECB600D7157C5AA49810D2D8F28BC2811827B"</span>;</span><br><span class="line">api.sendReq(request);</span><br></pre></td></tr></table></figure>
+
+<h3 id="随便找个Button植入上述代码，结果怎么玩都是返回-1（支付失败）"><a href="#随便找个Button植入上述代码，结果怎么玩都是返回-1（支付失败）" class="headerlink" title="随便找个Button植入上述代码，结果怎么玩都是返回 -1（支付失败）"></a>随便找个<code>Button</code>植入上述代码，结果怎么玩都是返回 -1（支付失败）</h3><p>怎么办，看文档呗。这里我给大家走下捷径：</p>
+<h4 id="1、确认你是debug还是release环境，跑在真机上的。怎么验证呢？"><a href="#1、确认你是debug还是release环境，跑在真机上的。怎么验证呢？" class="headerlink" title="1、确认你是debug还是release环境，跑在真机上的。怎么验证呢？"></a>1、确认你是debug还是release环境，跑在真机上的。怎么验证呢？</h4><p>点击：<a href="https://developers.weixin.qq.com/doc/oplatform/Downloads/Android_Resource.html" target="_blank" rel="noopener">https://developers.weixin.qq.com/doc/oplatform/Downloads/Android_Resource.html</a><br>该页面最底部有一个：签名生成工具<br>用于获取安装到手机的第三方应用签名的apk包。点击下载 <a href="https://res.wx.qq.com/open/zh_CN/htmledition/res/dev/download/sdk/Gen_Signature_Android2.apk" target="_blank" rel="noopener">签名生成工具</a></p>
+<h4 id="安装APK到真机上-打开app-输入项目包名-得到签名结果"><a href="#安装APK到真机上-打开app-输入项目包名-得到签名结果" class="headerlink" title="安装APK到真机上 - 打开app - 输入项目包名 - 得到签名结果"></a>安装<code>APK</code>到真机上 - 打开<code>app</code> - 输入项目包名 - 得到签名结果</h4><img src="/posts/wx_pay/wxpay_01.png">
+
+<h4 id="微信开放平台-登录-管理中心-开发信息（匹配两值是否一致）"><a href="#微信开放平台-登录-管理中心-开发信息（匹配两值是否一致）" class="headerlink" title="微信开放平台 - 登录 - 管理中心 - 开发信息（匹配两值是否一致）"></a>微信开放平台 - 登录 - 管理中心 - 开发信息（匹配两值是否一致）</h4><p>点击：<a href="https://open.weixin.qq.com/" target="_blank" rel="noopener">https://open.weixin.qq.com/</a></p>
+<img src="/posts/wx_pay/wxpay_02.png">
+
+<h4 id="后台给出接口，安卓传参：totalFee付款金额，userId识别某用户ID。得到返回结果，赋值给上述appId、partnerId、prepayId等7个属性"><a href="#后台给出接口，安卓传参：totalFee付款金额，userId识别某用户ID。得到返回结果，赋值给上述appId、partnerId、prepayId等7个属性" class="headerlink" title="后台给出接口，安卓传参：totalFee付款金额，userId识别某用户ID。得到返回结果，赋值给上述appId、partnerId、prepayId等7个属性"></a>后台给出接口，安卓传参：<code>totalFee</code>付款金额，<code>userId</code>识别某用户ID。得到返回结果，赋值给上述<code>appId</code>、<code>partnerId</code>、<code>prepayId</code>等7个属性</h4><p>结果发现还是返回 -1（支付失败）</p>
+<h4 id="这个阶段是最难熬的，给点提示："><a href="#这个阶段是最难熬的，给点提示：" class="headerlink" title="这个阶段是最难熬的，给点提示："></a>这个阶段是最难熬的，给点提示：</h4><p>1、如果持续返回 -1（支付失败）可以断言后台签名有误！<br>2、如果提示：支付验证签名失败。则说明后台签名正确！接近答案了！</p>
+<h4 id="改动上述代码："><a href="#改动上述代码：" class="headerlink" title="改动上述代码："></a>改动上述代码：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 得到后台接口返回对象</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">pay</span><span class="params">(WechatPayEntity pay)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 商户APP工程中引入微信JAR包，调用API前，需要先向微信注册您的APPID，代码如下：</span></span><br><span class="line">        IWXAPI api = WXAPIFactory.createWXAPI(<span class="keyword">this</span>, Constance.APP_ID);</span><br><span class="line">        <span class="comment">// 移动端时间戳，不用后台的。注意：微信支付的时间戳是10位非毫秒</span></span><br><span class="line">        String temp = String.valueOf(System.currentTimeMillis() / <span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">        PayReq request = <span class="keyword">new</span> PayReq();</span><br><span class="line">        request.appId = pay.getAppid(); <span class="comment">// 应用ID（微信开放平台审核通过的应用APPID）</span></span><br><span class="line">        request.partnerId = pay.getPartnerid(); <span class="comment">// 商户号（微信支付分配的商户号）</span></span><br><span class="line">        request.prepayId= pay.getPrepayid(); <span class="comment">// 预支付交易会话ID（微信返回的支付交易会话ID）</span></span><br><span class="line">        request.packageValue = <span class="string">"Sign=WXPay"</span>; <span class="comment">// 扩展字段，暂填写固定值Sign=WXPay</span></span><br><span class="line">        request.nonceStr= pay.getNoncestr(); <span class="comment">// 随机字符串（随机字符串，不长于32位。推荐随机数生成算法）</span></span><br><span class="line">        request.timeStamp= temp; <span class="comment">// 时间戳</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 将集合M内非空参数值的参数按照参数名ASCII码从小到大排序（字典序），最末尾加上商户Key</span></span><br><span class="line">        Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">"appid"</span>, pay.getAppid());</span><br><span class="line">        map.put(<span class="string">"partnerid"</span>, pay.getPartnerid());</span><br><span class="line">        map.put(<span class="string">"prepayid"</span>, pay.getPrepayid());</span><br><span class="line">        map.put(<span class="string">"package"</span>, <span class="string">"Sign=WXPay"</span>);</span><br><span class="line">        map.put(<span class="string">"noncestr"</span>, pay.getNoncestr());</span><br><span class="line">        map.put(<span class="string">"timestamp"</span>, temp);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 最终拉起支付时，request对象中的sign属性值为安卓自定义签名的值。而不能用后台返回的任何sign签名值，切记！！！</span></span><br><span class="line">        request.sign= getSign(map); <span class="comment">// 签名</span></span><br><span class="line"></span><br><span class="line">        api.sendReq(request);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getSign</span><span class="params">(Map&lt;String, String&gt; data)</span> </span>&#123;</span><br><span class="line">        Set&lt;String&gt; keySet = data.keySet();</span><br><span class="line">        String[] keyArray = keySet.toArray(<span class="keyword">new</span> String[keySet.size()]);</span><br><span class="line">        Arrays.sort(keyArray);</span><br><span class="line">        StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">for</span> (String k : keyArray) &#123;</span><br><span class="line">            <span class="keyword">if</span> (data.get(k).trim().length() &gt; <span class="number">0</span>) <span class="comment">// 参数值为空，则不参与签名</span></span><br><span class="line">                sb.append(k).append(<span class="string">"="</span>).append(data.get(k).trim()).append(<span class="string">"&amp;"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 此处商户Key为：自定义</span></span><br><span class="line">        sb.append(<span class="string">"key="</span>).append(<span class="string">"11hKHB6OIJG4I32J038JH34IG234548I"</span>);</span><br><span class="line">        MessageDigest md = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            md = MessageDigest.getInstance(<span class="string">"MD5"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchAlgorithmException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">byte</span>[] array = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            array = md.digest(sb.toString().getBytes(<span class="string">"UTF-8"</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        StringBuilder sb2 = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">byte</span> item : array) &#123;</span><br><span class="line">            sb2.append(Integer.toHexString((item &amp; <span class="number">0xFF</span>) | <span class="number">0x100</span>).substring(<span class="number">1</span>, <span class="number">3</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sb2.toString().toUpperCase();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/posts/wx_pay/wxpay_03.jpg">
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/wx_pay.html" title="微信支付踩坑记" target="_blank" rel="external">https://www.cmonbaby.com/posts/wx_pay.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/jcenter_maven_01.html" title="地震事件：安卓jenter换源maven，解决方案参考（一）"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/android_request9.html" title="老司机常规翻车，关于高版本9.0+请求失效"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

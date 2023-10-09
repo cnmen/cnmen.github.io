@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>UI绘制流程（测量，布局，绘制） | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="作者：鱼八（网易1902期） 公众号：鱼八说 日期：2019-06-23 类型：Android 说明：本文源于 鱼八 原创，如需转载请带上链接或注明出处！    一、测量performMeasure 在这个方法中我们我们需要清楚2件事。  1 . 测量 view的宽高流程是什么？ 2 . MeasureSpec 是什么？最后我们再去看看DecorView测量的整个流程是什么样的。   1.测量">
+<meta name="keywords" content="android,NetEase">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UI绘制流程（测量，布局，绘制）">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/yuba_ui02.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="作者：鱼八（网易1902期） 公众号：鱼八说 日期：2019-06-23 类型：Android 说明：本文源于 鱼八 原创，如需转载请带上链接或注明出处！    一、测量performMeasure 在这个方法中我们我们需要清楚2件事。  1 . 测量 view的宽高流程是什么？ 2 . MeasureSpec 是什么？最后我们再去看看DecorView测量的整个流程是什么样的。   1.测量">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/yuba_ui02/1560408068039.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/yuba_ui02/1560428222759.png">
+<meta property="og:updated_time" content="2023-10-09T07:23:45.138Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UI绘制流程（测量，布局，绘制）">
+<meta name="twitter:description" content="作者：鱼八（网易1902期） 公众号：鱼八说 日期：2019-06-23 类型：Android 说明：本文源于 鱼八 原创，如需转载请带上链接或注明出处！    一、测量performMeasure 在这个方法中我们我们需要清楚2件事。  1 . 测量 view的宽高流程是什么？ 2 . MeasureSpec 是什么？最后我们再去看看DecorView测量的整个流程是什么样的。   1.测量">
+<meta name="twitter:image" content="https://www.cmonbaby.com/posts/yuba_ui02/1560408068039.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/yuba_ui02.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-yuba_ui02" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UI绘制流程（测量，布局，绘制）
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/yuba_ui02.html" class="article-date">
+	  <time datetime="2019-06-23T07:04:37.000Z" itemprop="datePublished">2019-06-23</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/NetEase/">NetEase</a>►<a class="article-category-link" href="/categories/android/">android</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/NetEase/">NetEase</a>, <a class="article-tag-link" href="/tags/android/">android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/yuba_ui02.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>作者：鱼八（网易1902期）</li>
+<li>公众号：鱼八说</li>
+<li>日期：2019-06-23</li>
+<li>类型：Android</li>
+<li>说明：本文源于 <a href="https://mp.weixin.qq.com/s?__biz=MzIwNjczMzc5Nw==&mid=2247483708&idx=1&sn=2cf1bbafed26114434cd79e62d288d97&chksm=971c69b6a06be0a06538d2b1c19ca555afe2d9281ba05f0b62c37b9268ffcb17181598171acc&mpshare=1&scene=1&srcid=0623mKDpka9M5XFm6Ek33Mct&key=ff09d031d7c4257b90d16f6aa57ab90895ccbe4bfd3222e72f25ac6806603285034b703218d24102ab7a4a5aa533797b88cf2cee894a4640dbd267011bb0809cae97fe94ffdbf23e0a9583d6699501b5&ascene=1&uin=MTA0NDg0Mzc2MA%3D%3D&devicetype=Windows+10&version=62060834&lang=zh_CN&pass_ticket=JpSCDyJHcqjNr9Npoj%2BJHptySm%2FAkl7jLaKJB938tD1a3rLUnbgNU32mb%2BRwLxew" target="_blank" rel="noopener">鱼八</a> 原创，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="一、测量performMeasure"><a href="#一、测量performMeasure" class="headerlink" title="一、测量performMeasure"></a>一、测量performMeasure</h2><blockquote>
+<p>在这个方法中我们我们需要清楚2件事。</p>
+<ul>
+<li>1 . 测量 view的宽高流程是什么？</li>
+<li>2 . MeasureSpec 是什么？<br>最后我们再去看看DecorView测量的整个流程是什么样的。</li>
+</ul>
+</blockquote>
+<h3 id="1-测量-view的宽高流程"><a href="#1-测量-view的宽高流程" class="headerlink" title="1.测量 view的宽高流程"></a>1.测量 view的宽高流程</h3><blockquote>
+<p>最开始我们先去了解测量一个View的过程，我们进入到 ViewRootlmpl类中，找到<code>performMeasure（）</code>方法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private void performMeasure(int childWidthMeasureSpec, int childHeightMeasureSpec) &#123;</span><br><span class="line">    if (mView == null) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    Trace.traceBegin(Trace.TRACE_TAG_VIEW, &quot;measure&quot;);</span><br><span class="line">    try &#123;</span><br><span class="line">        mView.measure(childWidthMeasureSpec, childHeightMeasureSpec);</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        Trace.traceEnd(Trace.TRACE_TAG_VIEW);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>从源码中可以看到，mView 直接就调用了<code>measure()</code>方法，我们点进去可以看到我们进入到了View类中的<code>Measure（）</code>方法，是final类型不可以被重写。继续阅读源码，在<code>measure()</code>方法中，调用了<code>onMeasure（）</code>方法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public final void measure(int widthMeasureSpec, int heightMeasureSpec) &#123;</span><br><span class="line">onMeasure(widthMeasureSpec, heightMeasureSpec);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>进入到<code>onMeasure（）</code> 方法中</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) &#123;</span><br><span class="line">     setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),</span><br><span class="line">     getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>发现调用了setMeasuredDimension（）方法，进入该方法中我们发现又调用了setMeasuredDimensionRaw（）方法，在进入到该方法中，发现这个方法里只是对<code>mMeasuredWidth</code> 和<code>mMeasuredHeight</code> 进行了赋值，并且进行了一个标志位的设置，表示对这2个值已经做了赋值。 </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  private void setMeasuredDimensionRaw(int measuredWidth, int measuredHeight) &#123;</span><br><span class="line">    mMeasuredWidth = measuredWidth;</span><br><span class="line">    mMeasuredHeight = measuredHeight;</span><br><span class="line">    mPrivateFlags |= PFLAG_MEASURED_DIMENSION_SET;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>所以一个 view 从performMeasuer—&gt; measure() —&gt; onMeasure —&gt; setMeasuredDimension( ) — &gt; setMeasuredDimensionRaw 的过程实际上最后获得是View的宽高。</p>
+</blockquote>
+<h3 id="2-了解-MeasureSpec-（View类的静态内部类）"><a href="#2-了解-MeasureSpec-（View类的静态内部类）" class="headerlink" title="2.了解  MeasureSpec （View类的静态内部类）"></a>2.了解  MeasureSpec （View类的静态内部类）</h3><blockquote>
+<p> 我们知道了测量的流程后，我们再去了解一下<code>MeasureSpec</code> 。MeasureSpec封装了父布局传递给子布局的布局要求，有两个部分，一个是View的模式还有一个是View的尺寸，这两个部分被封装到了 <code>MeasureSpec</code> 中，<code>MeasureSpec</code> 是一个 32位的int值。<br>32位值 ：00000000 00000000 00000000 00000000 ,他的前2位就是view的模式 SpecMode。后30位就是代表着尺寸SpecSize。<br>在 进入到 <code>MeasureSpec</code> 中,我们可以看到 定义了三个值：UNSPECIFIED ，EXACTLY（精确模式）  ，AT_MOST （最大模式）    </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static class MeasureSpec &#123;</span><br><span class="line">    private static final int MODE_SHIFT = 30;</span><br><span class="line">    private static final int MODE_MASK  = 0x3 &lt;&lt; MODE_SHIFT;</span><br><span class="line"></span><br><span class="line">    /** @hide */</span><br><span class="line">    @IntDef(&#123;UNSPECIFIED, EXACTLY, AT_MOST&#125;)</span><br><span class="line">    @Retention(RetentionPolicy.SOURCE)</span><br><span class="line">    public @interface MeasureSpecMode &#123;&#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Measure specification mode: The parent has not imposed any constraint</span><br><span class="line">     * on the child. It can be whatever size it wants.</span><br><span class="line">     */</span><br><span class="line">    public static final int UNSPECIFIED = 0 &lt;&lt; MODE_SHIFT;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Measure specification mode: The parent has determined an exact size</span><br><span class="line">     * for the child. The child is going to be given those bounds regardless</span><br><span class="line">     * of how big it wants to be.</span><br><span class="line">     */</span><br><span class="line">    public static final int EXACTLY     = 1 &lt;&lt; MODE_SHIFT;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Measure specification mode: The child can be as large as it wants up</span><br><span class="line">     * to the specified size.</span><br><span class="line">     */</span><br><span class="line">    public static final int AT_MOST     = 2 &lt;&lt; MODE_SHIFT;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>阅读源码，我们发现：</p>
+<ul>
+<li>1 . public static final int UNSPECIFIED = 0 &lt;&lt; MODE_SHIFT;   00000000 00000000 00000000 00000000<br>表示 父容器 不对 View做任何限制，系统内部使用</li>
+<li>2 . public static final int EXACTLY     = 1 &lt;&lt; MODE_SHIFT;      01000000 00000000 00000000 00000000    精确模式<br>表示父容器检测出View的大小，View的最终大小就是 SpecSize ,  这个模式对应的布局属性是：LayoutPamras.match_parent 或者是 固定大小</li>
+<li>3 . public static final int AT_MOST     = 2 &lt;&lt; MODE_SHIFT;      10000000 00000000 00000000 00000000  最大模式<br>表示父容器会指定一个可用大小，View的大小不能超过这个值，对应的布局属性是：LayoutPamras.wrap_content</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>接着继续往下看MeasureSpec这个类，我们主要关心以下几个方法：</p>
+<ul>
+<li>1 . <code>makeMeasureSpec</code><br>我们会看到<code>makeMeasureSpec</code>这个方法，这个方法主要是将一个SpecMode值和SpecSize值进行一个打包的操作，打包成MeasureSpec。因为sUseBrokenMakeMeasureSpec 为false，所以我们只要关心else里的代码<code>return (size &amp; ~MODE_MASK) | (mode &amp; MODE_MASK);</code></li>
+</ul>
+</blockquote>
+<blockquote>
+<p>makeMeasureSpec方法 这个return表达意思是取MODE_MASK后30位做size，前2位做mode，然后打包返回得到一个MeasureSpec 这样的一个32位int值</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int makeMeasureSpec(@IntRange(from = 0, to = (1 &lt;&lt; MeasureSpec.MODE_SHIFT) - 1) int size,@MeasureSpecMode int mode) &#123;</span><br><span class="line">            if (sUseBrokenMakeMeasureSpec) &#123;</span><br><span class="line">                return size + mode;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                return (size &amp; ~MODE_MASK) | (mode &amp; MODE_MASK);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li>2 . <code>getMode（）</code>和 <code>getSize（）</code><br>接着往下看 可以看到两个方法 getMode（）和 getSize（），这2个方法表示传入一个MeasureSpec，将MeasureSpec进行一个解包操作，得到它的SpecMode和SpecSize.</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@MeasureSpecMode</span><br><span class="line">       public static int getMode(int measureSpec) &#123;</span><br><span class="line">           //noinspection ResourceType</span><br><span class="line">           return (measureSpec &amp; MODE_MASK);</span><br><span class="line">       &#125;</span><br><span class="line">       public static int getSize(int measureSpec) &#123;</span><br><span class="line">           return (measureSpec &amp; ~MODE_MASK);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>我们现在知道了view的测量过程和测量规格MeasureSpec<br>接着我们回到源码去看看DecorView（顶层view）测量的过程。</p>
+</blockquote>
+<h3 id="3-DecorView的测量获取-MeasureSpec-的规则"><a href="#3-DecorView的测量获取-MeasureSpec-的规则" class="headerlink" title="3.DecorView的测量获取 MeasureSpec 的规则"></a>3.DecorView的测量获取 MeasureSpec 的规则</h3><blockquote>
+<p>首先我们知道DecorView开始绘制UI是从<code>performTraversals（）</code>方法开始的，它先调用了 <code>performMeasure（）</code>方法：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// Ask host how big it wants to be</span><br><span class="line">  performMeasure(childWidthMeasureSpec, childHeightMeasureSpec);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>我们看到了这个方法的childWidthMeasureSpec ，childHeightMeasureSpec这两个参数<br>现在我们需要知道这两个参数是如何得到的，这这个方法的上面我们发现是由以下两句话获得的：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int childWidthMeasureSpec = getRootMeasureSpec(mWidth, lp.width);</span><br><span class="line">int childHeightMeasureSpec = getRootMeasureSpec(mHeight, lp.height);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>我们看到的getRootMeasureSpec（）这个方法，它的第一个参数表示窗口的宽，第二参数表示顶层view布局属性的宽。我们进入到<code>getRootMeasureSpec（）</code>该方法中，</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private static int getRootMeasureSpec(int windowSize, int rootDimension) &#123;</span><br><span class="line">    int measureSpec;</span><br><span class="line">    switch (rootDimension) &#123;</span><br><span class="line"></span><br><span class="line">    case ViewGroup.LayoutParams.MATCH_PARENT:</span><br><span class="line">        // Window can&apos;t resize. Force root view to be windowSize.</span><br><span class="line">        measureSpec = MeasureSpec.makeMeasureSpec(windowSize, MeasureSpec.EXACTLY);</span><br><span class="line">        break;</span><br><span class="line">    case ViewGroup.LayoutParams.WRAP_CONTENT:</span><br><span class="line">        // Window can resize. Set max size for root view.</span><br><span class="line">        measureSpec = MeasureSpec.makeMeasureSpec(windowSize, MeasureSpec.AT_MOST);</span><br><span class="line">        break;</span><br><span class="line">    default:</span><br><span class="line">        // Window wants to be an exact size. Force root view to be that size.</span><br><span class="line">        measureSpec = MeasureSpec.makeMeasureSpec(rootDimension, MeasureSpec.EXACTLY);</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return measureSpec;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>阅读源码发现根据顶层View的不同布局属性，会进入不同的条件中。通过这个方法可以知道顶层View测量的方式经过一定的规则。也就是View的测量过程中 DecorView（顶层View） 的MeasureSpec 是由窗口的大小和自身的LayoutParams所决定的，遵守如下<code>规则</code>：</p>
+<ul>
+<li>1 .如果DecorView的LayoutParams是：LayoutParams.MATCH_PARENT。那么我们给DecorView设置的MeasureSpec的值，他的模式是精确模式，它的尺寸是窗口大小。</li>
+<li>2 . 如果DecorView的LayoutParams是LayoutParams.WARP_CONTENT。那么我们给DecorView设置的MeasureSpec的值，他的模式是最大模式，它的最大尺寸是窗口大小</li>
+<li>3 .  如果DecorView的LayoutParams给的是固定大小，那么我们给DecorView设置的MeasureSpec的值，他的模式是精确模式它的尺寸是LayoutParams的大小。</li>
+</ul>
+</blockquote>
+<h3 id="4-DecorView-测量过程"><a href="#4-DecorView-测量过程" class="headerlink" title="4.DecorView 测量过程"></a>4.DecorView 测量过程</h3><h4 id="1-获取DecorView-的-MeasureSpec"><a href="#1-获取DecorView-的-MeasureSpec" class="headerlink" title="1.获取DecorView 的 MeasureSpec"></a>1.获取DecorView 的 MeasureSpec</h4><blockquote>
+<p>我们之前已经知道了窗口宽度和layoutParams，再通过<code>getRootMeasureSpec（）</code>方法得到了 DecorView 的实际的 MeasureSpec。也就是说从顶层View开始绘制，会先通过一定的规则获取到它的MeasureSpec，再去往下走，<br>我们接着往下看，会发现<code>performMeasure()</code>中调用的<code>mView.Measure（）</code>方法（这里的mView实际上就是顶层的DecorView）。因为measure()是被final修饰的无法被重写，进入到Measure（）方法中，在这个方法里，我们主要去看它实现的 <code>onMeasure(widthMeasureSpec, heightMeasureSpec);</code>方法。<code>值得注意的是，根据源码注释我们要知道这个onMeasure方法是可以且必须被他的子View进行重写的</code>。我们都知道DecorView是继承自FrameLayout的，</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">* The actual measurement work of a view is performed in</span><br><span class="line">     * &#123;@link #onMeasure(int, int)&#125;, called by this method. Therefore, only</span><br><span class="line">     * &#123;@link #onMeasure(int, int)&#125; can and must be overridden by subclasses.</span><br><span class="line">     * &lt;/p&gt;</span><br><span class="line"></span><br><span class="line">  public final void measure(int widthMeasureSpec, int heightMeasureSpec) &#123;</span><br><span class="line">				...</span><br><span class="line">                onMeasure(widthMeasureSpec, heightMeasureSpec);</span><br><span class="line">                ...</span><br><span class="line">                &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-进入onMeasure-方法遍历测量子控件"><a href="#2-进入onMeasure-方法遍历测量子控件" class="headerlink" title="2.进入onMeasure()方法遍历测量子控件"></a>2.进入onMeasure()方法遍历测量子控件</h4><blockquote>
+<p>所以在这里我们现在要去看看FrameLayout的<code>onMeasure（）</code>方法。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) &#123;</span><br><span class="line">...</span><br><span class="line">	//循环遍历measure子控件</span><br><span class="line">    for (int i = 0; i &lt; count; i++) &#123;</span><br><span class="line">        final View child = getChildAt(i);</span><br><span class="line">        if (mMeasureAllChildren || child.getVisibility() != GONE) &#123;</span><br><span class="line">            measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);</span><br><span class="line">            final LayoutParams lp = (LayoutParams) child.getLayoutParams();</span><br><span class="line">            maxWidth = Math.max(maxWidth,</span><br><span class="line">                    child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin);</span><br><span class="line">            maxHeight = Math.max(maxHeight,</span><br><span class="line">                    child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin);</span><br><span class="line">            childState = combineMeasuredStates(childState, child.getMeasuredState());</span><br><span class="line">            if (measureMatchParentChildren) &#123;</span><br><span class="line">                if (lp.width == LayoutParams.MATCH_PARENT ||</span><br><span class="line">                        lp.height == LayoutParams.MATCH_PARENT) &#123;</span><br><span class="line">                    mMatchParentChildren.add(child);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ....</span><br><span class="line">    //这个方法是决定自身的宽高</span><br><span class="line">setMeasuredDimension(resolveSizeAndState(maxWidth, widthMeasureSpec, childState),</span><br><span class="line">                resolveSizeAndState(maxHeight, heightMeasureSpec,</span><br><span class="line">                        childState &lt;&lt; MEASURED_HEIGHT_STATE_SHIFT));</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>一开始我们会看到一个遍历子View的一个for循环，这个for循环遍历了每一个子View ，调用了<code>measureChildWithMargins（）</code>，进入到这个方法中：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">protected void measureChildWithMargins(View child,</span><br><span class="line">            int parentWidthMeasureSpec, int widthUsed,</span><br><span class="line">            int parentHeightMeasureSpec, int heightUsed) &#123;</span><br><span class="line">        final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();</span><br><span class="line"></span><br><span class="line">        final int childWidthMeasureSpec = getChildMeasureSpec(parentWidthMeasureSpec,</span><br><span class="line">                mPaddingLeft + mPaddingRight + lp.leftMargin + lp.rightMargin</span><br><span class="line">                        + widthUsed, lp.width);</span><br><span class="line">        final int childHeightMeasureSpec = getChildMeasureSpec(parentHeightMeasureSpec,</span><br><span class="line">                mPaddingTop + mPaddingBottom + lp.topMargin + lp.bottomMargin</span><br><span class="line">                        + heightUsed, lp.height);</span><br><span class="line"></span><br><span class="line">        child.measure(childWidthMeasureSpec, childHeightMeasureSpec);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>measureChildWithMargins（）</code>实际上是在测量子view。<br>在这个方法中我们需要关注<code>getChildMeasureSpec（）</code>这个方法，它是获取到子View的MeasureSpec的一个方法。<br> 这个方法的三个参数： spec  是指父控件的MeasureSpec ，padding 是指 当前父容器已经使用的空间，childDimension 是指子控件的布局参数对应的尺寸。<br>现在让我们进入到这个方法中去看看：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> public static int getChildMeasureSpec(int spec, int padding, int childDimension) &#123;</span><br><span class="line">	 // 获取父控件的 specMode和specSize </span><br><span class="line">    int specMode = MeasureSpec.getMode(spec);</span><br><span class="line">    int specSize = MeasureSpec.getSize(spec);</span><br><span class="line">    int size = Math.max(0, specSize - padding);</span><br><span class="line"></span><br><span class="line">    int resultSize = 0;</span><br><span class="line">    int resultMode = 0;</span><br><span class="line"></span><br><span class="line">	//根据父控件的 specMode 进行判断</span><br><span class="line">    switch (specMode) &#123;</span><br><span class="line">    // Parent has imposed an exact size on us</span><br><span class="line">    case MeasureSpec.EXACTLY:</span><br><span class="line">	     // 固定大小</span><br><span class="line">        if (childDimension &gt;= 0) &#123;</span><br><span class="line">            resultSize = childDimension;</span><br><span class="line">            resultMode = MeasureSpec.EXACTLY;</span><br><span class="line">        // MATCH_PARENT</span><br><span class="line">        &#125; else if (childDimension == LayoutParams.MATCH_PARENT) &#123;</span><br><span class="line">            // Child wants to be our size. So be it.</span><br><span class="line">            resultSize = size;</span><br><span class="line">            resultMode = MeasureSpec.EXACTLY;</span><br><span class="line">        &#125; else if (childDimension == LayoutParams.WRAP_CONTENT) &#123;</span><br><span class="line">            // Child wants to determine its own size. It can&apos;t be</span><br><span class="line">            // bigger than us.</span><br><span class="line">            resultSize = size;</span><br><span class="line">            resultMode = MeasureSpec.AT_MOST;</span><br><span class="line">        &#125;</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    // Parent has imposed a maximum size on us</span><br><span class="line">    case MeasureSpec.AT_MOST:</span><br><span class="line">        if (childDimension &gt;= 0) &#123;</span><br><span class="line">            // Child wants a specific size... so be it</span><br><span class="line">            resultSize = childDimension;</span><br><span class="line">            resultMode = MeasureSpec.EXACTLY;</span><br><span class="line">        &#125; else if (childDimension == LayoutParams.MATCH_PARENT) &#123;</span><br><span class="line">            // Child wants to be our size, but our size is not fixed.</span><br><span class="line">            // Constrain child to not be bigger than us.</span><br><span class="line">            resultSize = size;</span><br><span class="line">            resultMode = MeasureSpec.AT_MOST;</span><br><span class="line">        &#125; else if (childDimension == LayoutParams.WRAP_CONTENT) &#123;</span><br><span class="line">            // Child wants to determine its own size. It can&apos;t be</span><br><span class="line">            // bigger than us.</span><br><span class="line">            resultSize = size;</span><br><span class="line">            resultMode = MeasureSpec.AT_MOST;</span><br><span class="line">        &#125;</span><br><span class="line">        break;</span><br><span class="line"></span><br><span class="line">    // Parent asked to see how big we want to be</span><br><span class="line">    case MeasureSpec.UNSPECIFIED:</span><br><span class="line">        if (childDimension &gt;= 0) &#123;</span><br><span class="line">            // Child wants a specific size... let him have it</span><br><span class="line">            resultSize = childDimension;</span><br><span class="line">            resultMode = MeasureSpec.EXACTLY;</span><br><span class="line">        &#125; else if (childDimension == LayoutParams.MATCH_PARENT) &#123;</span><br><span class="line">            // Child wants to be our size... find out how big it should</span><br><span class="line">            // be</span><br><span class="line">            resultSize = View.sUseZeroUnspecifiedMeasureSpec ? 0 : size;</span><br><span class="line">            resultMode = MeasureSpec.UNSPECIFIED;</span><br><span class="line">        &#125; else if (childDimension == LayoutParams.WRAP_CONTENT) &#123;</span><br><span class="line">            // Child wants to determine its own size.... find out how</span><br><span class="line">            // big it should be</span><br><span class="line">            resultSize = View.sUseZeroUnspecifiedMeasureSpec ? 0 : size;</span><br><span class="line">            resultMode = MeasureSpec.UNSPECIFIED;</span><br><span class="line">        &#125;</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    //noinspection ResourceType</span><br><span class="line">    return MeasureSpec.makeMeasureSpec(resultSize, resultMode);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这段源码是获取view的MeasureSpec的规则：<br>首先我们要知道获取view的MeasureSpec和顶级View的MeasureSpec是不一样的。<br>View的MeasureSpec的获取是由父容器MeasureSpec和自身的LayoutParams决定的。<br>而我们前面也提到了顶层的View也就是DecorView 的MeasureSpec 是由窗口的大小和自身的LayoutParams所决定的。<br><code>规则</code>：</p>
+</blockquote>
+<img src="/posts/yuba_ui02/1560408068039.png">
+
+<blockquote>
+<p> 现在通过阅读源码我们知道这个方法实际上是子控件获取MeasureSpec 的一个规则，最后一行<code>return MeasureSpec.makeMeasureSpec(resultSize, resultMode);</code>表明了这个方法 返回值是MeasureSpec 。<br>通过这个规则子View获取到它的MeasureSpec ，然后让我们在回到<code>measureChildWithMargins（）</code>方法中，继续往下看。<br>我们会看到执行了<code>child.measure()</code>在<code>measure（）</code>方法中又会去到view类中的<code>onMeasure（）</code>方法，紧接着在这个方法中又会去调用<code>setMeasuredDimension（）</code>然后通过<code>setMeasuredDimensionRaw（）</code>去得到子view的宽高。<code>注：在子view中不需要再去测量直接就通过onMeasure中的一系列方法获得自身的宽高。</code> 在我们测量子View的过程中，<code>onMeasure（）</code> 方法里有这样一个方法：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),</span><br><span class="line">                getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>我们需要注意这个方法的参数中<code>getDefaultSize（）</code>方法。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> public static int getDefaultSize(int size, int measureSpec) &#123;</span><br><span class="line">  int result = size;</span><br><span class="line">    int specMode = MeasureSpec.getMode(measureSpec);</span><br><span class="line">    int specSize = MeasureSpec.getSize(measureSpec);</span><br><span class="line"></span><br><span class="line">    switch (specMode) &#123;</span><br><span class="line">    case MeasureSpec.UNSPECIFIED:</span><br><span class="line">        result = size;</span><br><span class="line">        break;</span><br><span class="line">    case MeasureSpec.AT_MOST:</span><br><span class="line">    case MeasureSpec.EXACTLY:</span><br><span class="line">        result = specSize;</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这个方法中我们看到通过<code>getMode</code>和<code>getSize</code>获得measureSpec的mode和size值，在通过specMode的值进入到不同的case中。通过源码我们可以知道，我们在view的测量过程中，无论它是什么模式，他的测量尺寸specSize都是测量规格中的specSize 。<br><strong>如果我们在自定义View的过程里，不去重写我们的<code>onMeasure（）</code>方法，那么在布局文件中写wrap_content和match_content的效果是一样的。所以我们在定义view的时候，一定要去重写<code>onMeasure（）</code>方法。</strong></p>
+</blockquote>
+<h4 id="3-梳理decorView的测量流程"><a href="#3-梳理decorView的测量流程" class="headerlink" title="3.梳理decorView的测量流程"></a>3.梳理decorView的测量流程</h4><ul>
+<li><p>1 . 测量结束</p>
+<blockquote>
+<p>最后我们在回到for循环。当循环遍历执行结束后，至此我们对子View的全部测量就结束了。往下走，我们会看到<code>setMeasuredDimension()</code>这个方法，这个方法是用来决定父容器的自身的宽高，而它自身的宽高是由我们的父容器的子控件所决定的。 当他内部的所有方法执行完毕后，到此我们DecorView的 measure就全部结束了。 </p>
+</blockquote>
+</li>
+<li><p>2 . 梳理测量流程</p>
+<blockquote>
+<p>现在我们来回顾一下整个流程，<br><strong>首先</strong>有一点我们要明白：DecorView是继承自FrameLayout，而FrameLayout是一个ViewGroup。也就是说对DecorView的测量实际上就是对ViewGroup的测量。我们要知道ViewGroup的测量和View的测量是有区别的。</p>
+<p><strong>然后</strong>我们再来看流程 首先我们要知道测量一个view之前我们需要知道它的测量规格，而对于顶层View也就是DecorView来说，他的测量规格是通过<code>getRootMeasureSpec(mWidth, lp.width);</code>所获得的，它是获得MeasureSpec的规则。第一个参数代表着窗口的宽，第二个参数是顶层view布局属性的宽（高同理）。</p>
+<p><strong>再</strong>进入到<code>performMeasure（）</code>中， 我们看到<code>mView.measure(childWidthMeasureSpec, childHeightMeasureSpec);</code>这里的mView实际上就是我们的DecorView，进入到<code>measure（）</code>方法中因为它被final修饰所以无法被重写，</p>
+<p><strong>接着</strong>往下看可以看到<code>onMeasure(widthMeasureSpec, heightMeasureSpec);</code>方法的调用。值得注意的是，这个onMeasure方法是可以且必须被子View重写的，所以我们去到DecorView的onMeasure（）方法中，然后发现它最终调用了父类也就是<code>FrameLayout的onMeasure()</code>方法。在这个<code>onMeasure（）</code>方法中我们看到for循环对子view进行了遍历测量，而子view测量的流程是：先通过<code>measureChildWithMargins（）</code>中的<code>getChildMeasureSpec（）</code>获取到子view的MeasureSpec，再通过<code>child.measure(childWidthMeasureSpec, childHeightMeasureSpec);</code>方法传入获取到的宽高的MeasureSpec。</p>
+<p><strong>最后</strong>经过以下方法:<br><code>childe.measure（）---&gt; onMeasure---&gt;setMeasuredDimension（）----&gt;setMeasuredDimensionRaw()</code>后方法直接获取到子view自身的宽和高。当子view遍历循环结束后。在后面会调用<code>setMeasuredDimension（）----&gt;setMeasuredDimensionRaw()</code>方法去获取DecorView自身的宽高，而它自身的宽高是由它内部的子View所决定的。至此我们整个DecorView的测量也就全部完成了。<br><strong>从以上我们也可以得出顶层view对子view的测量实际上做的是一个递归操作。</strong> </p>
+</blockquote>
+</li>
+</ul>
+<h3 id="5-总结"><a href="#5-总结" class="headerlink" title="5.总结"></a>5.总结</h3><blockquote>
+<p> <strong>对于ViewGroup</strong>的测量会先调用<code>measure（）</code>，然后去调用<code>onMeasure()</code>方法，在重写的onMeasure（）方法中，我们需要去通过measureChildWithMargins（）方法测量子控件宽高，在测量子view宽高之前我们又要先通过getChildMeasureSpec()方法获得子控件的测量规格MeasureSpec，这个测量规格遵循一定的规则。在调用子控件的measure（）方法，最后完成了子控件的测量。接着ViewGroup 会调用setMeasuredDimension()然后通过setMeasuredDimensionRaw（）方法保存自己的宽高。</p>
+</blockquote>
+<blockquote>
+<p><strong>对于view</strong>的测量 当我们在对子控件进行测量的时候，它会有个<code>child.measure（）</code>方法被调用，他会来到view的<code>measure（）</code>方法，在<code>measure（）</code>方法中又会去到<code>onMeasure（）</code>方法，在这个方法中又会去调用<code>setMeasuredDimension（）</code>然后通过<code>setMeasuredDimensionRaw（）</code>去得到子控件的宽高。<code>注：在子控件中不需要再去测量直接就通过onMeasure中的一系列方法获得自身的宽高。</code> </p>
+</blockquote>
+<blockquote>
+<p>所以我们得到结论，如果在自定义ViewGroup 时，我们先要调用onMeasure方法去测量子控件的宽高，再去调用setMeasuredDimension()去确定自身的宽高。而在自定义view的时候。我们需要去重写onMeasure（）方法去重新确定view的宽高，否则布局文件中写wrap_content和match_content的效果是一样的。</p>
+</blockquote>
+<p><code>view的测量流程</code></p>
+<img src="/posts/yuba_ui02/1560428222759.png">
+
+<h2 id="二、布局performLayout"><a href="#二、布局performLayout" class="headerlink" title="二、布局performLayout"></a>二、布局performLayout</h2><h3 id="1-laout布局"><a href="#1-laout布局" class="headerlink" title="1.laout布局"></a>1.laout布局</h3><blockquote>
+<p>了解完了view的测量，我们在来看看view的布局方式，首先我们需要在viewRootImpl类中的performTraversals中找到 <code>performLayout(lp, mWidth, mHeight);</code>方法，这个方法的第一个参数是指顶层布局的布局属性，后面两个参数是顶层布局的宽和高。然后我们进入到（）方法中，我们看到 mView赋值给了host，那么这个host就是我们的顶层view。我们往下看可以看到<code>host.layout(0, 0, host.getMeasuredWidth(), host.getMeasuredHeight());</code>传入的是测量的宽和高。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private void performLayout(WindowManager.LayoutParams lp, int desiredWindowWidth,</span><br><span class="line">            int desiredWindowHeight) &#123;</span><br><span class="line">...</span><br><span class="line">        final View host = mView;</span><br><span class="line">...</span><br><span class="line">        host.layout(0, 0, host.getMeasuredWidth(), host.getMeasuredHeight());</span><br><span class="line">...</span><br><span class="line">        mInLayout = false;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>之后我们在进入到layout（）方法中</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public void layout(int l, int t, int r, int b) &#123;</span><br><span class="line">...</span><br><span class="line">        int oldL = mLeft;</span><br><span class="line">        int oldT = mTop;</span><br><span class="line">        int oldB = mBottom;</span><br><span class="line">        int oldR = mRight;</span><br><span class="line">        boolean changed = isLayoutModeOptical(mParent) ?</span><br><span class="line">          setOpticalFrame(l, t, r, b) : setFrame(l, t, r, b);</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">          onLayout(changed, l, t, r, b);</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这个方法实际上是通过<code>setFrame（）</code>方法确定我们上下左右的值。接着我们往下看可以看到 这里也调用了一个 onLayout(changed, l, t, r, b); 进入到这个方法中，我们发现它一个空方法，供子类实现。如果我们是ViewGroup，我们需要在onLayout里对子view进行摆放。如果是view，那么就不必重写这个方法。<br>我们这里以FrameLayout为例，我们进入到FrameLayout的onLayout（）方法中：它会先调用一个layoutChildren（）这个方法，这个方法就是去遍历我们的子view，对子view的控件摆放，然后又会去执行child.layout（）方法 形成了递归的操作。</p>
+</blockquote>
+<h3 id="2-总结"><a href="#2-总结" class="headerlink" title="2.总结"></a>2.总结</h3><blockquote>
+<p>view的布局实际上是调用view.layout确定自身的位置，即用在<code>layout（）</code>方法中的<code>setFrame（）</code>方法确定mLeft，mTop，mRight和mBottom的值。确定位置之后，会执行onLayout（）方法，如果此时是ViewGroup那么需要调用onLayout来确定子view的位置（通过递归的方式确定子view的位置），如果是view就不需要。</p>
+</blockquote>
+<h2 id="三、绘制performDraw"><a href="#三、绘制performDraw" class="headerlink" title="三、绘制performDraw"></a>三、绘制performDraw</h2><h3 id="1-draw布局"><a href="#1-draw布局" class="headerlink" title="1.draw布局"></a>1.draw布局</h3><blockquote>
+<p>最后我们在去看view的绘制，同样的我们需要在viewRootImpl类中的performTraversals中找到 <code>performDraw();</code>，我们进入到中，</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private void performDraw() &#123;</span><br><span class="line">...</span><br><span class="line">            draw(fullRedrawNeeded);</span><br><span class="line">...</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>我们看到了一个draw（）方法，</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">private void draw(boolean fullRedrawNeeded) &#123;</span><br><span class="line">  if (!drawSoftware(surface, mAttachInfo, xOffset, yOffset, scalingRequired, dirty)) &#123;</span><br><span class="line">                    return;</span><br><span class="line">                &#125;</span><br><span class="line">                &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在进入到其中我们可以看到<code>drawSoftWare（）</code>方法， 然后我们在这个<code>drawSoftWare（）</code>可以看到一个关键方法 <code>mView.draw(canvas);</code>,</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> private boolean drawSoftware(Surface surface, AttachInfo attachInfo, int xoff, int yoff,</span><br><span class="line">            boolean scalingRequired, Rect dirty) &#123;</span><br><span class="line">...</span><br><span class="line">mView.draw（canvas）</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里就会开始我们DecorView的绘制，通过它的注释我们可以看到绘制的步骤： 1. 绘制背景  2. 绘制图层保存  3. 绘制内容 4. 绘制子View 5.绘制边缘恢复图层 6.绘制装饰</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public void draw(Canvas canvas) &#123;</span><br><span class="line">        final int privateFlags = mPrivateFlags;</span><br><span class="line">        final boolean dirtyOpaque = (privateFlags &amp; PFLAG_DIRTY_MASK) == PFLAG_DIRTY_OPAQUE &amp;&amp;</span><br><span class="line">                (mAttachInfo == null || !mAttachInfo.mIgnoreDirtyState);</span><br><span class="line">        mPrivateFlags = (privateFlags &amp; ~PFLAG_DIRTY_MASK) | PFLAG_DRAWN;</span><br><span class="line"></span><br><span class="line">        /*</span><br><span class="line">         * Draw traversal performs several drawing steps which must be executed</span><br><span class="line">         * in the appropriate order:</span><br><span class="line">         *</span><br><span class="line">         *      1. Draw the background  //绘制背景</span><br><span class="line">         *      2. If necessary, save the canvas&apos; layers to prepare for fading //如果需要 进行图层保存</span><br><span class="line">         *      3. Draw view&apos;s content //绘制view的内容</span><br><span class="line">         *      4. Draw children // 绘制子View 如果是容器则去绘制</span><br><span class="line">         *      5. If necessary, draw the fading edges and restore layers //如果有需要绘制边缘恢复图层</span><br><span class="line">         *      6. Draw decorations (scrollbars for instance)  // 绘制装饰</span><br><span class="line">         */</span><br><span class="line"></span><br><span class="line">        // Step 1, draw the background, if needed</span><br><span class="line">        int saveCount;</span><br><span class="line"></span><br><span class="line">        if (!dirtyOpaque) &#123;</span><br><span class="line">            drawBackground(canvas);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // skip step 2 &amp; 5 if possible (common case)</span><br><span class="line">        final int viewFlags = mViewFlags;</span><br><span class="line">        boolean horizontalEdges = (viewFlags &amp; FADING_EDGE_HORIZONTAL) != 0;</span><br><span class="line">        boolean verticalEdges = (viewFlags &amp; FADING_EDGE_VERTICAL) != 0;</span><br><span class="line">        if (!verticalEdges &amp;&amp; !horizontalEdges) &#123;</span><br><span class="line">            // Step 3, draw the content</span><br><span class="line">            if (!dirtyOpaque) onDraw(canvas);</span><br><span class="line"></span><br><span class="line">            // Step 4, draw the children</span><br><span class="line">            dispatchDraw(canvas);</span><br><span class="line"></span><br><span class="line">            drawAutofilledHighlight(canvas);</span><br><span class="line"></span><br><span class="line">         ...</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果是绘制view，我们需要重写view的onDraw方法，如果自定义的是viewGroup ，那么我们还需要去绘制子view，这个时候我们进入到viewGroup的<code>dispatchDraw（）</code>方法中，我们可以看到viewGroup里面实现了<code>dispatchDraw（）</code>方法。 在这个方法中同样是有一个for循环去遍历我们的子view，执行了drawChild（）方法去绘制我们的子view。实际上drawChild()方法内部就是child.draw（）方法，这里也是一个绘制的递归操作。</p>
+</blockquote>
+<h3 id="2-总结-1"><a href="#2-总结-1" class="headerlink" title="2.总结"></a>2.总结</h3><blockquote>
+<p>ViewGroup的绘制流程<br>可以总结以下几点：<br>绘制流程的六个步骤：<br>1、对View的背景进行绘制  drawBackground（canvas）<br>2、保存当前的图层信息(可跳过)<br>3、绘制View的内容  onDraw（canvas）<br>4、对View的子View进行绘制(如果有子View)   dispatchDraw(canvas)<br>5、绘制View的褪色的边缘，类似于阴影效果(可跳过)<br>6、绘制View的装饰（例如：滚动条）<br>其中第2步和第5步是可以跳过的。</p>
+</blockquote>
+<blockquote>
+<p>那么view 的绘制流程 就是</p>
+<ul>
+<li>1 . 绘制背景 drawBackground（canvas）</li>
+<li>2 . 绘制自己 onDraw（canvas）</li>
+<li>3 . 绘制前景，滚动条等装饰 onDrawForeground（canvas）</li>
+</ul>
+</blockquote>
+<h2 id="四、View的绘制流程总结"><a href="#四、View的绘制流程总结" class="headerlink" title="四、View的绘制流程总结"></a>四、View的绘制流程总结</h2><blockquote>
+<p>在自定义开发中，我们需要去实现onMeasure（）—&gt; onLayout() — onDraw（）<br> 如果我们自定义的是ViewGroup方法onMeasure（）—&gt; onLayout () — onDraw（）<br> 如果是自定义view的方法 onLayout方法不用 去实现，而onDraw()方法可选。</p>
+</blockquote>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/yuba_ui02.html" title="UI绘制流程（测量，布局，绘制）" target="_blank" rel="external">https://www.cmonbaby.com/posts/yuba_ui02.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/netease_skin.html" title="网易动态换肤技术"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/yuba_ui01.html" title="UI的绘制流程以及原理"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

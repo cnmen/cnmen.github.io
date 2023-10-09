@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>网易动态换肤技术 | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="作者：彭老师 日期：2019-07-17 类型：Android 说明：本文源于 彭老师 手写摘要，如需转载请带上链接或注明出处！    前言动态换肤 技术在app应用中，越来越普及大众化了。那么具体的实现是怎么样呢？ 今天我们就来大致分析下大众版换肤技术（思路分析） 核心6点：  1、 registerActivityLifecycleCallbacks注册观察者 2 、Activity接收用">
+<meta name="keywords" content="android,NetEase">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网易动态换肤技术">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/netease_skin.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="作者：彭老师 日期：2019-07-17 类型：Android 说明：本文源于 彭老师 手写摘要，如需转载请带上链接或注明出处！    前言动态换肤 技术在app应用中，越来越普及大众化了。那么具体的实现是怎么样呢？ 今天我们就来大致分析下大众版换肤技术（思路分析） 核心6点：  1、 registerActivityLifecycleCallbacks注册观察者 2 、Activity接收用">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/netease_skin/netease_skin1.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/netease_skin/netease_skin2.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/netease_skin/netease_skin3.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/netease_skin/netease_skin4.png">
+<meta property="og:updated_time" content="2023-10-09T07:23:45.489Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网易动态换肤技术">
+<meta name="twitter:description" content="作者：彭老师 日期：2019-07-17 类型：Android 说明：本文源于 彭老师 手写摘要，如需转载请带上链接或注明出处！    前言动态换肤 技术在app应用中，越来越普及大众化了。那么具体的实现是怎么样呢？ 今天我们就来大致分析下大众版换肤技术（思路分析） 核心6点：  1、 registerActivityLifecycleCallbacks注册观察者 2 、Activity接收用">
+<meta name="twitter:image" content="https://www.cmonbaby.com/posts/netease_skin/netease_skin1.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/netease_skin.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-netease_skin" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      网易动态换肤技术
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/netease_skin.html" class="article-date">
+	  <time datetime="2019-07-16T16:36:37.000Z" itemprop="datePublished">2019-07-17</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/NetEase/">NetEase</a>►<a class="article-category-link" href="/categories/android/">android</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/NetEase/">NetEase</a>, <a class="article-tag-link" href="/tags/android/">android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/netease_skin.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>作者：彭老师</li>
+<li>日期：2019-07-17</li>
+<li>类型：Android</li>
+<li>说明：本文源于 <a href="https://www.cmonbaby.com">彭老师</a> 手写摘要，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>动态换肤</strong> 技术在app应用中，越来越普及大众化了。那么具体的实现是怎么样呢？</p>
+<p>今天我们就来大致分析下大众版换肤技术（思路分析）</p>
+<h3 id="核心6点："><a href="#核心6点：" class="headerlink" title="核心6点："></a>核心6点：</h3><blockquote>
+<ul>
+<li><h5 id="1、-registerActivityLifecycleCallbacks注册观察者"><a href="#1、-registerActivityLifecycleCallbacks注册观察者" class="headerlink" title="1、 registerActivityLifecycleCallbacks注册观察者"></a>1、 registerActivityLifecycleCallbacks注册观察者</h5></li>
+<li><h5 id="2-、Activity接收用户操作：点击换肤按钮"><a href="#2-、Activity接收用户操作：点击换肤按钮" class="headerlink" title="2 、Activity接收用户操作：点击换肤按钮"></a>2 、Activity接收用户操作：点击换肤按钮</h5></li>
+<li><h5 id="3-、调用被观察者Observable方法：setChanged-；-notifyObservers-；"><a href="#3-、调用被观察者Observable方法：setChanged-；-notifyObservers-；" class="headerlink" title="3 、调用被观察者Observable方法：setChanged()；  notifyObservers()；"></a>3 、调用被观察者Observable方法：setChanged()；  notifyObservers()；</h5></li>
+<li><h5 id="4-、实现Fatory2接口（收集-采集所有控件），并实现观察者Observer执行update-方法"><a href="#4-、实现Fatory2接口（收集-采集所有控件），并实现观察者Observer执行update-方法" class="headerlink" title="4 、实现Fatory2接口（收集/采集所有控件），并实现观察者Observer执行update()方法"></a>4 、实现Fatory2接口（收集/采集所有控件），并实现观察者Observer执行update()方法</h5></li>
+<li><h5 id="5-、遍历2层（所有View控件，每个View控件所有属性），匹配换肤属性"><a href="#5-、遍历2层（所有View控件，每个View控件所有属性），匹配换肤属性" class="headerlink" title="5 、遍历2层（所有View控件，每个View控件所有属性），匹配换肤属性"></a>5 、遍历2层（所有View控件，每个View控件所有属性），匹配换肤属性</h5></li>
+<li><h5 id="6-、有皮肤包加载皮肤包资源，找不到则加载内置资源，更改控件属性值"><a href="#6-、有皮肤包加载皮肤包资源，找不到则加载内置资源，更改控件属性值" class="headerlink" title="6 、有皮肤包加载皮肤包资源，找不到则加载内置资源，更改控件属性值"></a>6 、有皮肤包加载皮肤包资源，找不到则加载内置资源，更改控件属性值</h5></li>
+</ul>
+</blockquote>
+<h3 id="1、registerActivityLifecycleCallbacks注册观察者"><a href="#1、registerActivityLifecycleCallbacks注册观察者" class="headerlink" title="1、registerActivityLifecycleCallbacks注册观察者"></a>1、registerActivityLifecycleCallbacks注册观察者</h3><p>这是什么方法？有什么作用？</p>
+<p>监听当前应用所有Activity生命周期方法的执行，也是谷歌AOP思想</p>
+<p>该方法的意义就是：执行在<code>setContentView()</code>方法之前</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SkinActivityLifecycleCallbacks</span> <span class="keyword">implements</span> <span class="title">Application</span>.<span class="title">ActivityLifecycleCallbacks</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> SkinFactory skinFactory;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityCreated</span><span class="params">(Activity activity, Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        LayoutInflater layoutInflater = LayoutInflater.from(activity);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 利用反射去修改mFactorySet的值为false，防止抛出 A factory has already been set on this...</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Field mFactorySet = LayoutInflater.class.getDeclaredField(<span class="string">"mFactorySet"</span>);</span><br><span class="line">            mFactorySet.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            mFactorySet.set(layoutInflater, <span class="keyword">false</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        skinFactory = <span class="keyword">new</span> SkinFactory(activity);</span><br><span class="line">        LayoutInflaterCompat.setFactory2(layoutInflater, skinFactory);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 注册观察者（监听用户操作，点击了换肤，通知观察者更新）</span></span><br><span class="line">        SkinEngine.getInstance().addObserver(skinFactory);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 代码省略</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityDestroyed</span><span class="params">(Activity activity)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 解除注册的观察者</span></span><br><span class="line">        SkinEngine.getInstance().deleteObserver(skinFactory);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-、Activity接收用户操作：点击换肤按钮-1"><a href="#2-、Activity接收用户操作：点击换肤按钮-1" class="headerlink" title="2 、Activity接收用户操作：点击换肤按钮"></a>2 、Activity接收用户操作：点击换肤按钮</h3><p>布局activity_netease.xml接收到用户的换肤操作，即点击按钮事件</p>
+<h3 id="3-、调用被观察者Observable方法：setChanged-；-notifyObservers"><a href="#3-、调用被观察者Observable方法：setChanged-；-notifyObservers" class="headerlink" title="3 、调用被观察者Observable方法：setChanged()； notifyObservers()"></a>3 、调用被观察者Observable方法：<code>setChanged()</code>； <code>notifyObservers()</code></h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 被观察者</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SkinEngine</span> <span class="keyword">extends</span> <span class="title">Observable</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 代码省略</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 用户点击 换肤按钮</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateSkin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        setChanged();</span><br><span class="line">        notifyObservers();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-、实现Fatory2接口（收集-采集所有控件），并实现观察者Observer执行update-方法-1"><a href="#4-、实现Fatory2接口（收集-采集所有控件），并实现观察者Observer执行update-方法-1" class="headerlink" title="4 、实现Fatory2接口（收集/采集所有控件），并实现观察者Observer执行update()方法"></a>4 、实现Fatory2接口（收集/采集所有控件），并实现观察者Observer执行<code>update()</code>方法</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SkinFactory</span> <span class="keyword">implements</span> <span class="title">LayoutInflater</span>.<span class="title">Factory2</span>, <span class="title">Observer</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 代码省略</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 拦截View的创建，此View指的是 布局文件中 某个控件，例如：TextView，Button，自定义控件，...</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> parent  父控件View</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> name    控件的名字，例如：TextView</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> context 上下文环境</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> attrs   控件的属性，例如：TextView(定义了很多的属性 宽 高 text textColor ...)</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回创建好的View，如果返回null，系统内部就会创建View</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(View parent, String name, Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 此createViewFromTag，目的是去创建系统的控件 例如：TextView，Button，ImageView</span></span><br><span class="line">        View resultView = createViewFromTag(parent, name, context, attrs);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> (name) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">"ImageView"</span>:</span><br><span class="line">                resultView = <span class="keyword">new</span> ImageView(context, attrs);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">"xxxxx"</span>:</span><br><span class="line">                <span class="comment">// 省略</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果为null，可认为是自定义View，所以需要传入 name + "" ---&gt; 自定义控件包名和控件名 + ""</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> == resultView) &#123;</span><br><span class="line">            resultView = createView(name, <span class="string">""</span>, context, attrs);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 换肤第一步：收集控件信息：</span></span><br><span class="line"><span class="comment">         * 1、一个布局中有 N 个控件 List&lt;ViewInfo&gt;</span></span><br><span class="line"><span class="comment">         * 2、一个具体控件有 N 个属性 List&lt;AttrsForView&gt;</span></span><br><span class="line"><span class="comment">         * 3、一个具体的属性有键值对：key:android:textColor, value:<span class="doctag">@color</span>/xxx</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        widgetViewList.saveWidgetView(attrs, resultView);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> resultView;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 创建系统控件 例如：TextView，ImageView，Button ...</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> View <span class="title">createViewFromTag</span><span class="params">(View parent, String name, Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        View view = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">for</span> (String s : sClassPrefixList) &#123;</span><br><span class="line">            view = createView(name, s, context, attrs);</span><br><span class="line">            <span class="keyword">if</span> (view != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> view;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * 真正进行反射的方式创建View</span></span><br><span class="line"><span class="comment">     * 1.当传入 name + s  --&gt;  控件名 + 控件包名， 需要创建系统的控件。</span></span><br><span class="line"><span class="comment">     * 2.当传入 name + "" --&gt;  控件名 + ""        这个控件名就是完整的 自定义 包名+自定义控件名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> View <span class="title">createView</span><span class="params">(String name, String prefix, Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        Constructor&lt;? extends View&gt; constructors = sConstructorMap.get(name);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> == constructors) &#123;</span><br><span class="line"></span><br><span class="line">            Log.d(TAG, <span class="string">"需要反射找的&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; prefix + name："</span> + prefix + name);</span><br><span class="line">            <span class="comment">// 反射找</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Class&lt;? extends View&gt; classz = context.getClassLoader().loadClass(prefix + name).asSubclass(View.class);</span><br><span class="line">                Constructor&lt;? extends View&gt; constructor = classz.getConstructor(mConstructorSignature);</span><br><span class="line">                constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                sConstructorMap.put(name, constructor); <span class="comment">// 缓存一份</span></span><br><span class="line">                <span class="keyword">return</span> constructor.newInstance(context, attrs);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                constructors.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                <span class="keyword">return</span> constructors.newInstance(context, attrs);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(String name, Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 换肤第二步：收到 被观察者 发出的---&gt; 改变通知</span></span><br><span class="line"><span class="comment">     * 当被被观察者发生改变时回调</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(Observable o, Object arg)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 换肤第三步：告诉WidgetViewList去换肤，因为WidgetViewList身上有所有需要换肤的控件</span></span><br><span class="line">        widgetViewList.skinChange();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-、遍历2层（所有View控件，每个View控件所有属性），匹配换肤属性-1"><a href="#5-、遍历2层（所有View控件，每个View控件所有属性），匹配换肤属性-1" class="headerlink" title="5 、遍历2层（所有View控件，每个View控件所有属性），匹配换肤属性"></a>5 、遍历2层（所有View控件，每个View控件所有属性），匹配换肤属性</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WidgetViewList</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 代码省略</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 换肤第四步：遍历所有保存的 控件(WidgetView)</span></span><br><span class="line"><span class="comment">     * 每一个控件执行换肤</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">skinChange</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (WidgetView widgetView : WIDGET_VIEWS) &#123;</span><br><span class="line">            widgetView.skinChange();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 由于最终要保存 属性名 = 资源ID(Int型)attrValueInt</span></span><br><span class="line"><span class="comment">     * 类似于：android:textColor=</span></span><br><span class="line"><span class="comment">     * 所以定义JavaBean</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">AttributeNameAndValue</span> </span>&#123;</span><br><span class="line">        String attrName;</span><br><span class="line">        <span class="keyword">int</span> attrValueInt;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">AttributeNameAndValue</span><span class="params">(String attrName, <span class="keyword">int</span> attrValueInt)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.attrName = attrName;</span><br><span class="line">            <span class="keyword">this</span>.attrValueInt = attrValueInt;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 由于 一个TextView对应一个View，一个View中 有 多个AttributeNameAndValue</span></span><br><span class="line"><span class="comment">     * 所以需要描述这个对象，这个对象可以抽象理解为 TextView == WidgetView</span></span><br><span class="line"><span class="comment">     * 类似于：</span></span><br><span class="line"><span class="comment">     * &lt;TextView</span></span><br><span class="line"><span class="comment">     * android:layout_width="wrap_content"</span></span><br><span class="line"><span class="comment">     * android:layout_height="wrap_content"</span></span><br><span class="line"><span class="comment">     * android:text="测试"</span></span><br><span class="line"><span class="comment">     * android:textSize="30sp"</span></span><br><span class="line"><span class="comment">     * android:textColor="<span class="doctag">@color</span>/skin_my_textColor" /&gt;</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * 所以定义成JavaBean</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">WidgetView</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        View mView;</span><br><span class="line">        List&lt;AttributeNameAndValue&gt; attributeNameAndValues;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">WidgetView</span><span class="params">(View mView, List&lt;AttributeNameAndValue&gt; attributeNameAndValues)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.mView = mView;</span><br><span class="line">            <span class="keyword">this</span>.attributeNameAndValues = attributeNameAndValues;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 换肤第五步：遍历当前这个控件(WidgetView==TextView) 里面的属性(AttributeNameAndValue)</span></span><br><span class="line"><span class="comment">         * android:layout_width="wrap_content"</span></span><br><span class="line"><span class="comment">         * android:layout_height="wrap_content"</span></span><br><span class="line"><span class="comment">         * android:text="测试"</span></span><br><span class="line"><span class="comment">         * android:textSize="30sp"</span></span><br><span class="line"><span class="comment">         * android:textColor="<span class="doctag">@color</span>/skin_my_textColor"</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">skinChange</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (AttributeNameAndValue attributeNameAndValue : attributeNameAndValues) &#123;</span><br><span class="line">                <span class="keyword">switch</span> (attributeNameAndValue.attrName) &#123;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">"background"</span>:</span><br><span class="line">                        <span class="comment">// 代码省略</span></span><br><span class="line">                        <span class="keyword">if</span> (background <span class="keyword">instanceof</span> Integer) &#123;</span><br><span class="line">                            mView.setBackgroundColor((Integer) background);</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            mView.setBackground((Drawable) background);</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">case</span> <span class="string">"textColor"</span>:</span><br><span class="line">                        <span class="comment">// 代码省略</span></span><br><span class="line">                        TextView textView = (TextView) mView;</span><br><span class="line">                        textView.setTextColor(xxx);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-、有皮肤包加载皮肤包资源，找不到则加载内置资源，更改控件属性值（AssetsManager）"><a href="#6-、有皮肤包加载皮肤包资源，找不到则加载内置资源，更改控件属性值（AssetsManager）" class="headerlink" title="6 、有皮肤包加载皮肤包资源，找不到则加载内置资源，更改控件属性值（AssetsManager）"></a>6 、有皮肤包加载皮肤包资源，找不到则加载内置资源，更改控件属性值（AssetsManager）</h3><p>根据app内置资源的 <code>resourceID</code> 获取资源 <code>name</code> 与 <code>type</code> ，需要指定包名（皮肤包）资源，如果<code>skinResourceID</code> 等于0则说明皮肤包资源加载失败</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 参考：resources.arsc资源映射表</span></span><br><span class="line"><span class="comment"> * 通过ID值获取资源的 Name 和 Type</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> resourceId 资源的ID值（app内置资源）</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 如有没有皮肤包则加载app内置资源ID，反之则加载皮肤包对应的资源ID</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getSkinResourceIds</span><span class="params">(<span class="keyword">int</span> resourceId)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">    String resourceName = appResources.getResourceEntryName(resourceId);<span class="comment">// "music_bg"</span></span><br><span class="line">    String resourceType = appResources.getResourceTypeName(resourceId);<span class="comment">// drawable</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 动态获取皮肤包内的指定资源ID</span></span><br><span class="line">    <span class="keyword">int</span> skinResourceId = skinResources.getIdentifier(resourceName, resourceType, skinPackageName);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> skinResourceId == <span class="number">0</span> ? resourceId : skinResourceId;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="这个架构的缺陷和性能："><a href="#这个架构的缺陷和性能：" class="headerlink" title="这个架构的缺陷和性能："></a>这个架构的缺陷和性能：</h3><blockquote>
+<ul>
+<li><h4 id="1、置换setContentView-方法，容易不兼容，且自定义控件麻烦"><a href="#1、置换setContentView-方法，容易不兼容，且自定义控件麻烦" class="headerlink" title="1、置换setContentView()方法，容易不兼容，且自定义控件麻烦"></a>1、置换setContentView()方法，容易不兼容，且自定义控件麻烦</h4></li>
+<li><h4 id="2、控件信息收集：临时集合-所有控件"><a href="#2、控件信息收集：临时集合-所有控件" class="headerlink" title="2、控件信息收集：临时集合 + 所有控件"></a>2、控件信息收集：临时集合 + 所有控件</h4></li>
+<li><h4 id="3、换肤时，双层遍历-改变控件"><a href="#3、换肤时，双层遍历-改变控件" class="headerlink" title="3、换肤时，双层遍历 + 改变控件"></a>3、换肤时，双层遍历 + 改变控件</h4></li>
+</ul>
+</blockquote>
+<h4 id="截图如下："><a href="#截图如下：" class="headerlink" title="截图如下："></a>截图如下：</h4><img src="/posts/netease_skin/netease_skin1.png">
+
+<hr>
+<h3 id="网易换肤技术，性能至少是上面-7-倍。随着布局中的控件递增，差距是几何倍！（支持自定义控件、字体，兼容5-0-9-0）"><a href="#网易换肤技术，性能至少是上面-7-倍。随着布局中的控件递增，差距是几何倍！（支持自定义控件、字体，兼容5-0-9-0）" class="headerlink" title="网易换肤技术，性能至少是上面 7 倍。随着布局中的控件递增，差距是几何倍！（支持自定义控件、字体，兼容5.0 - 9.0）"></a>网易换肤技术，性能至少是上面 <strong>7</strong> 倍。随着布局中的控件递增，差距是几何倍！（支持自定义控件、字体，兼容5.0 - 9.0）</h3><h4 id="截图如下：-1"><a href="#截图如下：-1" class="headerlink" title="截图如下："></a>截图如下：</h4><img src="/posts/netease_skin/netease_skin2.png">
+
+
+<h4 id="效果图如下："><a href="#效果图如下：" class="headerlink" title="效果图如下："></a>效果图如下：</h4><img src="/posts/netease_skin/netease_skin3.png">
+
+<hr>
+<img src="/posts/netease_skin/netease_skin4.png">
+
+<hr>
+<h3 id="更多技术内幕请关注：网易云课堂-微专业-安卓高级开发工程师"><a href="#更多技术内幕请关注：网易云课堂-微专业-安卓高级开发工程师" class="headerlink" title="更多技术内幕请关注：网易云课堂 - 微专业 - 安卓高级开发工程师"></a>更多技术内幕请关注：<a href="https://mooc.study.163.com/smartSpec/detail/1202810601.htm" target="_blank" rel="noopener">网易云课堂 - 微专业 - 安卓高级开发工程师</a></h3>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/netease_skin.html" title="网易动态换肤技术" target="_blank" rel="external">https://www.cmonbaby.com/posts/netease_skin.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/skin_resourceid.html" title="动态换肤技术ResourceID补充"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/yuba_ui02.html" title="UI绘制流程（测量，布局，绘制）"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

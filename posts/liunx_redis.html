@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>Liunx服务器安装Redis实操记录 | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="作者：彭老师 日期：2020-06-02 类型：Java 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    服务器、操作工具  485配置：4核CPU，8G内存，5M带宽 工具：Xshell_5.0.0.37、Xftp_5.0.1028   1、安装Redis到/usr/local/redis-5.0.7目录软件包已上传移动后删除源文件 mv redis-5.0.7.tar.">
+<meta name="keywords" content="Java,android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Liunx服务器安装Redis实操记录">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/liunx_redis.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="作者：彭老师 日期：2020-06-02 类型：Java 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    服务器、操作工具  485配置：4核CPU，8G内存，5M带宽 工具：Xshell_5.0.0.37、Xftp_5.0.1028   1、安装Redis到/usr/local/redis-5.0.7目录软件包已上传移动后删除源文件 mv redis-5.0.7.tar.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_redis/redis01.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_redis/redis02.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_redis/redis03.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_redis/redis04.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_redis/redis05.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_redis/redis06.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_redis/redis09.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_redis/redis07.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/liunx_redis/redis08.png">
+<meta property="og:updated_time" content="2023-10-09T07:23:45.025Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Liunx服务器安装Redis实操记录">
+<meta name="twitter:description" content="作者：彭老师 日期：2020-06-02 类型：Java 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    服务器、操作工具  485配置：4核CPU，8G内存，5M带宽 工具：Xshell_5.0.0.37、Xftp_5.0.1028   1、安装Redis到/usr/local/redis-5.0.7目录软件包已上传移动后删除源文件 mv redis-5.0.7.tar.">
+<meta name="twitter:image" content="https://www.cmonbaby.com/posts/liunx_redis/redis01.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/liunx_redis.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-liunx_redis" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Liunx服务器安装Redis实操记录
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/liunx_redis.html" class="article-date">
+	  <time datetime="2020-06-02T03:44:37.000Z" itemprop="datePublished">2020-06-02</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Java/">Java</a>►<a class="article-category-link" href="/categories/android/">android</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Java/">Java</a>, <a class="article-tag-link" href="/tags/android/">android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/liunx_redis.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>作者：彭老师</li>
+<li>日期：2020-06-02</li>
+<li>类型：Java</li>
+<li>说明：本文源于<a href="https://www.cmonbaby.com">彭老师</a>手写摘要，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<hr>
+<h4 id="服务器、操作工具"><a href="#服务器、操作工具" class="headerlink" title="服务器、操作工具"></a>服务器、操作工具</h4><blockquote>
+<ul>
+<li>485配置：4核CPU，8G内存，5M带宽</li>
+<li>工具：Xshell_5.0.0.37、Xftp_5.0.1028</li>
+</ul>
+</blockquote>
+<h4 id="1、安装Redis到-usr-local-redis-5-0-7目录"><a href="#1、安装Redis到-usr-local-redis-5-0-7目录" class="headerlink" title="1、安装Redis到/usr/local/redis-5.0.7目录"></a>1、安装Redis到/usr/local/redis-5.0.7目录</h4><p><a href="https://www.cmonbaby.com/posts/liunx_jdk.html">软件包已上传</a><br>移动后删除源文件</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mv redis-5.0.7.tar.gz /usr/local/</span><br></pre></td></tr></table></figure>
+
+<p>复制源文件到指定目录</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">cp redis-5.0.7.tar.gz /usr/local/</span><br></pre></td></tr></table></figure>
+
+<p>进入<code>/usr/local/</code>目录</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">cd /usr/local/</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、用tar-zxvf或者xvf进行解压安装包"><a href="#2、用tar-zxvf或者xvf进行解压安装包" class="headerlink" title="2、用tar zxvf或者xvf进行解压安装包"></a>2、用<code>tar zxvf</code>或者<code>xvf</code>进行解压安装包</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">tar zxvf redis-5.0.7.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>附：很多服务器初始化是没有unzip命令<img src="/posts/liunx_redis/redis01.png">
+
+
+</li>
+</ul>
+<h4 id="3、删除安装包"><a href="#3、删除安装包" class="headerlink" title="3、删除安装包"></a>3、删除安装包</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">rm redis-5.0.7.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>强制删除，不需要确认</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">rm -rf redis-5.0.7.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h4 id="4、进入解压文件目录，对解压的Redis文件进行编译（大概需要1-2分钟）"><a href="#4、进入解压文件目录，对解压的Redis文件进行编译（大概需要1-2分钟）" class="headerlink" title="4、进入解压文件目录，对解压的Redis文件进行编译（大概需要1~2分钟）"></a>4、进入解压文件目录，对解压的Redis文件进行编译（大概需要1~2分钟）</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">cd /usr/local/redis-5.0.7</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<p>编译完成之后，可以看到解压文件redis-5.0.7中会有src、redis.conf等</p>
+<img src="/posts/liunx_redis/redis02.png">
+<img src="/posts/liunx_redis/redis03.png">
+
+
+<h4 id="5、进入src文件夹，执行Redis安装"><a href="#5、进入src文件夹，执行Redis安装" class="headerlink" title="5、进入src文件夹，执行Redis安装"></a>5、进入src文件夹，执行Redis安装</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">cd src/</span><br><span class="line">make <span class="keyword">install</span></span><br></pre></td></tr></table></figure>
+
+<img src="/posts/liunx_redis/redis04.png">
+
+
+
+<h4 id="6、将Redis文件中的conf配置文件和常用命令移动到统一文件中"><a href="#6、将Redis文件中的conf配置文件和常用命令移动到统一文件中" class="headerlink" title="6、将Redis文件中的conf配置文件和常用命令移动到统一文件中"></a>6、将Redis文件中的conf配置文件和常用命令移动到统一文件中</h4><p>在redis-5.0.7目录创建bin和etc文件<br>返回上级目录（redis-5.0.7）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">cd ..</span><br><span class="line">mkdir bin</span><br><span class="line">mkdir etc</span><br></pre></td></tr></table></figure>
+
+<p>将<code>redis.conf</code>复制移动到 <code>/usr/local/redis-5.0.7/ect</code>下</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mv redis.conf /usr/local/redis-5.0.7/etc/</span><br></pre></td></tr></table></figure>
+
+<img src="/posts/liunx_redis/redis05.png">
+
+
+
+<h4 id="7、进入src目录，执行移动命令"><a href="#7、进入src目录，执行移动命令" class="headerlink" title="7、进入src目录，执行移动命令"></a>7、进入src目录，执行移动命令</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mv mkreleasehdr.sh redis-benchmark redis-<span class="keyword">check</span>-aof redis-<span class="keyword">check</span>-rdb redis-cli redis-<span class="keyword">server</span> /usr/<span class="keyword">local</span>/redis<span class="number">-5.0</span><span class="number">.7</span>/<span class="keyword">bin</span>/</span><br></pre></td></tr></table></figure>
+
+<p>依次查看移动后文件</p>
+<img src="/posts/liunx_redis/redis06.png">
+
+
+
+<h4 id="8、执行redis-server-启动redis"><a href="#8、执行redis-server-启动redis" class="headerlink" title="8、执行redis-server 启动redis"></a>8、执行redis-server 启动redis</h4><p>进入bin目录，执行</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">./redis-server</span><br></pre></td></tr></table></figure>
+
+<img src="/posts/liunx_redis/redis09.png">
+
+
+
+<h4 id="9、设置绑定ip（注：该步骤如果不需要可省略）"><a href="#9、设置绑定ip（注：该步骤如果不需要可省略）" class="headerlink" title="9、设置绑定ip（注：该步骤如果不需要可省略）"></a>9、设置绑定ip（注：该步骤如果不需要可省略）</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">vim redis.conf</span><br></pre></td></tr></table></figure>
+
+<img src="/posts/liunx_redis/redis07.png">
+
+
+
+
+<h4 id="10、设置后台启动redis，将daemonize属性改为yes（表明需要在后台运行）"><a href="#10、设置后台启动redis，将daemonize属性改为yes（表明需要在后台运行）" class="headerlink" title="10、设置后台启动redis，将daemonize属性改为yes（表明需要在后台运行）"></a>10、设置后台启动redis，将<code>daemonize</code>属性改为<code>yes</code>（表明需要在后台运行）</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">vim redis.conf</span><br></pre></td></tr></table></figure>
+
+<img src="/posts/liunx_redis/redis08.png">
+
+
+
+
+<h4 id="11、再次启动redis服务，并指定启动服务配置文件"><a href="#11、再次启动redis服务，并指定启动服务配置文件" class="headerlink" title="11、再次启动redis服务，并指定启动服务配置文件"></a>11、再次启动redis服务，并指定启动服务配置文件</h4><ul>
+<li><p>进入<code>redis-5.0.7/bin/</code></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">./redis-server /usr/local/redis-5.0.7/etc/redis.conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果报错：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">creating server tcp listening socket 127.0.0.1:6379: bind No error</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>关闭redis（进入redis-5.0.7/bin/）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">./redis-cli</span><br><span class="line">shutdown</span><br><span class="line">exit</span><br><span class="line">./redis-server /usr/local/redis-5.0.7/etc/redis.conf</span><br></pre></td></tr></table></figure>
+
+<h4 id="12、如果不希望每次都到bin目录下使用redis命令则执行以下命令"><a href="#12、如果不希望每次都到bin目录下使用redis命令则执行以下命令" class="headerlink" title="12、如果不希望每次都到bin目录下使用redis命令则执行以下命令"></a>12、如果不希望每次都到<code>bin</code>目录下使用<code>redis</code>命令则执行以下命令</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">ln -s /usr/local/redis-5.0.7/bin/redis-server /usr/bin</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/liunx_redis.html" title="Liunx服务器安装Redis实操记录" target="_blank" rel="external">https://www.cmonbaby.com/posts/liunx_redis.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/liunx_tomcat.html" title="Liunx服务器安装Tomcat实操记录"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/liunx_node.html" title="Liunx服务器安装Node实操记录"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

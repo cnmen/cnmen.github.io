@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>网易 - 安卓班级问题汇总（更新） | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="34. 各位大佬开发h5和native的混合APP时候，要先把数据存到h5的localstorage，然后再刷新界面，各位大佬都是怎么做的。我每次都load2次url没办法控制进度条了解答： Js调用，通过原生的JSInterface通知js代码刷新  33. 大家好资讯一个问题我tinker补丁下载成功以后为啥程序跑到这里就崩了，如果不下载补丁可以正常解析。&amp;lt;com.baidu.mapap">
+<meta name="keywords" content="android,NetEase">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网易 - 安卓班级问题汇总（更新）">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/android_question.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="34. 各位大佬开发h5和native的混合APP时候，要先把数据存到h5的localstorage，然后再刷新界面，各位大佬都是怎么做的。我每次都load2次url没办法控制进度条了解答： Js调用，通过原生的JSInterface通知js代码刷新  33. 大家好资讯一个问题我tinker补丁下载成功以后为啥程序跑到这里就崩了，如果不下载补丁可以正常解析。&amp;lt;com.baidu.mapap">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/android_question/as_cmake_down.png">
+<meta property="og:updated_time" content="2023-10-09T07:23:45.485Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网易 - 安卓班级问题汇总（更新）">
+<meta name="twitter:description" content="34. 各位大佬开发h5和native的混合APP时候，要先把数据存到h5的localstorage，然后再刷新界面，各位大佬都是怎么做的。我每次都load2次url没办法控制进度条了解答： Js调用，通过原生的JSInterface通知js代码刷新  33. 大家好资讯一个问题我tinker补丁下载成功以后为啥程序跑到这里就崩了，如果不下载补丁可以正常解析。&amp;lt;com.baidu.mapap">
+<meta name="twitter:image" content="https://www.cmonbaby.com/posts/android_question/as_cmake_down.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/android_question.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-android_question" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      网易 - 安卓班级问题汇总（更新）
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/android_question.html" class="article-date">
+	  <time datetime="2019-06-19T08:27:37.000Z" itemprop="datePublished">2019-06-19</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/NetEase/">NetEase</a>►<a class="article-category-link" href="/categories/android/">android</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/NetEase/">NetEase</a>, <a class="article-tag-link" href="/tags/android/">android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/android_question.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h4 id="34-各位大佬开发h5和native的混合APP时候，要先把数据存到h5的localstorage，然后再刷新界面，各位大佬都是怎么做的。我每次都load2次url没办法控制进度条了"><a href="#34-各位大佬开发h5和native的混合APP时候，要先把数据存到h5的localstorage，然后再刷新界面，各位大佬都是怎么做的。我每次都load2次url没办法控制进度条了" class="headerlink" title="34. 各位大佬开发h5和native的混合APP时候，要先把数据存到h5的localstorage，然后再刷新界面，各位大佬都是怎么做的。我每次都load2次url没办法控制进度条了"></a>34. 各位大佬开发<code>h5</code>和<code>native</code>的混合APP时候，要先把数据存到<code>h5</code>的<code>localstorage</code>，然后再刷新界面，各位大佬都是怎么做的。我每次都<code>load</code>2次<code>url</code>没办法控制进度条了</h4><p><strong>解答：</strong> <code>Js</code>调用，通过原生的<code>JSInterface</code>通知<code>js</code>代码刷新</p>
+<hr>
+<h4 id="33-大家好资讯一个问题我tinker补丁下载成功以后为啥程序跑到这里就崩了，如果不下载补丁可以正常解析。"><a href="#33-大家好资讯一个问题我tinker补丁下载成功以后为啥程序跑到这里就崩了，如果不下载补丁可以正常解析。" class="headerlink" title="33. 大家好资讯一个问题我tinker补丁下载成功以后为啥程序跑到这里就崩了，如果不下载补丁可以正常解析。"></a>33. 大家好资讯一个问题我<code>tinker</code>补丁下载成功以后为啥程序跑到这里就崩了，如果不下载补丁可以正常解析。</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;com.baidu.mapapi.map.MapView</span><br><span class="line">    android:id=<span class="string">"@+id/mmpa"</span></span><br><span class="line">    android:layout_width=<span class="string">"match_parent"</span></span><br><span class="line">    android:layout_height=<span class="string">"match_parent"</span></span><br><span class="line">    android:layout_above=<span class="string">"@id/rl"</span></span><br><span class="line">    android:layout_below=<span class="string">"@id/title"</span>&gt;</span><br><span class="line">&lt;/com.baidu.mapapi.map.MapView&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>解答：</strong>主要是混淆的原因。这是百度的自定义控件，安装apk后 可能是<code>a.c.b.MapVIew</code>这样就提示找不到，解决办法，尽可能定位到bug点，不替换activity类</p>
+<hr>
+<h4 id="32-新安装的应用，系统是不是也会通过PMS扫描，把组件存档存到Packges缓存中去，什么流程？"><a href="#32-新安装的应用，系统是不是也会通过PMS扫描，把组件存档存到Packges缓存中去，什么流程？" class="headerlink" title="32. 新安装的应用，系统是不是也会通过PMS扫描，把组件存档存到Packges缓存中去，什么流程？"></a>32. 新安装的应用，系统是不是也会通过PMS扫描，把组件存档存到<code>Packges</code>缓存中去，什么流程？</h4><p><strong>解答：</strong>对的，流程和上课讲的一样</p>
+<hr>
+<h4 id="31-之前我提的那个关于分包-配置指定类未能成功保留到主包classes-dex的那个问题-老师有没有什么问题排查的建议？"><a href="#31-之前我提的那个关于分包-配置指定类未能成功保留到主包classes-dex的那个问题-老师有没有什么问题排查的建议？" class="headerlink" title="31. 之前我提的那个关于分包 , 配置指定类未能成功保留到主包classes.dex的那个问题~老师有没有什么问题排查的建议？"></a>31. 之前我提的那个关于分包 , 配置指定类未能成功保留到主包<code>classes.dex</code>的那个问题~老师有没有什么问题排查的建议？</h4><h4 id="我拿老师的项目源码-加一个class-可以正常保留到主包，而我自己却在自己的项目中，这样操作失败了，因为我的项目是公司实际的项目-很多东西，其中肯定是某些东西给影响了，冲突了，导致失败-但是不知道应该如何去排查，希望老师可以提一些排查的建议。"><a href="#我拿老师的项目源码-加一个class-可以正常保留到主包，而我自己却在自己的项目中，这样操作失败了，因为我的项目是公司实际的项目-很多东西，其中肯定是某些东西给影响了，冲突了，导致失败-但是不知道应该如何去排查，希望老师可以提一些排查的建议。" class="headerlink" title="我拿老师的项目源码 加一个class, 可以正常保留到主包，而我自己却在自己的项目中，这样操作失败了，因为我的项目是公司实际的项目, 很多东西，其中肯定是某些东西给影响了，冲突了，导致失败, 但是不知道应该如何去排查，希望老师可以提一些排查的建议。"></a>我拿老师的项目源码 加一个<code>class</code>, 可以正常保留到主包，而我自己却在自己的项目中，这样操作失败了，因为我的项目是公司实际的项目, 很多东西，其中肯定是某些东西给影响了，冲突了，导致失败, 但是不知道应该如何去排查，希望老师可以提一些排查的建议。</h4><p><strong>解答：</strong>第一步：先查看在<code>gradle</code>中<code>keep方法</code>是否执行了；第二步：<strong>反编译apk</strong> 查看最后添加的<code>class</code>在哪个<code>dex</code>下</p>
+<hr>
+<h4 id="30-Glide缓存框架，设置的内存缓存maxsize为1g，我改成100m，测试发现退出MainActivity，内存并没有降下来，不知道什么情况"><a href="#30-Glide缓存框架，设置的内存缓存maxsize为1g，我改成100m，测试发现退出MainActivity，内存并没有降下来，不知道什么情况" class="headerlink" title="30. Glide缓存框架，设置的内存缓存maxsize为1g，我改成100m，测试发现退出MainActivity，内存并没有降下来，不知道什么情况"></a>30. Glide缓存框架，设置的内存缓存maxsize为1g，我改成100m，测试发现退出<code>MainActivity</code>，内存并没有降下来，不知道什么情况</h4><p><strong>解答：</strong></p>
+<p>在最新的8.0 9.0 系统中 Google更改了gc回收机制。<br>调用System.gc() GC并不会立马被执行，解决办法，给apk设定限制内存 如125M<br>或者开启其他apk情况下，测试。 加大gc回收概率</p>
+<hr>
+<h4 id="29-老师，知道微信公众号推送消息48小时限制怎么解决？"><a href="#29-老师，知道微信公众号推送消息48小时限制怎么解决？" class="headerlink" title="29. 老师，知道微信公众号推送消息48小时限制怎么解决？"></a>29. 老师，知道微信公众号推送消息48小时限制怎么解决？</h4><p><strong>解答：</strong>没办法解决</p>
+<hr>
+<h4 id="28-vivo手机悬浮窗权限判断问题，vivo的悬浮窗权限用系统api去检查的时候，是有权限的，但是实际去显示悬浮窗的时候，他的悬浮窗权限会被vivo的i管家拦截。"><a href="#28-vivo手机悬浮窗权限判断问题，vivo的悬浮窗权限用系统api去检查的时候，是有权限的，但是实际去显示悬浮窗的时候，他的悬浮窗权限会被vivo的i管家拦截。" class="headerlink" title="28. vivo手机悬浮窗权限判断问题，vivo的悬浮窗权限用系统api去检查的时候，是有权限的，但是实际去显示悬浮窗的时候，他的悬浮窗权限会被vivo的i管家拦截。"></a>28. vivo手机悬浮窗权限判断问题，vivo的悬浮窗权限用系统api去检查的时候，是有权限的，但是实际去显示悬浮窗的时候，他的悬浮窗权限会被vivo的i管家拦截。</h4><p><strong>解答：</strong>没办法解决，悬浮框是比较重要的系统权限，一般有厂家改写了</p>
+<hr>
+<h4 id="27-进程没活下来，是咋回事"><a href="#27-进程没活下来，是咋回事" class="headerlink" title="27. 进程没活下来，是咋回事"></a>27. 进程没活下来，是咋回事</h4><p><strong>解答：</strong>保活有很多限制，目前只能做到尽可能保活。</p>
+<p>如9.0版本直接放弃吧。目前最好的方式是白名单机制和谷歌账号保活</p>
+<hr>
+<h4 id="26-老师在IoC的RecyclerView条目点击那节课，为什么下面这种就报错了呢？"><a href="#26-老师在IoC的RecyclerView条目点击那节课，为什么下面这种就报错了呢？" class="headerlink" title="26. 老师在IoC的RecyclerView条目点击那节课，为什么下面这种就报错了呢？"></a>26. 老师在IoC的RecyclerView条目点击那节课，为什么下面这种就报错了呢？</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@OnClick</span>(R.id.btn)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">click</span><span class="params">(View btn)</span> </span>&#123; <span class="comment">// 正确，没问题</span></span><br><span class="line">    Toast.makeText(<span class="keyword">this</span>, <span class="string">"btn click"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@OnClick</span>(R.id.tv)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">click</span><span class="params">()</span> </span>&#123; <span class="comment">// 点击方法无参数，异常</span></span><br><span class="line">    Toast.makeText(<span class="keyword">this</span>, <span class="string">"tv click"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>解答：</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (target != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// 获取需要拦截的方法名</span></span><br><span class="line">        String methodName = method.getName(); <span class="comment">// 假如是onClick</span></span><br><span class="line">        <span class="comment">// 重新赋值，将拦截的方法换为click</span></span><br><span class="line">        method = methodHashMap.get(methodName); <span class="comment">// 执行拦截的方法，click</span></span><br><span class="line">        <span class="keyword">if</span> (method != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 获取方法参数</span></span><br><span class="line">            Type[] parameterTypes = method.getGenericParameterTypes();</span><br><span class="line">        	<span class="keyword">if</span> (parameterTypes.length == <span class="number">0</span>) &#123; <span class="comment">// 加入方法参数判断</span></span><br><span class="line">                <span class="keyword">return</span> method.invoke(target);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> method.invoke(target, args);</span><br><span class="line">            &#125;            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="25-群里有没有大神遇到过这个问题并解决的，配置了ndk环境之后创建项目会报这个错误"><a href="#25-群里有没有大神遇到过这个问题并解决的，配置了ndk环境之后创建项目会报这个错误" class="headerlink" title="25. 群里有没有大神遇到过这个问题并解决的，配置了ndk环境之后创建项目会报这个错误"></a>25. 群里有没有大神遇到过这个问题并解决的，配置了ndk环境之后创建项目会报这个错误</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">CMake Error: CMake was unable to find a build program corresponding to <span class="string">"Ninja"</span>. CMAKE_MAKE_PROGRAMis not set. You probably need to select a different build tool.</span><br></pre></td></tr></table></figure>
+
+<p><strong>解答：</strong></p>
+<img src="/posts/android_question/as_cmake_down.png">
+
+<hr>
+<h4 id="24-《动态加载第三方应用-插件化架构详解》学了这节公开课有个疑问。如果有个业务app里面有application，主app里面需要做额外的处理不？是把application里面需要初始化的方法放在业务app某个activity里面执行吗？"><a href="#24-《动态加载第三方应用-插件化架构详解》学了这节公开课有个疑问。如果有个业务app里面有application，主app里面需要做额外的处理不？是把application里面需要初始化的方法放在业务app某个activity里面执行吗？" class="headerlink" title="24. 《动态加载第三方应用 - 插件化架构详解》学了这节公开课有个疑问。如果有个业务app里面有application，主app里面需要做额外的处理不？是把application里面需要初始化的方法放在业务app某个activity里面执行吗？"></a>24. 《动态加载第三方应用 - 插件化架构详解》学了这节公开课有个疑问。如果有个业务app里面有<code>application</code>，主app里面需要做额外的处理不？是把<code>application</code>里面需要初始化的方法放在业务app某个<code>activity</code>里面执行吗？</h4><p><strong>解答：</strong></p>
+<p>1、需要将业务<strong>app</strong>的<strong>application</strong>配置到<strong>appconfig</strong>中。<br>2、主<strong>app</strong>中初始化时，通过反射调用业务<strong>app</strong>的<strong>init方法</strong>，将自己的上下文传入</p>
+<hr>
+<h4 id="23-《Android人工智能离你并不遥远，OpenCV实现人脸识别》课程下的代码导入studio中报这个错，导入项目运行最后提示c-static代替gnustl-static，只改了下这里。-AS版本是最新的，还需要其他配置吗？"><a href="#23-《Android人工智能离你并不遥远，OpenCV实现人脸识别》课程下的代码导入studio中报这个错，导入项目运行最后提示c-static代替gnustl-static，只改了下这里。-AS版本是最新的，还需要其他配置吗？" class="headerlink" title="23. 《Android人工智能离你并不遥远，OpenCV实现人脸识别》课程下的代码导入studio中报这个错，导入项目运行最后提示c++_static代替gnustl_static，只改了下这里。 AS版本是最新的，还需要其他配置吗？"></a>23. 《Android人工智能离你并不遥远，OpenCV实现人脸识别》课程下的代码导入studio中报这个错，导入项目运行最后提示<code>c++_static</code>代替<code>gnustl_static</code>，只改了下这里。 AS版本是最新的，还需要其他配置吗？</h4><p><strong>解答：</strong>使用：<code>gnustl_static</code>。<strong>openCV</strong>是使用这一个函数模板库编译的</p>
+<hr>
+<h4 id="22-emoji表情在android-ios和web使用的方案"><a href="#22-emoji表情在android-ios和web使用的方案" class="headerlink" title="22. emoji表情在android ios和web使用的方案"></a>22. <code>emoji</code>表情在<code>android</code> <code>ios</code>和<code>web</code>使用的方案</h4><p><strong>解答：</strong>参考：<a href="https://www.jianshu.com/p/d82ac2edc7e8" target="_blank" rel="noopener">https://www.jianshu.com/p/d82ac2edc7e8</a></p>
+<hr>
+<h4 id="21-发现Bugly没有内测分发项，该怎么上传基线版本？或者有没有其他的平台推荐？"><a href="#21-发现Bugly没有内测分发项，该怎么上传基线版本？或者有没有其他的平台推荐？" class="headerlink" title="21. 发现Bugly没有内测分发项，该怎么上传基线版本？或者有没有其他的平台推荐？"></a>21. 发现<code>Bugly</code>没有内测分发项，该怎么上传基线版本？或者有没有其他的平台推荐？</h4><p><strong>解答：</strong>推荐：<strong>友盟（Umeng）</strong></p>
+<hr>
+<h4 id="20-Tinker热修复是不是不支持9-0呀，还是需要什么特殊配置？"><a href="#20-Tinker热修复是不是不支持9-0呀，还是需要什么特殊配置？" class="headerlink" title="20. Tinker热修复是不是不支持9.0呀，还是需要什么特殊配置？"></a>20. <code>Tinker</code>热修复是不是不支持9.0呀，还是需要什么特殊配置？</h4><p><strong>解答：</strong>支持9.0设备，插桩的方式虽然用到了反射技术，但不被黑名单列入</p>
+<hr>
+<h4 id="19-老师请问一下，Annotation注解的生命周期我自己定义的时候怎么选择？"><a href="#19-老师请问一下，Annotation注解的生命周期我自己定义的时候怎么选择？" class="headerlink" title="19. 老师请问一下，Annotation注解的生命周期我自己定义的时候怎么选择？"></a>19. 老师请问一下，<code>Annotation</code>注解的生命周期我自己定义的时候怎么选择？</h4><p><strong>解答：</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 生命周期：SOURCE &lt; CLASS &lt; RUNTIME</span></span><br><span class="line"><span class="comment">* 1、一般如果需要在运行时去动态获取注解信息，用RUNTIME注解</span></span><br><span class="line"><span class="comment">* 2、要在编译时进行一些预处理操作，如ButterKnife，用CLASS注解。注解会在class文件中存在，但是在运行时会被丢弃</span></span><br><span class="line"><span class="comment">* 3、做一些检查性的操作，如<span class="doctag">@Override</span>，用SOURCE源码注解。注解仅存在源码级别，在编译的时候丢弃该注解</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>SOURCE</strong>源码级绝大部分场景用不上一般是谷歌源码。<strong>CLASS</strong>用于编译期处理好比<strong>ButterKnife</strong>框架，<strong>RUNTIME</strong>指的是运行时通过反射技术。视真实场景再定义</p>
+<hr>
+<h4 id="18-如果讲述安卓源码的时候，希望尽可能选用最新android-API版本来讲"><a href="#18-如果讲述安卓源码的时候，希望尽可能选用最新android-API版本来讲" class="headerlink" title="18. 如果讲述安卓源码的时候，希望尽可能选用最新android API版本来讲"></a>18. 如果讲述安卓源码的时候，希望尽可能选用最新android API版本来讲</h4><p><strong>解答：</strong>彭老师的移动架构师专题，讲解的是9.0源码哦</p>
+<hr>
+<h4 id="17-能不能教一下调试jni的方法？"><a href="#17-能不能教一下调试jni的方法？" class="headerlink" title="17. 能不能教一下调试jni的方法？"></a>17. 能不能教一下调试jni的方法？</h4><p><strong>解答：</strong><br>单纯C/C++调试可以尝试Visio Studio IDE（老鸟）<br>新人建议：LLDB插件工具</p>
+<hr>
+<h4 id="16-老师，安卓在线源码地址多少？"><a href="#16-老师，安卓在线源码地址多少？" class="headerlink" title="16. 老师，安卓在线源码地址多少？"></a>16. 老师，安卓在线源码地址多少？</h4><p><strong>解答：</strong>点开左边“友链”，有放在里面</p>
+<hr>
+<h4 id="15-上次讲事件分发的那个老师，在讲解ViewGroup的dispatchTouchEvent时，有一个问题让我很困惑，就是利用mChildrenCount遍历View层级进行事件分发时，我的理解是mChildrenCount标识的是当前ViewGroup所包含的子View的个数，不知道是否正确？"><a href="#15-上次讲事件分发的那个老师，在讲解ViewGroup的dispatchTouchEvent时，有一个问题让我很困惑，就是利用mChildrenCount遍历View层级进行事件分发时，我的理解是mChildrenCount标识的是当前ViewGroup所包含的子View的个数，不知道是否正确？" class="headerlink" title="15. 上次讲事件分发的那个老师，在讲解ViewGroup的dispatchTouchEvent时，有一个问题让我很困惑，就是利用mChildrenCount遍历View层级进行事件分发时，我的理解是mChildrenCount标识的是当前ViewGroup所包含的子View的个数，不知道是否正确？"></a>15. 上次讲事件分发的那个老师，在讲解<code>ViewGroup</code>的<code>dispatchTouchEvent</code>时，有一个问题让我很困惑，就是利用<code>mChildrenCount</code>遍历<code>View</code>层级进行事件分发时，我的理解是<code>mChildrenCount</code>标识的是当前<code>ViewGroup</code>所包含的子<code>View</code>的个数，不知道是否正确？</h4><p><strong>解答：</strong>是的</p>
+<hr>
+<h4 id="14-coordinatorlayout可以把viewgroup作为child吗？我这边把ConstraintLayout作为behavior的child，这个behavior没有跟着coordinatorlayout动起来，我想要动起来。我的xml里没有引用到behavior"><a href="#14-coordinatorlayout可以把viewgroup作为child吗？我这边把ConstraintLayout作为behavior的child，这个behavior没有跟着coordinatorlayout动起来，我想要动起来。我的xml里没有引用到behavior" class="headerlink" title="14. coordinatorlayout可以把viewgroup作为child吗？我这边把ConstraintLayout作为behavior的child，这个behavior没有跟着coordinatorlayout动起来，我想要动起来。我的xml里没有引用到behavior"></a>14. coordinatorlayout可以把<code>viewgroup</code>作为<code>child</code>吗？我这边把<code>ConstraintLayout</code>作为<code>behavior</code>的<code>child</code>，这个<code>behavior</code>没有跟着<code>coordinatorlayout</code>动起来，我想要动起来。我的<code>xml</code>里没有引用到<code>behavior</code></h4><p><strong>解答：</strong>可以，这些技术点会在正式课程高级UI详细讲解</p>
+<hr>
+<h4 id="13-有人做过通过蓝牙麦克风录音的吗？通过AudioRecord来录音。有没有什么推荐的文章之类的？"><a href="#13-有人做过通过蓝牙麦克风录音的吗？通过AudioRecord来录音。有没有什么推荐的文章之类的？" class="headerlink" title="13. 有人做过通过蓝牙麦克风录音的吗？通过AudioRecord来录音。有没有什么推荐的文章之类的？"></a>13. 有人做过通过蓝牙麦克风录音的吗？通过AudioRecord来录音。有没有什么推荐的文章之类的？</h4><p><strong>解答：</strong>参考文章：<a href="https://blog.csdn.net/linzekai100/article/details/79487903" target="_blank" rel="noopener">https://blog.csdn.net/linzekai100/article/details/79487903</a></p>
+<hr>
+<h4 id="12-android编译后报这个错误："><a href="#12-android编译后报这个错误：" class="headerlink" title="12. android编译后报这个错误："></a>12. android编译后报这个错误：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException: <span class="number">1</span> 字节UTF-<span class="number">8</span> 序列的字节 <span class="number">1</span> 无效</span><br></pre></td></tr></table></figure>
+
+<h4 id="有人遇到过吗？"><a href="#有人遇到过吗？" class="headerlink" title="有人遇到过吗？"></a>有人遇到过吗？</h4><p><strong>解答：</strong>将xml文件单独处理为<strong>UTF-8</strong>格式，再导入项目中重新编译</p>
+<hr>
+<h4 id="11-蓝牙耳机的SCO通道采集录音，在通过蓝牙耳机输出，声音太小，同学们有遇到过这样的问题吗？"><a href="#11-蓝牙耳机的SCO通道采集录音，在通过蓝牙耳机输出，声音太小，同学们有遇到过这样的问题吗？" class="headerlink" title="11. 蓝牙耳机的SCO通道采集录音，在通过蓝牙耳机输出，声音太小，同学们有遇到过这样的问题吗？"></a>11. 蓝牙耳机的SCO通道采集录音，在通过蓝牙耳机输出，声音太小，同学们有遇到过这样的问题吗？</h4><p><strong>解答：</strong>暂未涉及这类项目<br>不过可以参考这篇文章：<a href="https://blog.csdn.net/cai784921129/article/details/53024091" target="_blank" rel="noopener">https://blog.csdn.net/cai784921129/article/details/53024091</a></p>
+<hr>
+<h4 id="10-sqlite删除的数据可以找的回来不？"><a href="#10-sqlite删除的数据可以找的回来不？" class="headerlink" title="10. sqlite删除的数据可以找的回来不？"></a>10. sqlite删除的数据可以找的回来不？</h4><p><strong>解答：</strong>不可以</p>
+<hr>
+<h4 id="9-有人搞过蓝牙开发吗？对device里面的major类有什么看法没？"><a href="#9-有人搞过蓝牙开发吗？对device里面的major类有什么看法没？" class="headerlink" title="9. 有人搞过蓝牙开发吗？对device里面的major类有什么看法没？"></a>9. 有人搞过蓝牙开发吗？对device里面的major类有什么看法没？</h4><p><strong>解答：</strong>主要设备类段是定义蓝牙设备的最高粒度级别。设备的主要功能决定了其主要类分组。此主要类字段的分配在表中进行了定义。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> AUDIO_VIDEO 音频/视频（耳机、扬声器、视频显示/VCR...)</span><br><span class="line">Constant Value: <span class="number">1024</span> (<span class="number">0x00000400</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> COMPUTER 计算机（台式机、笔记本...）</span><br><span class="line">Constant Value: <span class="number">256</span> (<span class="number">0x00000100</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> HEALTH 健康</span><br><span class="line">Constant Value: <span class="number">2304</span> (<span class="number">0x00000900</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> IMAGING 成像（打印、扫描仪、相机、显示...）</span><br><span class="line">Constant Value: <span class="number">1536</span> (<span class="number">0x00000600</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MISC 其他</span><br><span class="line">Constant Value: <span class="number">0</span> (<span class="number">0x00000000</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> NETWORKING LAN/网络接入点</span><br><span class="line">Constant Value: <span class="number">768</span> (<span class="number">0x00000300</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PERIPHERAL 配件（鼠标、游戏杆、键盘...)即外设</span><br><span class="line">Constant Value: <span class="number">1280</span> (<span class="number">0x00000500</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PHONE 电话（手机、支付电话、调制解调器...)</span><br><span class="line">Constant Value: <span class="number">512</span> (<span class="number">0x00000200</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TOY 玩具</span><br><span class="line">Constant Value: <span class="number">2048</span> (<span class="number">0x00000800</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> UNCATEGORIZED 未分类：未指定设备代码</span><br><span class="line">Constant Value: <span class="number">7936</span> (<span class="number">0x00001f00</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> WEARABLE 可穿戴</span><br><span class="line">Constant Value: <span class="number">1792</span> (<span class="number">0x00000700</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="8-这种导航定位怎样才能定位到准确的位置啊？"><a href="#8-这种导航定位怎样才能定位到准确的位置啊？" class="headerlink" title="8. 这种导航定位怎样才能定位到准确的位置啊？"></a>8. 这种导航定位怎样才能定位到准确的位置啊？</h4><h4 id="（淘宝APP商品详情页，点击评论-详情-推荐，会定位到具体的区域）"><a href="#（淘宝APP商品详情页，点击评论-详情-推荐，会定位到具体的区域）" class="headerlink" title="（淘宝APP商品详情页，点击评论/详情/推荐，会定位到具体的区域）"></a>（淘宝APP商品详情页，点击评论/详情/推荐，会定位到具体的区域）</h4><p><strong>解答：</strong>可以通过<code>getTop()</code>获取到控件相对父容器的位置,然后调用<strong>ScrollView</strong>的<code>scrollTo()</code>方法可以滚动到指定View的顶部</p>
+<hr>
+<h4 id="7-两边文字对比，有不一样的地方就变红，有什么思路吗？"><a href="#7-两边文字对比，有不一样的地方就变红，有什么思路吗？" class="headerlink" title="7. 两边文字对比，有不一样的地方就变红，有什么思路吗？"></a>7. 两边文字对比，有不一样的地方就变红，有什么思路吗？</h4><p><strong>解答：</strong>可以将两段文字进行对比，获取到不同的文字的或不同文字的下标，然后通过</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String s = HTML.fromHtml(<span class="string">"&lt;font color=\"#ff0000\"&gt;1&lt;/font&gt;2"</span>);</span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line">SpannableStringBuilder ssb = <span class="keyword">new</span> SpannableStringBuilder(sm);</span><br><span class="line">ssb.setSpan(<span class="keyword">new</span> ForegroundColorSpan(Color.RED), <span class="number">4</span>, <span class="number">10</span>, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);</span><br></pre></td></tr></table></figure>
+
+<p>的方式修改相应文字的颜色，再调用<code>TextView</code>的<code>setText()</code>方法将修改后的文本设置就可以了</p>
+<hr>
+<h4 id="6-彭老师，对象锁为啥用长度为零的对象数组？而不用对象？性能上有啥区别么？"><a href="#6-彭老师，对象锁为啥用长度为零的对象数组？而不用对象？性能上有啥区别么？" class="headerlink" title="6. 彭老师，对象锁为啥用长度为零的对象数组？而不用对象？性能上有啥区别么？"></a>6. 彭老师，对象锁为啥用长度为零的对象数组？而不用对象？性能上有啥区别么？</h4><p><strong>解答：</strong>零长度的<code>byte</code>数组对象创建起来将比任何对象都经济。<br>查看编译后的字节码：生成零长度的<code>byte[]</code>对象只需3条操作码，而<strong>Object lock = new Object()</strong>则需要7行操作码</p>
+<hr>
+<h4 id="5-用三方SDK来做IM通讯聊天和短视频播放，用哪个三方比较好，都有什么优势呢？"><a href="#5-用三方SDK来做IM通讯聊天和短视频播放，用哪个三方比较好，都有什么优势呢？" class="headerlink" title="5. 用三方SDK来做IM通讯聊天和短视频播放，用哪个三方比较好，都有什么优势呢？"></a>5. 用三方SDK来做IM通讯聊天和短视频播放，用哪个三方比较好，都有什么优势呢？</h4><p><strong>解答：</strong>通讯聊天这块最好是根据自己公司的业务，需求，然后去搜索多个第三方的官方，找他们的技术顾问进行询问，IM这块老师之前用过环信。</p>
+<hr>
+<h4 id="4-项目中没有做过HTTPS和数据加密这块，网上有看过大概说的什么流程，但是感觉不是可信，比如说电商项目中，怎么去做订单交易这块数据加密，实现HTTPS一个的流程是怎么样，如果可以的希望能够更贴近业务案例来说明下。备注：老师手上如果有现成的资料的话，可以直接分享资料给同学。"><a href="#4-项目中没有做过HTTPS和数据加密这块，网上有看过大概说的什么流程，但是感觉不是可信，比如说电商项目中，怎么去做订单交易这块数据加密，实现HTTPS一个的流程是怎么样，如果可以的希望能够更贴近业务案例来说明下。备注：老师手上如果有现成的资料的话，可以直接分享资料给同学。" class="headerlink" title="4. 项目中没有做过HTTPS和数据加密这块，网上有看过大概说的什么流程，但是感觉不是可信，比如说电商项目中，怎么去做订单交易这块数据加密，实现HTTPS一个的流程是怎么样，如果可以的希望能够更贴近业务案例来说明下。备注：老师手上如果有现成的资料的话，可以直接分享资料给同学。"></a>4. 项目中没有做过HTTPS和数据加密这块，网上有看过大概说的什么流程，但是感觉不是可信，比如说电商项目中，怎么去做订单交易这块数据加密，实现HTTPS一个的流程是怎么样，如果可以的希望能够更贴近业务案例来说明下。备注：老师手上如果有现成的资料的话，可以直接分享资料给同学。</h4><p><strong>解答：</strong>关于<strong>https</strong>需要自行翻阅资料，该协议包含的内容非常多。<br>另外电商项目中的数据加密，只要有普通的加密即可，比如<strong>base64</strong>，这样只要能保证客户端与服务器端在进行数据交互时不裸奔即可。但需要注意的是，客户端如果有比较私密的信息最好用非对称加密比如<strong>rsa</strong>，只加密关键数据。另外，客户端需要进行<strong>apk</strong>加固，让破解的人更难获得客户端源码。这一块是客户端需要进行的加密。<br>需要注意的是，如果订单数据在客户端进行了加密，还需要服务器端同步进行加密，比如你的客户端发送的数据为<strong>orderid=1&amp;amount=100&amp;userid=1</strong> 那么你需要将这些数据进行对称加密，比如<code>md5</code>，生成一个唯一码，让服务器端同样对数据进行加密比对，确保该数据没有被篡改，简而言之，服务器端在对客户端进行数据校验时，要以服务器端的数据为主，确保客户端过去的数据与服务器一致。</p>
+<hr>
+<h4 id="3-序列化的错误，怎么有遇到过吗？"><a href="#3-序列化的错误，怎么有遇到过吗？" class="headerlink" title="3. 序列化的错误，怎么有遇到过吗？"></a>3. 序列化的错误，怎么有遇到过吗？</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">java.lang.RuntimeException: Parcel android.os.Parcel@<span class="number">1e48</span>b6d7: Unmarshalling unknown type code <span class="number">3276854</span> at offset <span class="number">540</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解答：</strong>序列化时数据读写顺序要一致，<code>writeToParcel</code>里写的顺序要和<code>CREATOR</code>里读的顺序一致。</p>
+<hr>
+<h4 id="2-怎样在一个方法里返回一个网络请求返回的结果啊？"><a href="#2-怎样在一个方法里返回一个网络请求返回的结果啊？" class="headerlink" title="2. 怎样在一个方法里返回一个网络请求返回的结果啊？"></a>2. 怎样在一个方法里返回一个网络请求返回的结果啊？</h4><p><strong>解答：</strong>网络请求返回结果是异步操作，可以通过回调方法返回结果</p>
+<hr>
+<h4 id="1-jsbridge-有没有推荐的文章，比较高级一点的"><a href="#1-jsbridge-有没有推荐的文章，比较高级一点的" class="headerlink" title="1. jsbridge 有没有推荐的文章，比较高级一点的"></a>1. <code>jsbridge</code> 有没有推荐的文章，比较高级一点的</h4><p><strong>解答：</strong><a href="https://blog.csdn.net/zuggs_/article/details/80649669" target="_blank" rel="noopener">https://blog.csdn.net/zuggs_/article/details/80649669</a><br>高级点的就是深挖原理了，同学可以自行查找类似文章即可</p>
+<hr>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/android_question.html" title="网易 - 安卓班级问题汇总（更新）" target="_blank" rel="external">https://www.cmonbaby.com/posts/android_question.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/android_drawable.html" title="关于改变一个控件里的Drawable属性的时候其他控件也一起变化的问题"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/android_splash_compat.html" title="Splash适配解决启动图拉伸的问题"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

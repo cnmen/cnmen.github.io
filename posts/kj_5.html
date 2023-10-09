@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>柯基笔记：MySQL语句及高级用法 | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="作者：柯基大佬 日期：2021-08-13 类型：Java 说明：本文源于 柯基 手写摘要，如需转载请带上链接或注明出处！   符号注释：使用双中划线，-- xxx 通配符：一般用作条件，查询或修改某字段对应的值  %：占位符，代表任意长度，任意内容；举例：like %xxx%  _：占位符，代表一个长度，任意内容；举例：like x_  like：模糊匹配；举例：  like ‘s%’：模糊">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="柯基笔记：MySQL语句及高级用法">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/kj_5.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="作者：柯基大佬 日期：2021-08-13 类型：Java 说明：本文源于 柯基 手写摘要，如需转载请带上链接或注明出处！   符号注释：使用双中划线，-- xxx 通配符：一般用作条件，查询或修改某字段对应的值  %：占位符，代表任意长度，任意内容；举例：like %xxx%  _：占位符，代表一个长度，任意内容；举例：like x_  like：模糊匹配；举例：  like ‘s%’：模糊">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2023-10-09T07:23:45.454Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="柯基笔记：MySQL语句及高级用法">
+<meta name="twitter:description" content="作者：柯基大佬 日期：2021-08-13 类型：Java 说明：本文源于 柯基 手写摘要，如需转载请带上链接或注明出处！   符号注释：使用双中划线，-- xxx 通配符：一般用作条件，查询或修改某字段对应的值  %：占位符，代表任意长度，任意内容；举例：like %xxx%  _：占位符，代表一个长度，任意内容；举例：like x_  like：模糊匹配；举例：  like ‘s%’：模糊">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/kj_5.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-kj_5" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      柯基笔记：MySQL语句及高级用法
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/kj_5.html" class="article-date">
+	  <time datetime="2021-08-13T06:08:05.000Z" itemprop="datePublished">2021-08-13</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Java/">Java</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/kj_5.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>作者：柯基大佬</li>
+<li>日期：2021-08-13</li>
+<li>类型：Java</li>
+<li>说明：本文源于 <a href="https://blog.csdn.net/qq_39420519" target="_blank" rel="noopener">柯基</a> 手写摘要，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<h1 id="符号"><a href="#符号" class="headerlink" title="符号"></a>符号</h1><p><strong>注释：</strong><br>使用双中划线，<strong><code>--</code> xxx</strong></p>
+<p><strong>通配符：</strong><br>一般用作条件，查询或修改某字段对应的值</p>
+<ul>
+<li><p><strong><code>%</code></strong>：占位符，代表任意长度，任意内容；举例：<code>like %xxx%</code></p>
+</li>
+<li><p><strong><code>_</code></strong>：占位符，代表一个长度，任意内容；举例：like x<code>_</code></p>
+</li>
+<li><p><strong><code>like</code></strong>：模糊匹配；举例：</p>
+<ul>
+<li><code>like ‘s%’</code>：模糊匹配以s开头任意长度、任意内容的值</li>
+<li><code>like ‘s_’</code>：模糊匹配s后一个长度、任意内容的值</li>
+<li><code>like ‘%s%’</code>：模糊匹配s两头任意长度、任意内容的值</li>
+</ul>
+</li>
+<li><p><strong><code>or</code></strong>：两个以上或条件；举例：name = ‘张三’ <code>or</code> age = 18</p>
+</li>
+<li><p><strong><code>and</code></strong>：两个以上与条件；举例：name = ‘张三’ <code>and</code> age = 18</p>
+</li>
+<li><p><strong><code>in</code></strong>：两个以上包含条件；举例：age <code>in</code>(1,3,6)</p>
+</li>
+</ul>
+<h1 id="查询：SELECT"><a href="#查询：SELECT" class="headerlink" title="查询：SELECT"></a>查询：SELECT</h1><ul>
+<li><p>常用基本查询</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表名</span><br><span class="line"><span class="keyword">select</span> 字段<span class="number">1</span>,字段<span class="number">2.</span>.. <span class="keyword">from</span> 表名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>where</code></strong>：查询条件约束</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表名 <span class="keyword">where</span> 字段名=‘值’</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>limit</code></strong>：查询个数约束（分页）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表名 <span class="keyword">limit</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">limit</span> <span class="number">2</span>：查询<span class="keyword">count</span>限制n数据</span><br><span class="line"><span class="keyword">limit</span> <span class="number">1</span>,<span class="number">2</span>：查询下标<span class="number">1</span>~<span class="number">2</span>的数据</span><br><span class="line"><span class="keyword">limit</span> <span class="number">0</span>,<span class="number">-1</span>：查询所有数据，高版本已不可用</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>count</code></strong>：表的总行数查询</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> 表名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>distinct</code></strong>：不重复的总行数查询（去重查询）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 写法1</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">distinct</span> 字段名) <span class="keyword">from</span> 表名</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 写法2，省略count()</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> 字段名 <span class="keyword">from</span> 表名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>length</code></strong>：查询约束长度</p>
+<blockquote>
+<p>value是中文的情况下查询时需注意：</p>
+<ul>
+<li><p>在utf-8编码下，一个汉字占3个长度；</p>
+</li>
+<li><p>在gbk编码下，一个汉字占2个长度;</p>
+</li>
+<li><p>在Oracle的gbk编码下，一个汉字占1个长度</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 如果值是纯中文，以下语句查询到的会是2个汉字以上的条件</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表名 <span class="keyword">where</span> <span class="keyword">length</span>(字段名) &gt;= <span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- CHAR_LENGTH() 能够做到一个汉字一个字符，以下语句查询到的是6个汉字或字符以上的条件</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表名 <span class="keyword">where</span> <span class="keyword">char_length</span>(字段名) &gt;= <span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="插入：INSERT-INTO"><a href="#插入：INSERT-INTO" class="headerlink" title="插入：INSERT INTO"></a>插入：INSERT INTO</h1><blockquote>
+<p>注意：不可空字段是必传的</p>
+</blockquote>
+<ul>
+<li><p>字段名与值一一对应</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> 表名(字段<span class="number">1</span>， 字段<span class="number">2</span> ...) <span class="keyword">value</span>(字段<span class="number">1</span>值， 字段<span class="number">2</span>值 ...)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>无关字段名，必须传入所有字段</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> 表名 <span class="keyword">value</span>(字段<span class="number">1</span>值，字段<span class="number">2</span>值 ...)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="修改：UPDATE"><a href="#修改：UPDATE" class="headerlink" title="修改：UPDATE"></a>修改：UPDATE</h1><ul>
+<li><p>无条件修改所有该字段的值</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">update</span> 表名 <span class="keyword">set</span> 字段 = 值</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加条件修改某字段的值</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">update</span> 表名 <span class="keyword">set</span> 字段<span class="number">1</span>=字段<span class="number">1</span>值 <span class="keyword">where</span> 字段<span class="number">2</span>=字段<span class="number">2</span>值 <span class="keyword">or</span> 字段<span class="number">3</span>=字段<span class="number">3</span>值</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="删除：DELETE"><a href="#删除：DELETE" class="headerlink" title="删除：DELETE"></a>删除：DELETE</h1><ul>
+<li><p>清空表</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> 表名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加条件删除字段</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> 表名 <span class="keyword">where</span> 字段<span class="number">1</span>=字段<span class="number">1</span>值</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<hr>
+<h1 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h1><p><strong>别名：AS</strong><br>别名不修改原字段，只是在查询结果中显示</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 表别名</span></span><br><span class="line"><span class="keyword">select</span> 字段 <span class="keyword">from</span> 表名 <span class="keyword">as</span> xxx</span><br><span class="line"><span class="keyword">select</span> xxx.字段<span class="number">1</span>, xxx.字段<span class="number">2</span> <span class="keyword">from</span> 表名 <span class="keyword">as</span> xxx</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 字段别名</span></span><br><span class="line"><span class="keyword">select</span> 字段<span class="number">1</span> <span class="keyword">as</span> 别名<span class="number">1</span>, 字段<span class="number">2</span> 别名<span class="number">2</span> <span class="keyword">from</span> 表名</span><br></pre></td></tr></table></figure>
+
+<p><strong>时间</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- yyyy-MM-dd HH:mm:ss</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">NOW</span>()</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">SYSDATE</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">-- yyyy-MM-dd</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">CURRENT_DATE</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>排序：ORDER BY</strong><br>（asc是升序(默认)，desc是降序）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 升序</span></span><br><span class="line"><span class="keyword">select</span> 字段 <span class="keyword">from</span> 表名 <span class="keyword">order</span> <span class="keyword">by</span> 字段条件</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 降序</span></span><br><span class="line"><span class="keyword">select</span> 字段 <span class="keyword">from</span> 表名 <span class="keyword">order</span> <span class="keyword">by</span> 字段条件 <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>分组：GROUP BY</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> 字段 <span class="keyword">from</span> 表名 <span class="keyword">group</span> <span class="keyword">by</span> 字段条件</span><br></pre></td></tr></table></figure>
+
+<p><strong>区间：BETWEEN、OR、IN</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- BETWEEN，查询区间的值</span></span><br><span class="line"><span class="keyword">select</span> 字段 <span class="keyword">from</span> 表名 <span class="keyword">where</span> 字段条件 <span class="keyword">between</span> ‘<span class="keyword">start</span>值’ <span class="keyword">AND</span> ‘<span class="keyword">end</span>值’</span><br><span class="line"></span><br><span class="line"><span class="comment">-- OR，查询符合的其中一个值 </span></span><br><span class="line"><span class="keyword">select</span> 字段 <span class="keyword">from</span> 表名 <span class="keyword">where</span> 字段<span class="number">1</span>=字段<span class="number">1</span>值 <span class="keyword">or</span> 字段<span class="number">2</span>=字段<span class="number">2</span>值</span><br><span class="line"></span><br><span class="line"><span class="comment">-- IN，查询包含的值</span></span><br><span class="line"><span class="keyword">select</span> 字段 <span class="keyword">from</span> 表名 <span class="keyword">where</span> 字段条件 <span class="keyword">in</span>(<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>聚合函数</strong></p>
+<ul>
+<li><p><strong><code>SUM</code></strong>：总数</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">sum</span>(字段) <span class="keyword">from</span> 表名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>AVG</code></strong>：平均数</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">avg</span>(字段) <span class="keyword">from</span> 表名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>MAX</code></strong>：最大值</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">max</span>(字段) <span class="keyword">from</span> 表名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>MIN</code></strong>：最小值</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">min</span>(字段) <span class="keyword">from</span> 表名</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="参考：https-www-cmonbaby-com-posts-sql-html"><a href="#参考：https-www-cmonbaby-com-posts-sql-html" class="headerlink" title="参考：https://www.cmonbaby.com/posts/sql.html"></a>参考：<a href="https://www.cmonbaby.com/posts/sql.html">https://www.cmonbaby.com/posts/sql.html</a></h3>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/kj_5.html" title="柯基笔记：MySQL语句及高级用法" target="_blank" rel="external">https://www.cmonbaby.com/posts/kj_5.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/kj_33.html" title="柯基笔记：MySQL导入大数据"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/kj_4.html" title="柯基笔记：Navicat中建库、建表等操作"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>A2J实战训练营 | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="作者：彭老师 日期：2021-07-31 类型：Android、Java、Vue、Linux 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！      公开课（课程永久）课程链接：https://study.163.com/course/courseMain.htm?courseId=1212151824&amp;amp;share=2&amp;amp;shareId=4800000022625">
+<meta name="keywords" content="Java,android,Vue,Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A2J实战训练营">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/a2j.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="作者：彭老师 日期：2021-07-31 类型：Android、Java、Vue、Linux 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！      公开课（课程永久）课程链接：https://study.163.com/course/courseMain.htm?courseId=1212151824&amp;amp;share=2&amp;amp;shareId=4800000022625">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/a2j/a2j-black.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/a2j/a2j-java.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/a2j/a2j-vue.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/a2j/A2J-Java大纲.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/a2j/A2J-Vue大纲.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/a2j/A2J-Linux大纲.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/a2j/wechat.jpg">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/a2j/qgroup1.jpeg">
+<meta property="og:updated_time" content="2023-10-09T09:18:58.338Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="A2J实战训练营">
+<meta name="twitter:description" content="作者：彭老师 日期：2021-07-31 类型：Android、Java、Vue、Linux 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！      公开课（课程永久）课程链接：https://study.163.com/course/courseMain.htm?courseId=1212151824&amp;amp;share=2&amp;amp;shareId=4800000022625">
+<meta name="twitter:image" content="https://www.cmonbaby.com/posts/a2j/a2j-black.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/a2j.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-a2j" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      A2J实战训练营
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/a2j.html" class="article-date">
+	  <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Java/">Java</a>►<a class="article-category-link" href="/categories/Linux/">Linux</a>►<a class="article-category-link" href="/categories/Vue/">Vue</a>►<a class="article-category-link" href="/categories/android/">android</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Java/">Java</a>, <a class="article-tag-link" href="/tags/Linux/">Linux</a>, <a class="article-tag-link" href="/tags/Vue/">Vue</a>, <a class="article-tag-link" href="/tags/android/">android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/a2j.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>作者：彭老师</li>
+<li>日期：2021-07-31</li>
+<li>类型：Android、Java、Vue、Linux</li>
+<li>说明：本文源于<a href="https://www.cmonbaby.com">彭老师</a>手写摘要，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<hr>
+<img src="/posts/a2j/a2j-black.png">
+
+<h2 id="公开课（课程永久）"><a href="#公开课（课程永久）" class="headerlink" title="公开课（课程永久）"></a>公开课（课程永久）</h2><p><strong>课程链接</strong>：<a href="https://study.163.com/course/courseMain.htm?courseId=1212151824&share=2&shareId=480000002262580" target="_blank" rel="noopener">https://study.163.com/course/courseMain.htm?courseId=1212151824&amp;share=2&amp;shareId=480000002262580</a></p>
+<h2 id="9月1日开课前报名65折（课程永久，服务不限期！）"><a href="#9月1日开课前报名65折（课程永久，服务不限期！）" class="headerlink" title="9月1日开课前报名65折（课程永久，服务不限期！）"></a>9月1日开课前报名65折（课程永久，服务不限期！）</h2><p><strong>课程链接</strong>：<a href="https://study.163.com/course/courseMain.htm?courseId=1211970802&share=2&shareId=480000002262580" target="_blank" rel="noopener">https://study.163.com/course/courseMain.htm?courseId=1211970802&amp;share=2&amp;shareId=480000002262580</a></p>
+<h2 id="推荐报名，返现200-人（不封顶）"><a href="#推荐报名，返现200-人（不封顶）" class="headerlink" title="推荐报名，返现200/人（不封顶）"></a>推荐报名，返现200/人（不封顶）</h2><blockquote>
+<ul>
+<li>网易安卓老学员折后价2600，会员再减260</li>
+<li>课程仅剩18张优惠券，可以先领取</li>
+<li>老学员6.5折优惠时间不限制，少了券私我微信</li>
+</ul>
+</blockquote>
+<h2 id="缘由："><a href="#缘由：" class="headerlink" title="缘由："></a>缘由：</h2><p><em>2018～2019上半年，我有幸能在网易微专业，安卓高级开发与很多志同道合的 Android 伙伴相识。</em></p>
+<p><em>大概从去年年底开始，微信群@我的人越来越多。大家关乎的问题不再是安卓开发，而是自身事业的稳固和技术的转型。<br>在阵阵呼吁中我隐隐觉得，阔别两年多了，仅存的料是应该给大家技术分享了</em></p>
+<p><em>于是，我答应了再次授课（备课时精力上断断续续，项目上各重写了3遍。千呼万唤始出来～）</em></p>
+<h3 id="A2J实战训练营"><a href="#A2J实战训练营" class="headerlink" title="A2J实战训练营"></a>A2J实战训练营</h3><blockquote>
+<ul>
+<li>A2J：Android To / Transfer Java（我英语不好）</li>
+<li>人话：安卓转后台</li>
+<li>实战：某汽车平台真实项目功能模块（Java + Vue），不会有啰嗦的理论，这里只有项目实战</li>
+<li>训练营：1、没有量的沉淀不会有质的改变，2、用安卓的思维去轻松学习枯燥的后台和前端</li>
+</ul>
+</blockquote>
+<h3 id="技能范围"><a href="#技能范围" class="headerlink" title="技能范围"></a>技能范围</h3><blockquote>
+<ul>
+<li>Android，包含但不会讲解（有网易精品课）</li>
+<li>Java，重点（springboot、mybatis、redis、jwt、aspect、knife4j、maven等）</li>
+<li>Vue，重点（vue4、axios、element-ui、router、components、架构封装思想等）</li>
+<li>Mysql，重点（增删查改、连表查询、嵌套集合查询、建表规范与思想等）</li>
+<li>Linux，入门基础、环境安装与配置、常用命令、打包部署、Nginx配置等</li>
+</ul>
+</blockquote>
+<h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><img src="/posts/a2j/a2j-java.png">
+<img src="/posts/a2j/a2j-vue.png">
+
+<h3 id="原创课程的个人看法："><a href="#原创课程的个人看法：" class="headerlink" title="原创课程的个人看法："></a>原创课程的个人看法：</h3><h4 id="十余年开发走下来，我总结了下（没有针对过谁）"><a href="#十余年开发走下来，我总结了下（没有针对过谁）" class="headerlink" title="十余年开发走下来，我总结了下（没有针对过谁）"></a>十余年开发走下来，我总结了下（没有针对过谁）</h4><h5 id="1、只有教不好的老师，没有学不会的技能"><a href="#1、只有教不好的老师，没有学不会的技能" class="headerlink" title="1、只有教不好的老师，没有学不会的技能"></a>1、只有教不好的老师，没有学不会的技能</h5><h5 id="2、自学的路上很漫长、很坎坷，太容易放弃了"><a href="#2、自学的路上很漫长、很坎坷，太容易放弃了" class="headerlink" title="2、自学的路上很漫长、很坎坷，太容易放弃了"></a>2、自学的路上很漫长、很坎坷，太容易放弃了</h5><h5 id="3、从哪开始入门？网络视频？OOP？接口？各种后台框架？"><a href="#3、从哪开始入门？网络视频？OOP？接口？各种后台框架？" class="headerlink" title="3、从哪开始入门？网络视频？OOP？接口？各种后台框架？"></a>3、从哪开始入门？网络视频？OOP？接口？各种后台框架？</h5><h5 id="4、哪些姿势必学必会，哪些要精炼、常撸，真的不知道！"><a href="#4、哪些姿势必学必会，哪些要精炼、常撸，真的不知道！" class="headerlink" title="4、哪些姿势必学必会，哪些要精炼、常撸，真的不知道！"></a>4、哪些姿势必学必会，哪些要精炼、常撸，真的不知道！</h5><h5 id="5、理论比唱歌还好听，实战二百五呆瓜一个"><a href="#5、理论比唱歌还好听，实战二百五呆瓜一个" class="headerlink" title="5、理论比唱歌还好听，实战二百五呆瓜一个"></a>5、理论比唱歌还好听，实战二百五呆瓜一个</h5><h5 id="6、技术不见长进，年龄却很尴尬。无论被面试还是将来带团队"><a href="#6、技术不见长进，年龄却很尴尬。无论被面试还是将来带团队" class="headerlink" title="6、技术不见长进，年龄却很尴尬。无论被面试还是将来带团队"></a>6、技术不见长进，年龄却很尴尬。无论被面试还是将来带团队</h5><h5 id="7、移动端注定被团队边缘？还是身板真的不够硬？"><a href="#7、移动端注定被团队边缘？还是身板真的不够硬？" class="headerlink" title="7、移动端注定被团队边缘？还是身板真的不够硬？"></a>7、移动端注定被团队边缘？还是身板真的不够硬？</h5><h5 id="8、学不动了？7W-研究生在给我们送外卖呢"><a href="#8、学不动了？7W-研究生在给我们送外卖呢" class="headerlink" title="8、学不动了？7W+研究生在给我们送外卖呢"></a>8、学不动了？7W+研究生在给我们送外卖呢</h5><h5 id="9、主攻安卓或管理，应该具备Java、Vue的技能高度"><a href="#9、主攻安卓或管理，应该具备Java、Vue的技能高度" class="headerlink" title="9、主攻安卓或管理，应该具备Java、Vue的技能高度"></a>9、主攻安卓或管理，应该具备Java、Vue的技能高度</h5><h5 id="……太多感言"><a href="#……太多感言" class="headerlink" title="……太多感言"></a>……太多感言</h5><h3 id="课程的承诺："><a href="#课程的承诺：" class="headerlink" title="课程的承诺："></a>课程的承诺：</h3><h4 id="1、原创作品，无商业纠纷"><a href="#1、原创作品，无商业纠纷" class="headerlink" title="1、原创作品，无商业纠纷"></a>1、原创作品，无商业纠纷</h4><h4 id="2、所有技能围绕项目实战去针对性学习、成长、积累"><a href="#2、所有技能围绕项目实战去针对性学习、成长、积累" class="headerlink" title="2、所有技能围绕项目实战去针对性学习、成长、积累"></a>2、所有技能围绕项目实战去针对性学习、成长、积累</h4><h4 id="3、多维度讲解，学会架构思想、逻辑交互、业务分析、代码实现"><a href="#3、多维度讲解，学会架构思想、逻辑交互、业务分析、代码实现" class="headerlink" title="3、多维度讲解，学会架构思想、逻辑交互、业务分析、代码实现"></a>3、多维度讲解，学会架构思想、逻辑交互、业务分析、代码实现</h4><h4 id="4、我讲课，有且只有一个讲师带班级"><a href="#4、我讲课，有且只有一个讲师带班级" class="headerlink" title="4、我讲课，有且只有一个讲师带班级"></a>4、我讲课，有且只有一个讲师带班级</h4><h4 id="5、考虑网络传播，此课程暂定-1-个班级"><a href="#5、考虑网络传播，此课程暂定-1-个班级" class="headerlink" title="5、考虑网络传播，此课程暂定 1 个班级"></a>5、考虑网络传播，此课程暂定 1 个班级</h4><h4 id="6、网易安卓学员，可享受-65-折-报名"><a href="#6、网易安卓学员，可享受-65-折-报名" class="headerlink" title="6、网易安卓学员，可享受 65 折 报名"></a>6、网易安卓学员，可享受 65 折 报名</h4><h4 id="7、任何推荐报名，都可享当日福利"><a href="#7、任何推荐报名，都可享当日福利" class="headerlink" title="7、任何推荐报名，都可享当日福利"></a>7、任何推荐报名，都可享当日福利</h4><h4 id="8、网易平台授课，知识付费，彼此尊重！"><a href="#8、网易平台授课，知识付费，彼此尊重！" class="headerlink" title="8、网易平台授课，知识付费，彼此尊重！"></a>8、网易平台授课，知识付费，彼此尊重！</h4><h4 id="9、高级Java课程看大家需求，再做研发"><a href="#9、高级Java课程看大家需求，再做研发" class="headerlink" title="9、高级Java课程看大家需求，再做研发"></a>9、高级Java课程看大家需求，再做研发</h4><h3 id="学员要求"><a href="#学员要求" class="headerlink" title="学员要求"></a>学员要求</h3><h4 id="1、至少-半年-Java工作经验（Java专业）"><a href="#1、至少-半年-Java工作经验（Java专业）" class="headerlink" title="1、至少 半年 Java工作经验（Java专业）"></a>1、至少 半年 Java工作经验（Java专业）</h4><h4 id="2、至少-1年-Android工作经验（Android专业）"><a href="#2、至少-1年-Android工作经验（Android专业）" class="headerlink" title="2、至少 1年 Android工作经验（Android专业）"></a>2、至少 1年 Android工作经验（Android专业）</h4><h4 id="3、暂不考虑-0基础-Java学员"><a href="#3、暂不考虑-0基础-Java学员" class="headerlink" title="3、暂不考虑 0基础 Java学员"></a>3、暂不考虑 0基础 Java学员</h4><h3 id="课程大纲"><a href="#课程大纲" class="headerlink" title="课程大纲"></a>课程大纲</h3><img src="/posts/a2j/A2J-Java大纲.png">
+<img src="/posts/a2j/A2J-Vue大纲.png">
+<img src="/posts/a2j/A2J-Linux大纲.png">
+
+<h3 id="学习课时、周期"><a href="#学习课时、周期" class="headerlink" title="学习课时、周期"></a>学习课时、周期</h3><h4 id="约200节课，4～6个月完成。课程永久，服务不限期！"><a href="#约200节课，4～6个月完成。课程永久，服务不限期！" class="headerlink" title="约200节课，4～6个月完成。课程永久，服务不限期！"></a>约200节课，4～6个月完成。课程永久，服务不限期！</h4><h3 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h3><h4 id="Java后台：http-dev-cmonbaby-com-8080-a2j-doc-html"><a href="#Java后台：http-dev-cmonbaby-com-8080-a2j-doc-html" class="headerlink" title="Java后台：http://dev.cmonbaby.com:8080/a2j/doc.html"></a>Java后台：<a href="http://dev.cmonbaby.com:8080/a2j/doc.html" target="_blank" rel="noopener">http://dev.cmonbaby.com:8080/a2j/doc.html</a></h4><h4 id="Vue前端：http-dev-cmonbaby-com"><a href="#Vue前端：http-dev-cmonbaby-com" class="headerlink" title="Vue前端：http://dev.cmonbaby.com"></a>Vue前端：<a href="http://dev.cmonbaby.com" target="_blank" rel="noopener">http://dev.cmonbaby.com</a></h4><h4 id="服务器冰点环境：1-核CPU、2G-内存、1M-带宽（架构不好、代码不健壮、sql没优化随时宕机）"><a href="#服务器冰点环境：1-核CPU、2G-内存、1M-带宽（架构不好、代码不健壮、sql没优化随时宕机）" class="headerlink" title="服务器冰点环境：1 核CPU、2G 内存、1M 带宽（架构不好、代码不健壮、sql没优化随时宕机）"></a>服务器冰点环境：1 核CPU、2G 内存、1M 带宽（架构不好、代码不健壮、sql没优化随时宕机）</h4><h3 id="微信群："><a href="#微信群：" class="headerlink" title="微信群："></a>微信群：</h3><img src="/posts/a2j/wechat.jpg">
+
+<h3 id="QQ群："><a href="#QQ群：" class="headerlink" title="QQ群："></a>QQ群：</h3><img src="/posts/a2j/qgroup1.jpeg">
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/a2j.html" title="A2J实战训练营" target="_blank" rel="external">https://www.cmonbaby.com/posts/a2j.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/posts/a2j_questions.html" title="A2J答疑"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

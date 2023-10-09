@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>柯基笔记：MySQL导入大数据 | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="作者：柯基大佬 日期：2021-10-20 类型：Java 说明：本文源于 柯基 手写摘要，如需转载请带上链接或注明出处！   大数据库导表数据库引擎：  InnoDB支持事务、外键等高级数据库功能，适用于业务  MyISAM不支持事务，强调高性能   步骤1.打开.sql文件，搜索“ENGINE=InnoDB”，把所有数据库引擎修改为“MyISAM”2.命令行启动MySQL3.show da">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="柯基笔记：MySQL导入大数据">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/kj_33.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="作者：柯基大佬 日期：2021-10-20 类型：Java 说明：本文源于 柯基 手写摘要，如需转载请带上链接或注明出处！   大数据库导表数据库引擎：  InnoDB支持事务、外键等高级数据库功能，适用于业务  MyISAM不支持事务，强调高性能   步骤1.打开.sql文件，搜索“ENGINE=InnoDB”，把所有数据库引擎修改为“MyISAM”2.命令行启动MySQL3.show da">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2023-10-09T07:23:45.452Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="柯基笔记：MySQL导入大数据">
+<meta name="twitter:description" content="作者：柯基大佬 日期：2021-10-20 类型：Java 说明：本文源于 柯基 手写摘要，如需转载请带上链接或注明出处！   大数据库导表数据库引擎：  InnoDB支持事务、外键等高级数据库功能，适用于业务  MyISAM不支持事务，强调高性能   步骤1.打开.sql文件，搜索“ENGINE=InnoDB”，把所有数据库引擎修改为“MyISAM”2.命令行启动MySQL3.show da">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/kj_33.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-kj_33" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      柯基笔记：MySQL导入大数据
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/kj_33.html" class="article-date">
+	  <time datetime="2021-10-20T06:08:01.000Z" itemprop="datePublished">2021-10-20</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Java/">Java</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/kj_33.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>作者：柯基大佬</li>
+<li>日期：2021-10-20</li>
+<li>类型：Java</li>
+<li>说明：本文源于 <a href="https://blog.csdn.net/qq_39420519" target="_blank" rel="noopener">柯基</a> 手写摘要，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<h1 id="大数据库导表"><a href="#大数据库导表" class="headerlink" title="大数据库导表"></a>大数据库导表</h1><p>数据库引擎：</p>
+<ul>
+<li><p>InnoDB<br>支持事务、外键等高级数据库功能，适用于业务</p>
+</li>
+<li><p>MyISAM<br>不支持事务，强调高性能</p>
+</li>
+</ul>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>1.打开.sql文件，搜索“ENGINE=InnoDB”，把所有数据库引擎修改为“MyISAM”<br>2.命令行启动MySQL<br>3.<code>show databases;</code><br>4.<code>use xxx(数据库名);</code><br>5.<code>source xxx.sql;</code></p>
+<h1 id="拆表"><a href="#拆表" class="headerlink" title="拆表"></a>拆表</h1><h3 id="一、品牌表-car-brand"><a href="#一、品牌表-car-brand" class="headerlink" title="一、品牌表 car_brand"></a>一、品牌表 car_brand</h3><ol>
+<li><p>查询表结构与自增长ID：<code>show create table xxx</code></p>
+</li>
+<li><p>清空表</p>
+</li>
+<li><p>重置自增长ID：<code>truncate table xxx</code></p>
+</li>
+<li><p>新建一条数据，检查自增长id是否从1开始</p>
+</li>
+<li><p>新建临时字段源id</p>
+</li>
+<li><p>读表插入新表：将读取的表字段下的数据，插入另一长表的字段下</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tableName(field...) <span class="keyword">SELECT</span> field... <span class="keyword">FROM</span> tableName</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将表创建人数据填上<br><code>update tableName set field = &#39;xxx&#39;</code></p>
+</li>
+</ol>
+<p>sql</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">create</span> <span class="keyword">table</span> car_type</span><br><span class="line"></span><br><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> car_brand</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> car_brand(<span class="keyword">name</span>, letter, icon, old_id)</span><br><span class="line"><span class="keyword">select</span> p_pinpai, p_shouzimu, p_pinpai_logo, p_pinpai_id <span class="keyword">from</span> yf_brand</span><br><span class="line"></span><br><span class="line"><span class="keyword">update</span> car_brand <span class="keyword">set</span> creater_name = <span class="string">'bzb'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="二、子品牌表-car-sub-brand"><a href="#二、子品牌表-car-sub-brand" class="headerlink" title="二、子品牌表 car_sub_brand"></a>二、子品牌表 car_sub_brand</h3><ol>
+<li><p>数据分组插入</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tableName_new(field1, field2)</span><br><span class="line"><span class="keyword">select</span> field1, field2 <span class="keyword">from</span> tableName <span class="keyword">group</span> field1, field2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改车系表，关联品牌id， 子品牌表brand_id = 品牌表old_id</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">update</span> tabName1, tabName2</span><br><span class="line"><span class="keyword">set</span> tabName1.xx = tabName2.xx</span><br><span class="line"><span class="keyword">where</span> tabName1.xx = tabName2.xx</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将表创建人数据填上</p>
+</li>
+<li><p>将所有来源设置为国产：3</p>
+</li>
+<li><p>模糊匹配所有带“进口”标识的数据，将来源改为进口：2</p>
+</li>
+</ol>
+<p>sql</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> car_sub_brand(<span class="keyword">name</span>, brand_id)</span><br><span class="line"><span class="keyword">select</span> p_changshang, p_pinpai_id <span class="keyword">from</span> yf_series <span class="keyword">group</span> <span class="keyword">by</span> p_changshang, p_pinpai_id</span><br><span class="line"></span><br><span class="line"><span class="keyword">update</span> car_sub_brand csb, car_brand cb </span><br><span class="line"><span class="keyword">set</span> csb.brand_id = cb.id </span><br><span class="line"><span class="keyword">where</span> csb.brand_id = cb.old_id</span><br><span class="line"></span><br><span class="line"><span class="keyword">update</span> car_sub_brand <span class="keyword">set</span> creater_name = <span class="string">'bzb'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">update</span> car_sub_brand <span class="keyword">set</span> source_type = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">update</span> car_sub_brand <span class="keyword">set</span> source_type = <span class="number">2</span> <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'%进口%'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="三、车系表-car-series"><a href="#三、车系表-car-series" class="headerlink" title="三、车系表 car_series"></a>三、车系表 car_series</h3><ol>
+<li>根据子品牌表中的 厂商+品牌id 分组</li>
+</ol>
+<p>车系表新建临时字段：old_id, brand_id, changshang</p>
+<blockquote>
+<p>注意：</p>
+<ul>
+<li><p>brand_id、changshang 两个字段用于关联子品牌表</p>
+</li>
+<li><p>old_id 源车系id，用于后续的车型表关联</p>
+</li>
+</ul>
+</blockquote>
+<ol start="2">
+<li><p>读表插入新表</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> car_series(<span class="keyword">name</span>, old_id, brand_id, changshang)</span><br><span class="line"><span class="keyword">select</span> p_chexi, p_chexi_id, p_pinpai_id, p_changshang </span><br><span class="line"><span class="keyword">from</span> yf_series</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>子品牌表和车系表关联（非主键）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">update</span> car_series cs, car_sub_brand csb </span><br><span class="line"><span class="keyword">set</span> cs.sub_brand_id = csb.id</span><br><span class="line"><span class="keyword">where</span> cs.brand_id = csb.old_id</span><br><span class="line"><span class="keyword">and</span> cs.changshang = csb.name</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>填充创建人字段</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">update</span> car_series <span class="keyword">set</span> creater_name = <span class="string">'bzb'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查遗漏关联</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> car_series <span class="keyword">where</span> sub_brand_id <span class="keyword">is</span> <span class="literal">NULL</span> <span class="keyword">or</span> sub_brand_id = <span class="string">''</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="四、车型表-car-type"><a href="#四、车型表-car-type" class="headerlink" title="四、车型表 car_type"></a>四、车型表 car_type</h3><ol>
+<li><p>从yc_car中拆出需要的字段及数据（name是必须的，不再需要old_id）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> car_type(</span><br><span class="line"><span class="keyword">name</span>,</span><br><span class="line">price,</span><br><span class="line">price_str,</span><br><span class="line">year_type,</span><br><span class="line">sale_state,</span><br><span class="line">effluent_standard,</span><br><span class="line">fadongji,</span><br><span class="line">qigangshu,</span><br><span class="line">biansuxiang,</span><br><span class="line">jinqixingshi,</span><br><span class="line">qudongfangshi,</span><br><span class="line">pailiang,</span><br><span class="line">ranyouxinghao,</span><br><span class="line">youxiangrongji,</span><br><span class="line">zuigaochesu,</span><br><span class="line">zuidamali,</span><br><span class="line">zuidagonglv,</span><br><span class="line">chang_kuan_gao,</span><br><span class="line">zuoweishu,</span><br><span class="line">xinglixiangrongji,</span><br><span class="line">cheshenjiegou,</span><br><span class="line">size_type,</span><br><span class="line">series_id</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> </span><br><span class="line">p_chexingmingcheng,</span><br><span class="line">p_changshangzhidaojia_search,</span><br><span class="line">p_changshangzhidaojia_yuan,</span><br><span class="line">p_niankuan,</span><br><span class="line">p_xiaoshouzhuangtai,</span><br><span class="line">p_huanbaobiaozhun,</span><br><span class="line">p_fadongji,</span><br><span class="line">p_qigangshu_ge,</span><br><span class="line">p_biansuxiang,</span><br><span class="line">p_jinqixingshi,</span><br><span class="line">p_qudongfangshi,</span><br><span class="line">p_pailiang_l,</span><br><span class="line">p_ranyoubiaohao,</span><br><span class="line">p_youxiangrongji_l,</span><br><span class="line">p_zuigaochesu_km_h,</span><br><span class="line">p_zuidamali_ps,</span><br><span class="line">p_zuidagongshuai_kw,</span><br><span class="line">p_chang_kuan_gao_mm,</span><br><span class="line">p_zuoweishu_ge,</span><br><span class="line">p_hanglixiangrongji_l,</span><br><span class="line">p_cheshenjiegou,</span><br><span class="line">p_jibie,</span><br><span class="line">p_chexing_id</span><br><span class="line"><span class="keyword">from</span> yf_car</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关联车系表</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">update</span> car_type ct, car_series cs</span><br><span class="line"><span class="keyword">set</span> ct.series_id = cs.id</span><br><span class="line"><span class="keyword">where</span> ct.series_id = cs.old_id</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 先将所有数据设置为 1：国产</span></span><br><span class="line"><span class="keyword">update</span> car_type <span class="keyword">set</span> specification_id = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 把包含“进口”内容的数据修改为 2：进口</span></span><br><span class="line"><span class="keyword">update</span> car_type <span class="keyword">set</span> specification_id = <span class="number">2</span> </span><br><span class="line"><span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'%进口%'</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 填充创建人字段</span></span><br><span class="line"><span class="keyword">update</span> car_series <span class="keyword">set</span> creater_name = <span class="string">'bzb'</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 检查遗漏关联</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> car_type <span class="keyword">where</span> series_id <span class="keyword">is</span> <span class="literal">NULL</span> <span class="keyword">or</span> series_id = <span class="string">''</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>删除脏数据</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> car_type <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">is</span> <span class="literal">NULL</span> <span class="keyword">or</span> <span class="keyword">name</span> = <span class="string">''</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下架过时车型(先下架全部车型，再上架需要的)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">update</span> car_type <span class="keyword">set</span> <span class="keyword">enable</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">update</span> car_type <span class="keyword">set</span> <span class="keyword">enable</span> = <span class="number">1</span> <span class="keyword">where</span> year_type = <span class="string">'2015款'</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">update</span> car_type <span class="keyword">set</span> <span class="keyword">enable</span> = <span class="number">1</span> <span class="keyword">where</span> year_type = <span class="string">'即将销售'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>平行进口</p>
+</li>
+</ol>
+<h3 id="五、删除old-id临时字段"><a href="#五、删除old-id临时字段" class="headerlink" title="五、删除old_id临时字段"></a>五、删除old_id临时字段</h3>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/kj_33.html" title="柯基笔记：MySQL导入大数据" target="_blank" rel="external">https://www.cmonbaby.com/posts/kj_33.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/kj_42.html" title="柯基笔记：全局异常处理"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/kj_5.html" title="柯基笔记：MySQL语句及高级用法"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

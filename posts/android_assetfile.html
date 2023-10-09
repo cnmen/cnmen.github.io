@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>AssetFile - 像File一样操作Asset资源 | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="说明：本文源于闲蛋，如需转载请带上链接或注明出处！   如果想跳过直接看文档，可以拉到最底前言平时开发中经常会用到Assets，可以让我们把一些资源内置在应用里，但是它使用起来比较麻烦，比如要使用Assets里面的一个文件，需要这样：   try &amp;#123;    final InputStream stream = getAssets().open(&amp;quot;test.jpg&amp;quot;">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AssetFile - 像File一样操作Asset资源">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/android_assetfile.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="说明：本文源于闲蛋，如需转载请带上链接或注明出处！   如果想跳过直接看文档，可以拉到最底前言平时开发中经常会用到Assets，可以让我们把一些资源内置在应用里，但是它使用起来比较麻烦，比如要使用Assets里面的一个文件，需要这样：   try &amp;#123;    final InputStream stream = getAssets().open(&amp;quot;test.jpg&amp;quot;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/android_assetfile/1.gif">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/android_assetfile/2.jpg">
+<meta property="og:updated_time" content="2023-10-09T07:23:44.933Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AssetFile - 像File一样操作Asset资源">
+<meta name="twitter:description" content="说明：本文源于闲蛋，如需转载请带上链接或注明出处！   如果想跳过直接看文档，可以拉到最底前言平时开发中经常会用到Assets，可以让我们把一些资源内置在应用里，但是它使用起来比较麻烦，比如要使用Assets里面的一个文件，需要这样：   try &amp;#123;    final InputStream stream = getAssets().open(&amp;quot;test.jpg&amp;quot;">
+<meta name="twitter:image" content="https://www.cmonbaby.com/posts/android_assetfile/1.gif">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/android_assetfile.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-android_assetfile" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AssetFile - 像File一样操作Asset资源
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/android_assetfile.html" class="article-date">
+	  <time datetime="2018-09-17T06:59:17.000Z" itemprop="datePublished">2018-09-17</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/android/">android</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/android/">android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/android_assetfile.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>说明：本文源于<a href="https://xiandan.in" target="_blank" rel="noopener">闲蛋</a>，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<h4 id="如果想跳过直接看文档，可以拉到最底"><a href="#如果想跳过直接看文档，可以拉到最底" class="headerlink" title="如果想跳过直接看文档，可以拉到最底"></a>如果想跳过直接看<a href="#文档">文档</a>，可以拉到最底</h4><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>平时开发中经常会用到Assets，可以让我们把一些资源内置在应用里，但是它使用起来比较麻烦，比如要使用Assets里面的一个文件，需要这样：  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">    final InputStream stream = getAssets().open(&quot;test.jpg&quot;);</span><br><span class="line">&#125; catch (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>拿到的是InputStream，当需要复制到手机外部存储的时候，还得用<code>FileOutputStream</code>输出到文件，如果需要获取文件夹下面的文件：  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">    final String[] list = getAssets().list(&quot;test&quot;);</span><br><span class="line">&#125; catch (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样获取到的只是文件夹下的文件名，如果要复制整个文件夹到手机目录至少要3步：  </p>
+<ol>
+<li>遍历；</li>
+<li>拼接完整路径；</li>
+<li>调用open输出到文件。  </li>
+</ol>
+<p>强迫症表示很难受，没有Java File的API那么方便，那只能撸一个轮子让它像File一样了。<br>下面的图是用<code>AssetFile</code>做的Assets文件管理器  </p>
+<img src="/posts/android_assetfile/1.gif">
+
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><p>先举一个我遇到的场景，在线滤镜和内置滤镜，在线滤镜需要先把配置文件下载到手机目录，内置滤镜就是放在Assets里的，为了方便管理，把两种滤镜都放到统一的目录，AssetFile先解决了一个复制文件夹的问题。</p>
+<p>如果要获取下图的滤镜1.json，实际上是这样<code>assetManager.open(filter/group/滤镜1/滤镜1.json)</code>，文件名和文件数量实际上是不受开发控制的，也不可能每次变化都再去修改一遍文件名或者代码，所以AssetFile将多层次文件夹的操作简单化了</p>
+<img src="/posts/android_assetfile/2.jpg">
+
+<p>AssetFile并没有省略那些流程，只是经过封装，让它使用起来变得更简单了</p>
+<h3 id="基本实现"><a href="#基本实现" class="headerlink" title="基本实现"></a>基本实现</h3><p>首先先来实现一下基本功能，Java的叫File，那我们就叫AssetFile，先暂时存一些基本信息，路径和文件名  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class AssetFile &#123;</span><br><span class="line">    private String assetPath;</span><br><span class="line">    private String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在用File的时候是传文件路径，AssetFile也一样，假设Assets根目录有一个<code>test.jpg</code>文件  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class AssetFile &#123;</span><br><span class="line">    private String assetPath;</span><br><span class="line">    private String name;</span><br><span class="line">    </span><br><span class="line">    public AssetFile(String assetPath) &#123;</span><br><span class="line">        this.assetPath = assetPath == null ? &quot;&quot; : assetPath;</span><br><span class="line">        //有/的话会去掉/</span><br><span class="line">        int index = assetPath.lastIndexOf(File.separatorChar);</span><br><span class="line">        this.name = assetPath.substring(index + 1, assetPath.length());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">new AssetFile(&quot;test.jpg&quot;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件API"><a href="#文件API" class="headerlink" title="文件API"></a>文件API</h3><p>基本信息也赋好值了，可以说已经有一个雏形了，现在添加一些常用的API，比如<code>exists()</code><br>当调用<code>AssetManager.list(assetPath)</code>的时候，如果找不到这个文件，会抛出<code>IOException</code>，所以只要catch到就说明这个文件不存在。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public boolean exists(AssetManager assetManager) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        assetManager.list(assetPath);</span><br><span class="line">        return true;</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">AssetFile file = new AssetFile(&quot;test.jpg&quot;)</span><br><span class="line">boolean exists = file.exists(context.getAssets())</span><br></pre></td></tr></table></figure>
+
+<h3 id="加入文件夹的支持"><a href="#加入文件夹的支持" class="headerlink" title="加入文件夹的支持"></a>加入文件夹的支持</h3><p>文件的API比较简单，要考虑文件夹就会有一些逻辑了  </p>
+<h5 id="isDirectory"><a href="#isDirectory" class="headerlink" title="isDirectory()"></a>isDirectory()</h5><p>现在我们加入一个<code>isDirectory ()</code>，用来判断这个路径是否是文件夹，可以获取该路径下的子文件数组，来判断这个路径是不是一个文件夹，如果数组长度大于0说明是一个文件夹。  </p>
+<p>当然这个方法也有不准确的情况，比如你放了一个空文件夹在Assets里，但是为什么要放一个空文件夹在Assets里呢，所以这个方法还是可行的。  </p>
+<p>这里还有一个处理，<code>assetManager.list()</code>是把子文件的路径都添加到数组里了，所以不能每次都这样取一次子文件数组，可以用一个变量来缓存它，当它有值的时候，就直接用变量的值了。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class AssetFile &#123;</span><br><span class="line">    private Boolean directory;</span><br><span class="line"></span><br><span class="line">    public boolean isDirectory(AssetManager assetManager) &#123;</span><br><span class="line">        if (directory == null) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                directory = assetManager.list(assetPath).length &gt; 0;</span><br><span class="line">            &#125; catch (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">                directory = false;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return directory;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="getParent"><a href="#getParent" class="headerlink" title="getParent()"></a>getParent()</h5><p>还有一个常用的方法就是获取父文件夹，这个比较简单，通过分割路径字符串就可以实现。  </p>
+<p>比如A文件夹里放了B文件夹，B文件夹放了C文件，那路径其实就是<code>A/B/C.jpg</code>，通过<code>substring</code>从<code>0</code>开始截取到最后的<code>/</code>，截取后的<code>A/B</code>就是父文件夹的路径了。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public String getParent() &#123;</span><br><span class="line">    int index = assetPath.lastIndexOf(File.separatorChar);</span><br><span class="line">    return assetPath.substring(0, index);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public AssetFile getParentFile() &#123;</span><br><span class="line">    return new AssetFile(getParent());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="listFiles"><a href="#listFiles" class="headerlink" title="listFiles()"></a>listFiles()</h5><p>既然有文件夹，就肯定会需要用到<code>listFiles()</code>，<code>assetManager.list()</code>提供的只是子文件的文件名称，所以需要把它拼接成完整的路径传给<code>AssetFile</code>。  </p>
+<p>还可以添加一个<code>AssetFileFilter</code>，<code>return false</code>的就不添加到集合;了。当根目录的时候调用<code>assetManager.list</code>会把系统自带的一些文件列出来，所以这里还实现了一个<code>SystemAssetFileFilter</code>，用来过滤这些文件。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public List&lt;AssetFile&gt; listFiles(AssetManager assetManager) &#123;</span><br><span class="line">    return listFiles(assetManager, new SystemAssetFileFilter());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public List&lt;AssetFile&gt; listFiles(AssetManager assetManager, AssetFileFilter filter) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        String newAssetPath = TextUtils.isEmpty(assetPath) ? &quot;&quot; : assetPath;</span><br><span class="line">        //先获取子文件数组</span><br><span class="line">        String[] list = assetManager.list(newAssetPath);</span><br><span class="line">        List&lt;AssetFile&gt; fileList = new ArrayList&lt;&gt;();</span><br><span class="line">        for (int i = 0; i &lt; list.length; i++) &#123;</span><br><span class="line">            AssetFile file = new AssetFile(newAssetPath, list[i]);</span><br><span class="line">            if (filter != null) &#123;</span><br><span class="line">        		//如果有过滤器，返回true的才添加到AssetFile集合</span><br><span class="line">                if (filter.accept(file)) &#123;</span><br><span class="line">                    fileList.add(file);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">            	//否则直接添加</span><br><span class="line">                fileList.add(file);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return fileList;</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    return new ArrayList&lt;&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="AssetsManager"><a href="#AssetsManager" class="headerlink" title="AssetsManager"></a>AssetsManager</h3><p>为了更方便的使用，可以再扩展一个<code>AssetsManager</code>，提供一些辅助性的方法，比如从Assets复制资源到手机目录，复制文件很简单，拿到流之后直接输出到文件，复制文件夹需要递归来达到复制多层文件夹的效果。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 复制Asset文件夹和里面的文件到手机目录</span><br><span class="line"> *</span><br><span class="line"> * @param assetSource</span><br><span class="line"> * @param outputDir</span><br><span class="line"> */</span><br><span class="line">public static boolean copyAsset(AssetManager assetManager, AssetFile assetSource, File outputDir) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        File outputFile = new File(outputDir, assetSource.getName());</span><br><span class="line"></span><br><span class="line">        String assetPath = assetSource.getAssetPath();</span><br><span class="line">        final String[] list = assetManager.list(assetPath);</span><br><span class="line">        if (list.length &lt;= 0) &#123;</span><br><span class="line">            //文件</span><br><span class="line">            copyAssetFile(assetManager, assetPath, outputFile);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            //目录</span><br><span class="line">            if (!outputFile.exists()) &#123;</span><br><span class="line">                outputFile.mkdirs();</span><br><span class="line">            &#125;</span><br><span class="line">            for (String child : list) &#123;</span><br><span class="line">                copyAsset(assetManager, new AssetFile(assetPath, child), outputFile);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    return false;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 复制Asset文件到手机目录</span><br><span class="line"> *</span><br><span class="line"> * @param assetPath</span><br><span class="line"> * @param outputFile</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">public static boolean copyAssetFile(AssetManager assetManager, String assetPath, File outputFile) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        InputStream is = assetManager.open(assetPath);</span><br><span class="line">        int byteRead = 0;</span><br><span class="line">        FileOutputStream fs = new FileOutputStream(outputFile);</span><br><span class="line">        byte[] buffer = new byte[1024];</span><br><span class="line">        while ((byteRead = is.read(buffer)) != -1) &#123;</span><br><span class="line">            fs.write(buffer, 0, byteRead);</span><br><span class="line">        &#125;</span><br><span class="line">        fs.close();</span><br><span class="line">        is.close();</span><br><span class="line">        return true;</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><h5 id="Gradle引入"><a href="#Gradle引入" class="headerlink" title="Gradle引入"></a>Gradle引入</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">implementation &apos;com.dyhdyh.io:asset-file:1.0.2&apos;</span><br></pre></td></tr></table></figure>
+
+<h5 id="AssetFile"><a href="#AssetFile" class="headerlink" title="AssetFile"></a>AssetFile</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//根目录</span><br><span class="line">AssetFile root = new AssetFile();</span><br><span class="line">//根目录下的test.jpg</span><br><span class="line">AssetFile testFile = new AssetFile(&quot;test.jpg&quot;);</span><br><span class="line">//test文件夹下的test.jpg  - test/test.jpg</span><br><span class="line">AssetFile testFile = new AssetFile(&quot;test/test.jpg&quot;);</span><br><span class="line">AssetFile testFile = new AssetFile(&quot;test&quot;, &quot;test.jpg&quot;);</span><br><span class="line"></span><br><span class="line">//获取完整路径</span><br><span class="line">assetFile.getAssetPath();</span><br><span class="line"></span><br><span class="line">//获取文件名称或目录名称</span><br><span class="line">assetFile.getName();</span><br><span class="line"></span><br><span class="line">//获取父级目录</span><br><span class="line">assetFile.getParentFile();</span><br><span class="line"></span><br><span class="line">//转换Uri</span><br><span class="line">assetFile.getUri();</span><br><span class="line"></span><br><span class="line">//是否文件夹</span><br><span class="line">assetFile.isDirectory(getAssets());</span><br><span class="line"></span><br><span class="line">//是否根目录</span><br><span class="line">assetFile.isRootDir();</span><br><span class="line"></span><br><span class="line">//文件是否存在</span><br><span class="line">assetFile.exists(getAssets());</span><br><span class="line"></span><br><span class="line">//获取目录下的文件数组</span><br><span class="line">assetFile.listFiles(getAssets());</span><br></pre></td></tr></table></figure>
+
+<h5 id="AssetsManager-1"><a href="#AssetsManager-1" class="headerlink" title="AssetsManager"></a>AssetsManager</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//复制Assets里的test.jpg到手机根目录</span><br><span class="line">AssetFile assetFile = new AssetFile(&quot;test.jpg&quot;);</span><br><span class="line">File outputFile = new File(Environment.getExternalStorageDirectory(), assetFile.getName());</span><br><span class="line">AssetsManager.copyAssetFile(getAssets(), assetFile.getAssetPath(), outputFile);</span><br><span class="line"></span><br><span class="line">//复制Assets里的test文件夹到手机根目录</span><br><span class="line">AssetsManager.copyAssetFile(getAssets(), &quot;test&quot;, Environment.getExternalStorageDirectory());</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/android_assetfile.html" title="AssetFile - 像File一样操作Asset资源" target="_blank" rel="external">https://www.cmonbaby.com/posts/android_assetfile.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/android_decompile_tool.html" title="Android反编译工具"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/a2j_info.html" title="全栈入门，快速突破瓶颈"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

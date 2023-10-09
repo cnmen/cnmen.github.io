@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>使用android-gpuimage的一些问题总结 | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="说明：本文源于闲蛋，如需转载请带上链接或注明出处！   前言android-gpuimage虽然可以实现滤镜的效果，但遇到稍微复杂的需求，框架本身的bug和一些缺陷就暴露出来了，而且这个项目最后一个版本是1.4.1，已经2年没维护过了，提issues也没人讨论，这里总结一些遇到的问题和解决办法。 1、Demo跑起来就有些bugandroid-gpuimage-support 重写了更友好的示例">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用android-gpuimage的一些问题总结">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/android_gpuimage_support.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="说明：本文源于闲蛋，如需转载请带上链接或注明出处！   前言android-gpuimage虽然可以实现滤镜的效果，但遇到稍微复杂的需求，框架本身的bug和一些缺陷就暴露出来了，而且这个项目最后一个版本是1.4.1，已经2年没维护过了，提issues也没人讨论，这里总结一些遇到的问题和解决办法。 1、Demo跑起来就有些bugandroid-gpuimage-support 重写了更友好的示例">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/android_gpuimage_support/1.gif">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/android_gpuimage_support/2.jpg">
+<meta property="og:updated_time" content="2023-10-09T07:23:45.242Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用android-gpuimage的一些问题总结">
+<meta name="twitter:description" content="说明：本文源于闲蛋，如需转载请带上链接或注明出处！   前言android-gpuimage虽然可以实现滤镜的效果，但遇到稍微复杂的需求，框架本身的bug和一些缺陷就暴露出来了，而且这个项目最后一个版本是1.4.1，已经2年没维护过了，提issues也没人讨论，这里总结一些遇到的问题和解决办法。 1、Demo跑起来就有些bugandroid-gpuimage-support 重写了更友好的示例">
+<meta name="twitter:image" content="https://www.cmonbaby.com/posts/android_gpuimage_support/1.gif">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/android_gpuimage_support.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-android_gpuimage_support" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用android-gpuimage的一些问题总结
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/android_gpuimage_support.html" class="article-date">
+	  <time datetime="2018-06-28T13:32:39.000Z" itemprop="datePublished">2018-06-28</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/android/">android</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/android/">android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/android_gpuimage_support.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>说明：本文源于<a href="https://xiandan.in" target="_blank" rel="noopener">闲蛋</a>，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h3><p>android-gpuimage虽然可以实现滤镜的效果，但遇到稍微复杂的需求，框架本身的bug和一些缺陷就暴露出来了，而且这个项目最后一个版本是1.4.1，已经2年没维护过了，提issues也没人讨论，这里总结一些遇到的问题和解决办法。</p>
+<h6 id="1、Demo跑起来就有些bug"><a href="#1、Demo跑起来就有些bug" class="headerlink" title="1、Demo跑起来就有些bug"></a>1、Demo跑起来就有些bug</h6><p><a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a> 重写了更友好的示例</p>
+<img src="/posts/android_gpuimage_support/1.gif">
+
+<h6 id="2、异步调用getBitmapWithFilterApplied有时候是黑色"><a href="#2、异步调用getBitmapWithFilterApplied有时候是黑色" class="headerlink" title="2、异步调用getBitmapWithFilterApplied有时候是黑色"></a>2、异步调用<code>getBitmapWithFilterApplied</code>有时候是黑色</h6><p>在子线程调用<code>getBitmapWithFilterApplied</code>，出来的bitmap是全黑的，但是在主线程就不会有问题。</p>
+<p>预览设置的Filter对象跟生成的Filter需要是不同的对象，<a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a> 增加了<code>GPUImageOutput</code>，可以更方便的输出Bitmap或文件。<br>这里示例RxJava2的调用方式，自定义Filter建议手动创建新对象然后<code>setFilter</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">new GPUImageOutput(gpuimage)</span><br><span class="line">		//.setFilter()//这里需要新创建的Filter</span><br><span class="line">        .setFilterByClass(filter)//这里可以跟预览Filter用同一个对象</span><br><span class="line">        .getFilterBitmap(GPUImageRxJava2Adapter.&lt;Bitmap&gt;create())</span><br><span class="line">        .subscribeOn(Schedulers.io())</span><br><span class="line">        .observeOn(AndroidSchedulers.mainThread())</span><br><span class="line">        .subscribe(new SimpleLoadingDialogObserver&lt;Bitmap&gt;(v.getContext()) &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onNext(Bitmap bitmap) &#123;</span><br><span class="line">                super.onNext(bitmap);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+
+<h6 id="3、RxJava的支持"><a href="#3、RxJava的支持" class="headerlink" title="3、RxJava的支持"></a>3、RxJava的支持</h6><p>使用<a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a>的<code>GPUImageOutput</code>，添加了RxJava1和RxJava2的支持</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">new GPUImageOutput(gpuImage)</span><br><span class="line">        .setFilter(filter)</span><br><span class="line">        .setOutputFormat(Bitmap.CompressFormat.JPEG)//输出格式</span><br><span class="line">        .setQuality(80)//输出质量</span><br><span class="line">        .setOutputFile(outputFile)</span><br><span class="line">        .outputFilterBitmap(GPUImageRxJava2Adapter.&lt;File&gt;create())//这里可以切换RxJava1和RxJava2</span><br><span class="line">        .subscribeOn(Schedulers.io())</span><br><span class="line">        .observeOn(AndroidSchedulers.mainThread())</span><br><span class="line">        .subscribe(new SimpleLoadingDialogObserver&lt;File&gt;(this) &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onNext(File file) &#123;</span><br><span class="line">                super.onNext(file);</span><br><span class="line">                Toast.makeText(MainActivity.this, &quot;保存成功-&gt;&quot; + file.getAbsolutePath(), Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+
+<h6 id="4、用TextureView来预览GPUImage的效果"><a href="#4、用TextureView来预览GPUImage的效果" class="headerlink" title="4、用TextureView来预览GPUImage的效果"></a>4、用TextureView来预览GPUImage的效果</h6><p><a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a>添加了支持GPUImage的TextureView</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;jp.co.cyberagent.android.gpuimage.view.GPUImageTextureView</span><br><span class="line">    android:id=&quot;@+id/texture&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="5、多次设置GPUImageFilterGroup背景会出现错乱"><a href="#5、多次设置GPUImageFilterGroup背景会出现错乱" class="headerlink" title="5、多次设置GPUImageFilterGroup背景会出现错乱"></a>5、多次设置<code>GPUImageFilterGroup</code>背景会出现错乱</h6><p>当<code>ScaleType</code>为<code>CENTER_INSIDE</code>的时候，在使用GPUImageFilterGroup添加多个Filter的时候，首次<code>setFilter(group)</code>不会有问题，再设置就会背景出现错乱（单个Filter不会出现这种情况）</p>
+<img src="/posts/android_gpuimage_support/2.jpg">
+
+<p>暂时弄了2种办法：<br>&nbsp;&nbsp;&nbsp;&nbsp;1、ZongwenSun在 <a href="https://github.com/cats-oss/android-gpuimage/issues/395#issuecomment-442725618" target="_blank" rel="noopener">#395</a> 提到在<code>GPUImageFilter.onDraw</code>中添加<code>GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);</code>，可以解决。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;2、通过图片来动态改变View的宽高</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GPUImageTextureView textureView = new GPUImageTextureView(context);</span><br><span class="line">textureView.setScaleType(GPUImage.ScaleType.VIEW_FIT_CENTER);</span><br></pre></td></tr></table></figure>
+
+<h6 id="6、GPUImageFilterGroup有时会出现IndexOutOfBoundsException"><a href="#6、GPUImageFilterGroup有时会出现IndexOutOfBoundsException" class="headerlink" title="6、GPUImageFilterGroup有时会出现IndexOutOfBoundsException"></a>6、<code>GPUImageFilterGroup</code>有时会出现<code>IndexOutOfBoundsException</code></h6><p>添加多个Filter后，频繁改变子Filter的属性，会导致<code>GPUImageFilterGroup</code>的<code>onDraw</code>方法内出现<code>IndexOutOfBoundsException</code>。
+猜测是线程问题，目前只能<code>try-catch</code>掉，已经在<a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a>做相应处理，暂时没有找到更好的解决办法，。</p>
+<h6 id="7、GPUImageFilterGroup出现ConcurrentModificationException"><a href="#7、GPUImageFilterGroup出现ConcurrentModificationException" class="headerlink" title="7、GPUImageFilterGroup出现ConcurrentModificationException"></a>7、<code>GPUImageFilterGroup</code>出现<code>ConcurrentModificationException</code></h6><p>GPUImageFilterGroup里的Filter集合遍历都是用的<code>foreach</code>，增删子Filter时就会出现此异常，换成<code>for循环</code>即可。<br>已在<a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a>修复</p>
+<h6 id="8、改变GPUImageFilterGroup子Filter属性不刷新"><a href="#8、改变GPUImageFilterGroup子Filter属性不刷新" class="headerlink" title="8、改变GPUImageFilterGroup子Filter属性不刷新"></a>8、改变<code>GPUImageFilterGroup</code>子Filter属性不刷新</h6><p>调用<code>requestRender</code>没有刷新子Filter的效果，保险一点的办法是重新调用<code>setFilter</code></p>
+<h6 id="9、GPUImageTwoInputFilter让输入源不仅支持Bitmap还支持Filter"><a href="#9、GPUImageTwoInputFilter让输入源不仅支持Bitmap还支持Filter" class="headerlink" title="9、GPUImageTwoInputFilter让输入源不仅支持Bitmap还支持Filter"></a>9、<code>GPUImageTwoInputFilter</code>让输入源不仅支持Bitmap还支持Filter</h6><p><a href="https://github.com/dengyuhan/android-gpuimage-support" target="_blank" rel="noopener">android-gpuimage-support</a>提供了<code>GPUImageTwoInputFilter2</code>，调用<code>setSecondFilter(filter)</code>可以将滤镜作为输入源传入，需要注意的是要放一个GPUImageFilter在它的前面，否则可能回出现输入源的尺寸问题。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GPUImageFilterGroup group=new GPUImageFilterGroup();</span><br><span class="line">group.addFilter(new GPUImageFilter());</span><br><span class="line">group.addFilter(new GPUImageTwoInputFilter2());</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/android_gpuimage_support.html" title="使用android-gpuimage的一些问题总结" target="_blank" rel="external">https://www.cmonbaby.com/posts/android_gpuimage_support.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/a2j_info.html" title="全栈入门，快速突破瓶颈"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/android_chrome_webview_debug.html" title="无需插件用Chrome调试WebView加载的网页"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

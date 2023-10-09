@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>Liunx服务器增量更新BSDiff实操记录 | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="作者：彭老师 日期：2019-11-28 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    BSDiff（增量更新），官网：http://www.daemonology.net/bsdiff/依赖bzip2库：https://nchc.dl.sourceforge.net/project/gnuwin32/bzip2/1.0.5/bzip2-1.0.5-">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Liunx服务器增量更新BSDiff实操记录">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/android_bsdiff.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="作者：彭老师 日期：2019-11-28 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    BSDiff（增量更新），官网：http://www.daemonology.net/bsdiff/依赖bzip2库：https://nchc.dl.sourceforge.net/project/gnuwin32/bzip2/1.0.5/bzip2-1.0.5-">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/android_bsdiff/bsdiff01.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/android_bsdiff/bsdiff02.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/android_bsdiff/bsdiff03.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/android_bsdiff/bsdiff04.png">
+<meta property="og:updated_time" content="2023-10-09T07:23:44.937Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Liunx服务器增量更新BSDiff实操记录">
+<meta name="twitter:description" content="作者：彭老师 日期：2019-11-28 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    BSDiff（增量更新），官网：http://www.daemonology.net/bsdiff/依赖bzip2库：https://nchc.dl.sourceforge.net/project/gnuwin32/bzip2/1.0.5/bzip2-1.0.5-">
+<meta name="twitter:image" content="https://www.cmonbaby.com/posts/android_bsdiff/bsdiff01.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/android_bsdiff.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-android_bsdiff" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Liunx服务器增量更新BSDiff实操记录
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/android_bsdiff.html" class="article-date">
+	  <time datetime="2019-11-28T05:45:37.000Z" itemprop="datePublished">2019-11-28</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/android/">android</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/android/">android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/android_bsdiff.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>作者：彭老师</li>
+<li>日期：2019-11-28</li>
+<li>类型：Android</li>
+<li>说明：本文源于<a href="https://www.cmonbaby.com">彭老师</a>手写摘要，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="BSDiff（增量更新），官网：http-www-daemonology-net-bsdiff"><a href="#BSDiff（增量更新），官网：http-www-daemonology-net-bsdiff" class="headerlink" title="BSDiff（增量更新），官网：http://www.daemonology.net/bsdiff/"></a>BSDiff（增量更新），官网：<a href="http://www.daemonology.net/bsdiff/" target="_blank" rel="noopener">http://www.daemonology.net/bsdiff/</a></h3><h4 id="依赖bzip2库：https-nchc-dl-sourceforge-net-project-gnuwin32-bzip2-1-0-5-bzip2-1-0-5-src-zip"><a href="#依赖bzip2库：https-nchc-dl-sourceforge-net-project-gnuwin32-bzip2-1-0-5-bzip2-1-0-5-src-zip" class="headerlink" title="依赖bzip2库：https://nchc.dl.sourceforge.net/project/gnuwin32/bzip2/1.0.5/bzip2-1.0.5-src.zip"></a>依赖bzip2库：<a href="https://nchc.dl.sourceforge.net/project/gnuwin32/bzip2/1.0.5/bzip2-1.0.5-src.zip" target="_blank" rel="noopener">https://nchc.dl.sourceforge.net/project/gnuwin32/bzip2/1.0.5/bzip2-1.0.5-src.zip</a></h4><blockquote>
+<ul>
+<li>核心思想</li>
+</ul>
+<ul>
+<li>尽可能多的利用old文件中已有的内容，尽可能少的加入新的内容来构建new文件</li>
+<li>通常的做法是对old文件和new文件做子字符串匹配或使用hash技术</li>
+<li>提取公共部分，将new文件中剩余的部分打包成patch包</li>
+<li>在Patch阶段中，用copying和insertion两个基本操作即可将old文件和patch包合成new文件</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>BSDiff基本步骤</li>
+</ul>
+<ul>
+<li>1．对old文件中所有字符串形成一个字典</li>
+<li>2．对比old文件和new文件，产生diff string和extra string</li>
+<li>3．将diff string和extra string以及相应的控制用zip压缩成一个patch包</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>观察一个应用是否使用过增量更新，最简单粗暴的方式：<br>把apk解压，打开<code>lib</code>包，看看有没有<code>libbspatch.so</code>文件</p>
+</blockquote>
+<hr>
+<h4 id="环境和工具，老鸟带过"><a href="#环境和工具，老鸟带过" class="headerlink" title="环境和工具，老鸟带过"></a>环境和工具，老鸟带过</h4><ul>
+<li>服务器：CenterOS6.5+</li>
+<li>连接工具：Xshell 5（百度一堆）</li>
+</ul>
+<h4 id="废话不多说，直接上服务器命令，演示如果在Liunx环境做差分包"><a href="#废话不多说，直接上服务器命令，演示如果在Liunx环境做差分包" class="headerlink" title="废话不多说，直接上服务器命令，演示如果在Liunx环境做差分包"></a>废话不多说，直接上服务器命令，演示如果在Liunx环境做差分包</h4><hr>
+<h4 id="1、BSDiff官网下载：bsdiff-4-3-tar-gz"><a href="#1、BSDiff官网下载：bsdiff-4-3-tar-gz" class="headerlink" title="1、BSDiff官网下载：bsdiff-4.3.tar.gz"></a>1、BSDiff官网下载：<code>bsdiff-4.3.tar.gz</code></h4><p>或者点击此处下载：<a href="http://www.daemonology.net/bsdiff/bsdiff-4.3.tar.gz" target="_blank" rel="noopener">http://www.daemonology.net/bsdiff/bsdiff-4.3.tar.gz</a></p>
+<img src="/posts/android_bsdiff/bsdiff01.png">
+
+
+<h4 id="2、登录服务器后，删除和创建命令"><a href="#2、登录服务器后，删除和创建命令" class="headerlink" title="2、登录服务器后，删除和创建命令"></a>2、登录服务器后，删除和创建命令</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">rm -rf bsdiff/  （删库到跑路）</span><br><span class="line">mkdir bsdiff/   （创建文件夹：bsdiff）</span><br></pre></td></tr></table></figure>
+
+<h4 id="3、创建文件夹后进入文件夹"><a href="#3、创建文件夹后进入文件夹" class="headerlink" title="3、创建文件夹后进入文件夹"></a>3、创建文件夹后进入文件夹</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">cd bsdiff</span><br></pre></td></tr></table></figure>
+
+<h4 id="4、上传-bsdiff-4-3-tar-gz"><a href="#4、上传-bsdiff-4-3-tar-gz" class="headerlink" title="4、上传 bsdiff-4.3.tar.gz"></a>4、上传 <code>bsdiff-4.3.tar.gz</code></h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">rz</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>可能会碰到问题：服务器没有 <code>rz</code> 环境</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">wget http://www.ohse.de/uwe/releases/lrzsz-0.12.20.tar.gz（下载）</span><br><span class="line">tar zxvf lrzsz-0.12.20.tar.gz &amp;&amp; cd lrzsz-0.12.20（解压）</span><br><span class="line">./configure &amp;&amp; make &amp;&amp; make <span class="keyword">install</span>（安装）</span><br><span class="line">cd /usr/<span class="keyword">bin</span>（进入目录）</span><br><span class="line"><span class="keyword">ln</span> -s /usr/<span class="keyword">local</span>/<span class="keyword">bin</span>/lrz rz（创建软链接）</span><br><span class="line"><span class="keyword">ln</span> -s /usr/<span class="keyword">local</span>/<span class="keyword">bin</span>/lsz sz（创建软链接）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>再次执行 <code>rz</code> 命令上传 <code>bsdiff-4.3.tar.gz</code> 到服务器指定目录</p>
+</li>
+</ul>
+<h4 id="5、查看文件夹内容命令"><a href="#5、查看文件夹内容命令" class="headerlink" title="5、查看文件夹内容命令"></a>5、查看文件夹内容命令</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">ls  （列表）</span><br><span class="line">ll  （列表 + 详情）</span><br></pre></td></tr></table></figure>
+
+<h4 id="6、解压-bsdiff-4-3-tar-gz"><a href="#6、解压-bsdiff-4-3-tar-gz" class="headerlink" title="6、解压 bsdiff-4.3.tar.gz"></a>6、解压 <code>bsdiff-4.3.tar.gz</code></h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">tar xvf bsdiff-4.3.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h4 id="7、进入-bsdiff-4-3-解压后的目录中，执行编译"><a href="#7、进入-bsdiff-4-3-解压后的目录中，执行编译" class="headerlink" title="7、进入 bsdiff-4.3 解压后的目录中，执行编译"></a>7、进入 <code>bsdiff-4.3</code> 解压后的目录中，执行编译</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>可能会碰到问题：服务器 <code>gcc</code> 环境</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">Makefile:13: *** missing separator.  Stop.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编辑 <code>Makefile</code> 文件</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">vim Makefile（进入编辑）</span><br><span class="line"><span class="keyword">insert</span>（只读切换成编辑）</span><br><span class="line">esc（退出编辑）</span><br><span class="line">:（进入命令行输入）</span><br><span class="line">wq（保存退出）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果出现 <code>vim</code> 无法识别，说明服务器真的很丐版：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">vim: command not found</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行 <code>vim</code> 安装命令：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">rpm -qa | grep vim（查看vim命令在什么软件包）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>结果显示：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">vim-minimal-7.4.160-4.el7.x86_64（版本可能不同）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装 <code>vim</code> 相关的软件包</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">yum <span class="keyword">install</span> -y vim*</span><br><span class="line">rpm -qa | grep vim</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<hr>
+<img src="/posts/android_bsdiff/bsdiff02.png">
+<h5 id="2、"><a href="#2、" class="headerlink" title="2、"></a>2、</h5><img src="/posts/android_bsdiff/bsdiff03.png">
+
+<ul>
+<li><p>再次执行 <code>make</code> 命令编译</p>
+</li>
+<li><p>可能会碰到问题：服务器 <code>bzip2</code> 环境</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">yum -y <span class="keyword">install</span> bzip2-devel.x86_64（在线安装）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>再次执行 <code>make</code> 命令编译</p>
+</li>
+</ul>
+<h4 id="8、直至通过，查看列表-ls-看到如下："><a href="#8、直至通过，查看列表-ls-看到如下：" class="headerlink" title="8、直至通过，查看列表 ls 看到如下："></a>8、直至通过，查看列表 <code>ls</code> 看到如下：</h4><img src="/posts/android_bsdiff/bsdiff04.png">
+
+
+<h4 id="9、查看文件属性"><a href="#9、查看文件属性" class="headerlink" title="9、查看文件属性"></a>9、查看文件属性</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">file bsdiff</span><br></pre></td></tr></table></figure>
+
+<h4 id="10、帮助信息"><a href="#10、帮助信息" class="headerlink" title="10、帮助信息"></a>10、帮助信息</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">./bsdiff</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>最终差分包命令：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">./bsdiff oldfile newfile patchfile</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>其中 <code>oldfile</code> 比如：<code>old.apk</code></p>
+</li>
+<li><p><code>newfile</code> 比如：<code>app-release.apk</code></p>
+</li>
+<li><p><code>patchfile</code> 差分包，可自定义</p>
+</li>
+</ul>
+<h4 id="安卓端的代码操作，有公开课演示，这里就不做累赘了"><a href="#安卓端的代码操作，有公开课演示，这里就不做累赘了" class="headerlink" title="安卓端的代码操作，有公开课演示，这里就不做累赘了"></a>安卓端的代码操作，有公开课演示，这里就不做累赘了</h4>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/android_bsdiff.html" title="Liunx服务器增量更新BSDiff实操记录" target="_blank" rel="external">https://www.cmonbaby.com/posts/android_bsdiff.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/liunx_git.html" title="Liunx服务器安装Git实操记录"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/simon_framework.html" title="公布几个在用的框架（更新中）"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

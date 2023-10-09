@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>开源一个 Android 图片压缩框架 | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="作者：彭老师 日期：2019-06-23 类型：Android 说明：本文源于 彭老师 手写摘要，如需转载请带上链接或注明出处！    前言图片操作几乎每个项目都要用到，而图片压缩技术的真正掌握却又少之又少！ 有感而发，同样也希望这样的技术能被更多的求学者发现和传播。 在这里 彭老师 发下学习的 视频链接： 安卓黑科技：图片终极压缩，支持自定义配置、不失真和批量处理在我们的业务场景中，需要使用">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开源一个 Android 图片压缩框架">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/images_compress.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="作者：彭老师 日期：2019-06-23 类型：Android 说明：本文源于 彭老师 手写摘要，如需转载请带上链接或注明出处！    前言图片操作几乎每个项目都要用到，而图片压缩技术的真正掌握却又少之又少！ 有感而发，同样也希望这样的技术能被更多的求学者发现和传播。 在这里 彭老师 发下学习的 视频链接： 安卓黑科技：图片终极压缩，支持自定义配置、不失真和批量处理在我们的业务场景中，需要使用">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2023-10-09T07:23:45.427Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="开源一个 Android 图片压缩框架">
+<meta name="twitter:description" content="作者：彭老师 日期：2019-06-23 类型：Android 说明：本文源于 彭老师 手写摘要，如需转载请带上链接或注明出处！    前言图片操作几乎每个项目都要用到，而图片压缩技术的真正掌握却又少之又少！ 有感而发，同样也希望这样的技术能被更多的求学者发现和传播。 在这里 彭老师 发下学习的 视频链接： 安卓黑科技：图片终极压缩，支持自定义配置、不失真和批量处理在我们的业务场景中，需要使用">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/images_compress.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-images_compress" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      开源一个 Android 图片压缩框架
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/images_compress.html" class="article-date">
+	  <time datetime="2019-06-22T19:27:37.000Z" itemprop="datePublished">2019-06-23</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/android/">android</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/android/">android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/images_compress.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>作者：彭老师</li>
+<li>日期：2019-06-23</li>
+<li>类型：Android</li>
+<li>说明：本文源于 <a href="https://www.cmonbaby.com">彭老师</a> 手写摘要，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>图片操作</strong>几乎每个项目都要用到，而<strong>图片压缩技术</strong>的真正掌握却又少之又少！</p>
+<p>有感而发，同样也希望这样的技术能被更多的求学者发现和传播。</p>
+<p>在这里 <strong>彭老师</strong> 发下学习的 <strong>视频链接</strong>：</p>
+<h2 id="安卓黑科技：图片终极压缩，支持自定义配置、不失真和批量处理"><a href="#安卓黑科技：图片终极压缩，支持自定义配置、不失真和批量处理" class="headerlink" title="安卓黑科技：图片终极压缩，支持自定义配置、不失真和批量处理"></a><a href="https://study.163.com/course/courseLearn.htm?courseId=1208968811&share=2&shareId=1024134767#/learn/live?lessonId=1278460236&courseId=1208968811" target="_blank" rel="noopener">安卓黑科技：图片终极压缩，支持自定义配置、不失真和批量处理</a></h2><p>在我们的业务场景中，需要使用客户端<strong>采集图片，上传服务器</strong>，然后对图片信息进行识别。为了提升程序的性能，我们需要保证图片上传服务器的速度的同时，保证用于识别图片的质量。整个优化包括两个方面的内容：</p>
+<blockquote>
+<p>1、相机拍照的优化：包括相机参数的选择、预览、启动速度和照片质量等；</p>
+</blockquote>
+<blockquote>
+<p>2、图片压缩的优化：基于拍摄的图片和从相册中选择的图片进行压缩，控制图片大小和尺寸。</p>
+</blockquote>
+<p>在本文中，我们主要介绍图片压缩优化，后续我们会介绍如何对 Android 的相机进行封装和优化。本项目主要基于 Android 自带的图片压缩 API 进行封装，结合了 <code>Luban</code> 和 <code>Compressor</code> 的优点，同时提供了用户自定义压缩策略的接口。</p>
+<p><a href="https://github.com/Curzibn/Luban" target="_blank" rel="noopener">鲁班Luban</a></p>
+<p><a href="https://github.com/zetbaitsu/Compressor" target="_blank" rel="noopener">Compressor</a></p>
+<p>该项目的主要目的在于，统一图片压缩框库的实现，集成常用的两种图片压缩算法，让你以更低的成本集成图片压缩功能到自己的项目中。</p>
+<h3 id="1、图片压缩的基础知识"><a href="#1、图片压缩的基础知识" class="headerlink" title="1、图片压缩的基础知识"></a>1、图片压缩的基础知识</h3><p>对于一般业务场景，当我们展示图片的时候，<code>Glide</code> 会帮我们处理加载的图片的尺寸问题。但在把采集来的图片上传到服务器之前，为了节省流量，我们需要对图片进行压缩。</p>
+<p>在 Android 平台上，默认提供的压缩有三种方式：质量压缩和两种尺寸压缩，邻近采样以及双线性采样。下面我们简单介绍下者三种压缩方式都是如何使用的：</p>
+<p>####1.1 质量压缩</p>
+<p>所谓的质量压缩就是下面的这行代码，它是 <code>Bitmap</code> 的方法。当我们得到了 <code>Bitmap</code> 的时候，即可使用这个方法来实现质量压缩。它一般位于我们所有压缩方法的最后一步。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// android.graphics。Bitmap</span></span><br><span class="line">compress(CompressFormat format, <span class="keyword">int</span> quality, OutputStream stream)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li>该方法接受三个参数，其含义分别如下： </li>
+<li>1、format：枚举，有三个选项 JPEG, PNG 和 WEBP，表示图片的格式； </li>
+<li>2、quality：图片的质量，取值在 [0,100] 之间，表示图片质量，越大，图片的质量越高； </li>
+<li>3、stream：一个输出流，通常是我们压缩结果输出的文件的流 </li>
+</ul>
+</blockquote>
+<h4 id="1-2-邻近采样"><a href="#1-2-邻近采样" class="headerlink" title="1.2 邻近采样"></a>1.2 邻近采样</h4><p>邻近采样基于临近点插值算法，用像素代替周围的像素。 </p>
+<p>邻近采样的核心代码只有下面三行， </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line">options.inSampleSize = <span class="number">1</span>;</span><br><span class="line">Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blue_red, options);</span><br></pre></td></tr></table></figure>
+
+<p>邻近采样核心的地方在于 inSampleSize 的计算。它通常是我们使用的压缩算法的第一步。 </p>
+<p>我们可以通过设置 inSampleSize 来得到原始图片采样之后的结果，而不是将原始的图片全部加载到内存中，以防止 OOM。 </p>
+<p>标准使用姿势如下： </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 获取原始图片的尺寸</span></span><br><span class="line">BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line">options.inJustDecodeBounds = <span class="keyword">true</span>;</span><br><span class="line">options.inSampleSize = <span class="number">1</span>;</span><br><span class="line">BitmapFactory.decodeStream(srcImg.open(), <span class="keyword">null</span>, options);</span><br><span class="line"><span class="keyword">this</span>.srcWidth = options.outWidth;</span><br><span class="line"><span class="keyword">this</span>.srcHeight = options.outHeight;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 进行图片加载，此时会将图片加载到内存中</span></span><br><span class="line">options.inJustDecodeBounds = <span class="keyword">false</span>;</span><br><span class="line">options.inSampleSize = calInSampleSize();</span><br><span class="line">Bitmap bitmap = BitmapFactory.decodeStream(srcImg.open(), <span class="keyword">null</span>, options);</span><br></pre></td></tr></table></figure>
+
+<p>这里主要分成两个步骤，它们各自的含义是：</p>
+<p>1、先通过设置 <code>Options</code> 的 <code>inJustDecodeBounds</code> 为 <code>true</code>，来加载图片，以得到图片的尺寸信息。此时图片不会被加载到内存中，所以不会造成 OOM，同时我们可以通过 <code>Options</code> 得到原图的尺寸信息。</p>
+<p>2、根据上一步中得到的图片的尺寸信息，计算一个 <code>inSampleSize</code>，然后将 <code>inJustDecodeBounds</code> 设置为 false，以加载采样之后的图片到内存中。</p>
+<p>关于 <code>inSampleSize</code> 需要简单说明一下：</p>
+<p>inSampleSize 代表压缩后的图像一个像素点代表了原来的几个像素点，例如 <code>inSampleSize</code> 为 4，则压缩后的图像的宽高是原来的 1/4，像素点数是原来的 1/16，<code>inSampleSize</code> 一般会选择 2 的指数，如果不是 2 的指数，内部计算的时候也会向 2 的指数靠近。</p>
+<p>所以，实际使用过程中，我们会通过明确指定 <code>inSampleSize</code> 为 2 的指数，来避免内部计算导致的不确定性。</p>
+<h4 id="1-3-双线性采样"><a href="#1-3-双线性采样" class="headerlink" title="1.3 双线性采样"></a>1.3 双线性采样</h4><p>邻近采样可以对图片的尺寸进行有效的控制，但是它存在几个问题。比如，当我需要把图片的宽度压缩到 1200 左右的时候，如果原始的图片的宽度压是 3200，那么我只能通过设置 <code>inSampleSize</code> 将采样率设置为 2 来将其压缩到 1600. 此时图片的尺寸比我们的要求要大。</p>
+<p>就是说，邻近采样无法对图片的尺寸进行更加精准的控制。如果需要对图片尺寸进行更加精准的控制，那么就需要使用双线性压缩了。</p>
+<p>双线性采样采用双线性插值算法，相比邻近采样简单粗暴的选择一个像素点代替其他像素点，双线性采样参考源像素相应位置周围 2x2 个点的值，根据相对位置取对应的权重，经过计算得到目标图像。</p>
+<p>它在 Android 中的使用也比较简单，</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blue_red);</span><br><span class="line">Matrix matrix = <span class="keyword">new</span> Matrix();</span><br><span class="line">matrix.setScale(<span class="number">0.5f</span>, <span class="number">0.5f</span>);</span><br><span class="line">Bitmap sclaedBitmap = Bitmap.createBitmap(bitmap, <span class="number">0</span>, <span class="number">0</span>, bitmap.getWidth()/<span class="number">2</span>, bitmap.getHeight()/<span class="number">2</span>, matrix, <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+
+<p> 也就是对得到的 <code>Bitmap</code> 应用 <code>createBitmap()</code> 进行处理，并传入 <code>Matrix</code> 指定图片尺寸放缩的比例。该方法返回的 <code>Bitmap</code> 就是双线性压缩之后的结果。 </p>
+<h4 id="1-4-图片压缩算法总结"><a href="#1-4-图片压缩算法总结" class="headerlink" title="1.4 图片压缩算法总结"></a>1.4 图片压缩算法总结</h4><p>在实际使用过程中，我们通常会结合三种压缩方式使用，一般使用的步骤如下， </p>
+<blockquote>
+<p>1、使用邻近采样对原始的图片进行采样，将图片控制到比目标尺寸稍大的大小，防止 OOM； </p>
+<p>2、使用双线性采样对图片的尺寸进行压缩，控制图片的尺寸为目标的大小； </p>
+<p>3、对上述两个步骤之后得到的图片 Bitmap 进行质量压缩，并将其输出到磁盘上。 </p>
+</blockquote>
+<p>当然，本质上 Android 图片的编码是由 Skia 库来完成的…</p>
+<p><em><a href="https://skia.org/index_zh" target="_blank" rel="noopener">https://skia.org/index_zh</a></em> </p>
+<p>所以，除了使用 Android 自带的库进行压缩，我们还可以调用外部的库进行压缩。为了追求更高的压缩效率，通常我们会在 Native 层对图片进行处理，这将涉及 JNI 的知识。 </p>
+<h3 id="Github-上的开源的图片压缩库"><a href="#Github-上的开源的图片压缩库" class="headerlink" title="Github 上的开源的图片压缩库"></a>Github 上的开源的图片压缩库</h3><p>现在 Github 上的图片压缩框架主要有 Luban 和 Compressor 两个。Star 的数量也比较高，一个 10K，另一个 4K. 但是，这两个图片压缩的库有各自的优点和缺点。下面我们通过一个表格总结一下： </p>
+<table>
+<thead>
+<tr>
+<th>框架</th>
+<th align="left">优点</th>
+<th align="left">缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Luban</strong></td>
+<td align="left">据说是根据微信图片压缩逆推的算法</td>
+<td align="left">1、只适用于一般的图片展示的场景，无法对图片的尺寸进行精准压缩；2、内部封装 AsyncTaks 来进行异步的图片压缩，对于 RxJava 支持不好</td>
+</tr>
+<tr>
+<td><strong>Compressor</strong></td>
+<td align="left">1、可以对图片的尺寸进行压缩；2、支持 RxJava</td>
+<td align="left">1、尺寸压缩的场景有限，如果有特别的需求，则需要手动修改源代码；2、图片压缩采样的时候计算有问题，导致采样后的图片尺寸总是小于我们指定的尺寸</td>
+</tr>
+</tbody></table>
+<p>上面的图表已经总结得很详细了。所以，根据上面的两个库各自的优缺点，我们打算开发一个新的图片压缩框架。它满足下面的功能：</p>
+<p>1、支持 RxJava：我们可以像使用 Compressor 的时候那样，指定图片压缩的线程和结果监听的线程</p>
+<p>2、支持 Luban 压缩算法：Luban 压缩算法核心的部分只在于 inSampleSize 的计算</p>
+<p>3、支持 Compressor 压缩算法同时指定更多的参数：Compressor 压缩算法就是我们上述提到的三种压缩算法的总和。</p>
+<p>4、提供用户自定义压缩算法的接口：我们希望设计的库可以允许用户自定义压缩策略。</p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>我们的项目中，需要把图片的短边控制到 1200，长变只适应，只通过改变 Luban 来改变采样率只能把边长控制到一个范围中，无法精准压缩。</p>
+<p>所以，我们想到了 Compressor，并提出了 SCALE_SMALLER 的压缩模式. 但是 Luban 也不是用不到，一般用来展示的图片的压缩，它用起来更加方便。</p>
+<p>因此，我们在库中综合了两个框架，其实代码量并不大。当然，为了让我们的库功能更加丰富，因此我们提出了自定义压缩策略的接口，也是用来降低压缩策略的更换成本吧。</p>
+<hr>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/images_compress.html" title="开源一个 Android 图片压缩框架" target="_blank" rel="external">https://www.cmonbaby.com/posts/images_compress.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/yuba_ui01.html" title="UI的绘制流程以及原理"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/eventbus_network.html" title="听说你还在用工具类来判断网络状态？试试这个吧，像使用EventBus一样简单优雅"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

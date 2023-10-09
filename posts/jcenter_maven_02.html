@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>地震事件：安卓jenter换源maven，解决方案参考（二） | 西门博客 - 让技术更透明、让开发更简单！</title>
+  <meta name="description" content="作者：彭老师 日期：2021-04-09 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    接上篇：地震事件：安卓jenter换源maven，解决方案参考（一）  项目根目录（非app目录） 创建：javadocs.gradle 创建：maven.gradle 创建：simon.gradle （随意命名）   javadocs.gradle代码如下：//">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="地震事件：安卓jenter换源maven，解决方案参考（二）">
+<meta property="og:url" content="https://www.cmonbaby.com/posts/jcenter_maven_02.html">
+<meta property="og:site_name" content="西门博客 - 让技术更透明、让开发更简单！">
+<meta property="og:description" content="作者：彭老师 日期：2021-04-09 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    接上篇：地震事件：安卓jenter换源maven，解决方案参考（一）  项目根目录（非app目录） 创建：javadocs.gradle 创建：maven.gradle 创建：simon.gradle （随意命名）   javadocs.gradle代码如下：//">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/jcenter_maven_02/jcenter_maven_13.png">
+<meta property="og:image" content="https://www.cmonbaby.com/posts/jcenter_maven_02/jcenter_maven_20.png">
+<meta property="og:updated_time" content="2023-10-09T07:23:45.350Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="地震事件：安卓jenter换源maven，解决方案参考（二）">
+<meta name="twitter:description" content="作者：彭老师 日期：2021-04-09 类型：Android 说明：本文源于彭老师手写摘要，如需转载请带上链接或注明出处！    接上篇：地震事件：安卓jenter换源maven，解决方案参考（一）  项目根目录（非app目录） 创建：javadocs.gradle 创建：maven.gradle 创建：simon.gradle （随意命名）   javadocs.gradle代码如下：//">
+<meta name="twitter:image" content="https://www.cmonbaby.com/posts/jcenter_maven_02/jcenter_maven_13.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://www.cmonbaby.com/posts/jcenter_maven_02.html">
+  
+    <link rel="alternate" href="/atom.xml" title="西门博客 - 让技术更透明、让开发更简单！" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cnmen" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">彭锡</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">安卓讲师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 网易, 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NetEase/">NetEase</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL/">SQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a><span class="category-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetEase/">NetEase</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">45</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Java/" style="font-size: 13.75px;">Java</a> <a href="/tags/Linux/" style="font-size: 13.25px;">Linux</a> <a href="/tags/NetEase/" style="font-size: 13.5px;">NetEase</a> <a href="/tags/SQL/" style="font-size: 13px;">SQL</a> <a href="/tags/Vue/" style="font-size: 13.25px;">Vue</a> <a href="/tags/android/" style="font-size: 14px;">android</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j.html" class="title">A2J实战训练营</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:18:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Linux/">Linux</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/Vue/">Vue</a><i class="icon icon-angle-right"></i><a class="category-link" href="/categories/android/">android</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/a2j_questions.html" class="title">A2J答疑</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-31T11:10:37.000Z" itemprop="datePublished">2022-07-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_46.html" class="title">柯基笔记：优化启动配置，properties改为yml</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:13:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_45.html" class="title">柯基笔记：mybatis插件快速生成代码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:12:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Java/">Java</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/kj_44.html" class="title">柯基笔记：Log日志配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-20T06:11:01.000Z" itemprop="datePublished">2021-10-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-jcenter_maven_02" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      地震事件：安卓jenter换源maven，解决方案参考（二）
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/jcenter_maven_02.html" class="article-date">
+	  <time datetime="2021-04-09T02:16:00.000Z" itemprop="datePublished">2021-04-09</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/android/">android</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/android/">android</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/jcenter_maven_02.html#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<ul>
+<li>作者：彭老师</li>
+<li>日期：2021-04-09</li>
+<li>类型：Android</li>
+<li>说明：本文源于<a href="https://www.cmonbaby.com">彭老师</a>手写摘要，如需转载请带上链接或注明出处！</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="接上篇：地震事件：安卓jenter换源maven，解决方案参考（一）"><a href="#接上篇：地震事件：安卓jenter换源maven，解决方案参考（一）" class="headerlink" title="接上篇：地震事件：安卓jenter换源maven，解决方案参考（一）"></a>接上篇：<a href="https://www.cmonbaby.com/posts/jcenter_maven_01.html">地震事件：安卓jenter换源maven，解决方案参考（一）</a></h3><blockquote>
+<ul>
+<li>项目根目录（非app目录）</li>
+<li>创建：javadocs.gradle</li>
+<li>创建：maven.gradle</li>
+<li>创建：simon.gradle （随意命名）</li>
+</ul>
+</blockquote>
+<h3 id="javadocs-gradle代码如下："><a href="#javadocs-gradle代码如下：" class="headerlink" title="javadocs.gradle代码如下："></a>javadocs.gradle代码如下：</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">// 生成javadoc.jar和source.jar</span><br><span class="line">if (project.hasProperty("android")) &#123;</span><br><span class="line">    // Android libraries</span><br><span class="line"></span><br><span class="line">    println("&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; JavaDoc for AndroidLibrary, Java Version:" + JavaVersion.current().getMajorVersion())</span><br><span class="line"></span><br><span class="line">    // 打包source源码</span><br><span class="line">    task sourcesJar(type: Jar) &#123;</span><br><span class="line">        classifier = 'sources'</span><br><span class="line">        from android.sourceSets.main.java.srcDirs</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 打包class的jar包</span><br><span class="line">    if (project.hasProperty("zipFile")) &#123;</span><br><span class="line">        task makeJar(type: Jar) &#123;</span><br><span class="line">            from zipTree(file(zipFile))</span><br><span class="line">            destinationDir = file("build")</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    android.libraryVariants.all &#123; variant -&gt;</span><br><span class="line">        if (variant.name == 'release') &#123;</span><br><span class="line">            // 只需release的javadoc</span><br><span class="line">            task("generate$&#123;variant.name.capitalize()&#125;Javadoc", type: Javadoc) &#123;</span><br><span class="line"></span><br><span class="line">                title "API Documentation ($&#123;project.android.defaultConfig.versionName&#125;)"</span><br><span class="line">                group "ApiDoc"</span><br><span class="line">                description "Generates Javadoc for $variant.name."</span><br><span class="line"></span><br><span class="line">                ext.androidJar = "$&#123;android.sdkDirectory&#125;/platforms/$&#123;android.compileSdkVersion&#125;/android.jar"</span><br><span class="line">                source = variant.sourceSets.collect &#123; it.java.sourceFiles &#125;.inject &#123; m, i -&gt; m + i &#125;</span><br><span class="line"></span><br><span class="line">                doFirst &#123;</span><br><span class="line">                    classpath = project.files(variant.javaCompileProvider.get().classpath.files,</span><br><span class="line">                            project.android.getBootClasspath())</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                options &#123;</span><br><span class="line">                    encoding "UTF-8"</span><br><span class="line">                    charSet 'UTF-8'</span><br><span class="line">                    author true</span><br><span class="line">                    version true</span><br><span class="line">                    if (project.hasProperty("libName")) &#123;</span><br><span class="line">                        title libName</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                String javaDocsLink = String.format("https://docs.oracle.com/javase/%s/docs/api/",</span><br><span class="line">                        JavaVersion.current().getMajorVersion())</span><br><span class="line">                options.links(javaDocsLink)</span><br><span class="line"></span><br><span class="line">                if (JavaVersion.current().isJava8Compatible()) &#123;</span><br><span class="line">                    options.addStringOption('Xdoclint:none', '-quiet')</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                exclude '**/BuildConfig.java'</span><br><span class="line">                exclude '**/R.java'</span><br><span class="line">            &#125;</span><br><span class="line">            task("javadoc$&#123;variant.name.capitalize()&#125;Jar", type: Jar,</span><br><span class="line">                    dependsOn: "generate$&#123;variant.name.capitalize()&#125;Javadoc") &#123;</span><br><span class="line">                // 打包javadoc的jar包</span><br><span class="line">                getArchiveClassifier().value('javadoc')</span><br><span class="line">                from tasks.getByName("generate$&#123;variant.name.capitalize()&#125;Javadoc").destinationDir</span><br><span class="line">            &#125;</span><br><span class="line">            artifacts &#123;</span><br><span class="line">                archives tasks.getByName("javadoc$&#123;variant.name.capitalize()&#125;Jar")</span><br><span class="line">                archives sourcesJar</span><br><span class="line">                archives makeJar</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    println("&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; JavaDoc for JavaLibrary")</span><br><span class="line">    // Java libraries</span><br><span class="line">    task sourcesJar(type: Jar, dependsOn: classes) &#123;</span><br><span class="line">        classifier = 'sources'</span><br><span class="line">        from sourceSets.main.allSource</span><br><span class="line">    &#125;</span><br><span class="line">    task javadocJar(type: Jar, dependsOn: javadoc) &#123;</span><br><span class="line">        classifier = 'javadoc'</span><br><span class="line">        from javadoc.destinationDir</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    artifacts &#123;</span><br><span class="line">        archives javadocJar</span><br><span class="line">        archives sourcesJar</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="maven-gradle代码如下："><a href="#maven-gradle代码如下：" class="headerlink" title="maven.gradle代码如下："></a>maven.gradle代码如下：</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">apply plugin: 'com.github.dcendents.android-maven'</span><br><span class="line">apply plugin: 'signing'</span><br><span class="line"></span><br><span class="line">// 配置maven库，生成POM.xml文件</span><br><span class="line">// 动态读取local.properties</span><br><span class="line">Properties properties = new Properties()</span><br><span class="line">properties.load(project.rootProject.file('local.properties').newDataInputStream())</span><br><span class="line"></span><br><span class="line">println("------------- upload -------------")</span><br><span class="line">def snapshop_url = properties.getProperty("SNAPSHOT_REPOSITORY_URL")</span><br><span class="line">def release_url = properties.getProperty("RELEASE_REPOSITORY_URL")</span><br><span class="line"></span><br><span class="line">def userName = properties.getProperty("NEXUS_USERNAME")</span><br><span class="line">def pwd = properties.getProperty("NEXUS_PASSWORD")</span><br><span class="line"></span><br><span class="line">def gpg_keyid = properties.getProperty("GPG_KEYID")</span><br><span class="line">def gpg_password = properties.getProperty("GPG_PASSWORD")</span><br><span class="line">def gpg_secretkeyringfile = properties.getProperty("GPG_SECRETKEYRINGFILE")</span><br><span class="line"></span><br><span class="line">gradle.taskGraph.whenReady &#123; taskGraph -&gt;</span><br><span class="line">    if (taskGraph.allTasks.any &#123; it instanceof Sign &#125;) &#123;</span><br><span class="line">        allprojects &#123; ext."signing.keyId" = gpg_keyid &#125;</span><br><span class="line">        allprojects &#123; ext."signing.secretKeyRingFile" = gpg_secretkeyringfile &#125;</span><br><span class="line">        allprojects &#123; ext."signing.password" = gpg_password &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">signing &#123;</span><br><span class="line">    sign configurations.archives</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">install &#123;</span><br><span class="line">    println("------------- maven -------------")</span><br><span class="line">    repositories.mavenDeployer &#123;</span><br><span class="line">        beforeDeployment &#123; MavenDeployment deployment -&gt; signing.signPom(deployment) &#125;</span><br><span class="line"></span><br><span class="line">        snapshotRepository(url: snapshop_url) &#123;</span><br><span class="line">            authentication(userName: userName, password: pwd)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        repository(url: release_url) &#123;</span><br><span class="line">            authentication(userName: userName, password: pwd)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // 生成pom.xml和参数</span><br><span class="line">        pom &#123;</span><br><span class="line">            project &#123;</span><br><span class="line">                version project.hasProperty("versionName") ? versionName : project.versionName</span><br><span class="line">                // java jar  /  android aar</span><br><span class="line">                packaging project.hasProperty("libraryPackaging") ? libraryPackaging : project.hasProperty("android") ? 'aar' : 'jar'</span><br><span class="line">                groupId publishedGroupId</span><br><span class="line">                artifactId artifactId</span><br><span class="line"></span><br><span class="line">                // 可选，库名称</span><br><span class="line">                name project.hasProperty("libName") ? libName : project.name</span><br><span class="line"></span><br><span class="line">                // 可选，库描述</span><br><span class="line">                if (project.hasProperty("libraryDesc")) &#123;</span><br><span class="line">                    description libraryDesc</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                // 可选，库主页</span><br><span class="line">                if (project.hasProperty("websiteUrl")) &#123;</span><br><span class="line">                    url websiteUrl</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                // 软件开源协议，现在一般都是Apache License2.0</span><br><span class="line">                if (project.hasProperty("licenseName")) &#123;</span><br><span class="line">                    licenses &#123;</span><br><span class="line">                        license &#123;</span><br><span class="line">                            name licenseName</span><br><span class="line">                            url licenseUrl</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                // 填写开发者基本信息</span><br><span class="line">                if (project.hasProperty("developerId") &amp;&amp; project.hasProperty("developerName")</span><br><span class="line">                        &amp;&amp; project.hasProperty("developerEmail")) &#123;</span><br><span class="line">                    developers &#123;</span><br><span class="line">                        developer &#123;</span><br><span class="line">                            id developerId // 开发者的id。</span><br><span class="line">                            name developerName // 开发者名字。</span><br><span class="line">                            email developerEmail // 开发者邮箱。</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                scm &#123;</span><br><span class="line">                    if (project.hasProperty("websiteUrl")) &#123;</span><br><span class="line">                        connection websiteUrl // Git仓库地址</span><br><span class="line">                        developerConnection websiteUrl // Git仓库地址</span><br><span class="line">                        url websiteUrl // 库主页</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="simon-gradle代码如下："><a href="#simon-gradle代码如下：" class="headerlink" title="simon.gradle代码如下："></a>simon.gradle代码如下：</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">// 生成maven配置</span><br><span class="line">apply from: '../maven.gradle'</span><br><span class="line"></span><br><span class="line">// 生成JavaDocs</span><br><span class="line">apply from: '../javadocs.gradle'</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">task simon &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println "Release $&#123;version&#125;"</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">simon.dependsOn(install)</span><br></pre></td></tr></table></figure>
+
+<h3 id="最后-4-个步骤非常关键！！！"><a href="#最后-4-个步骤非常关键！！！" class="headerlink" title="最后 4 个步骤非常关键！！！"></a><font color="#0099ff" size="6" face="黑体">最后 4 个步骤非常关键！！！</font></h3><h4 id="1、在根目录的build-gradle中配置："><a href="#1、在根目录的build-gradle中配置：" class="headerlink" title="1、在根目录的build.gradle中配置："></a>1、在根目录的build.gradle中配置：</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">        classpath 'com.android.tools.build:gradle:3.5.4'</span><br><span class="line"></span><br><span class="line">        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'</span><br><span class="line"></span><br><span class="line">        // NOTE: Do not place your application dependencies here; they belong</span><br><span class="line">        // in the individual module build.gradle files</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、在根目录的local-properties中配置："><a href="#2、在根目录的local-properties中配置：" class="headerlink" title="2、在根目录的local.properties中配置："></a>2、在根目录的local.properties中配置：</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"># 服务器地址，本地私服或者远程maven仓库地址</span><br><span class="line">SNAPSHOT_REPOSITORY_URL=http://192.168.x.y:port/nexus/repository/maven-snapshots/</span><br><span class="line">RELEASE_REPOSITORY_URL=http://192.168.x.y:port/nexus/repository/maven-releases/</span><br><span class="line"></span><br><span class="line"># 仓库登录账号密码</span><br><span class="line">NEXUS_USERNAME=admin</span><br><span class="line">NEXUS_PASSWORD=xxxyyyzzz</span><br><span class="line"></span><br><span class="line"># gpg加密信息</span><br><span class="line">GPG_KEYID=12345678（8位）</span><br><span class="line">GPG_PASSWORD=simon（生成公/私钥密码）</span><br><span class="line">GPG_SECRETKEYRINGFILE=/Users/simon/.gnupg/simon-private.gpg（命令生成）</span><br></pre></td></tr></table></figure>
+
+<h4 id="3、在需要打包jar-aar上传仓库的子项目（子模块）中，build-gradle添加："><a href="#3、在需要打包jar-aar上传仓库的子项目（子模块）中，build-gradle添加：" class="headerlink" title="3、在需要打包jar / aar上传仓库的子项目（子模块）中，build.gradle添加："></a>3、在需要打包jar / aar上传仓库的子项目（子模块）中，build.gradle添加：</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">ext &#123;</span><br><span class="line">    publishedGroupId = 'com.cmonbaby' //  填写groupId， 一般是包名，比如：com.android.support</span><br><span class="line">    libName = 'arouter_compiler' //  如果不填写，就使用module名称</span><br><span class="line">    versionName = '1.0.3' //  版本号，比如：1.0.0</span><br><span class="line">    licenseName = "Apache-2.0" // 支持的协议</span><br><span class="line">    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt' // 支持的协议网址</span><br><span class="line"></span><br><span class="line">    libraryPackaging = 'jar' //  选填（已处理）如果是'com.android.library'默认上传aar, 如果是'java-library'默认上传jar</span><br><span class="line">    libraryDesc = 'Android APT Library For Module Develop' //  库的描述</span><br><span class="line">    websiteUrl = 'https://github.com/cnmen/arouter' //  可以填写github上的库地址.</span><br><span class="line"></span><br><span class="line">    developerId = '8950764'</span><br><span class="line">    developerName = 'simon'</span><br><span class="line">    developerEmail = 'simon@cmonbaby.com'</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">apply from: '../simon.gradle'</span><br></pre></td></tr></table></figure>
+
+<h4 id="4、在Android-Studio-IDEA-中，找到-logcat-旁边的-Terminal，输入命令行："><a href="#4、在Android-Studio-IDEA-中，找到-logcat-旁边的-Terminal，输入命令行：" class="headerlink" title="4、在Android Studio / IDEA 中，找到 logcat 旁边的 Terminal，输入命令行："></a>4、在Android Studio / IDEA 中，找到 logcat 旁边的 Terminal，输入命令行：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">gradle simon</span><br></pre></td></tr></table></figure>
+
+<h4 id="PS：如果gradle环境没配置，请度娘～"><a href="#PS：如果gradle环境没配置，请度娘～" class="headerlink" title="PS：如果gradle环境没配置，请度娘～"></a>PS：如果gradle环境没配置，请度娘～</h4><hr>
+<h4 id="以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！"><a href="#以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！" class="headerlink" title="以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！"></a>以上方案比较仓促整理，上传可以成功，下载依赖还待测试，过几天我再更新！</h4><img src="/posts/jcenter_maven_02/jcenter_maven_13.png">
+
+<hr>
+<h3 id="补充：备份现有的第三方库"><a href="#补充：备份现有的第三方库" class="headerlink" title="补充：备份现有的第三方库"></a><font color="#0099ff" size="6" face="黑体">补充：备份现有的第三方库</font></h3><img src="/posts/jcenter_maven_02/jcenter_maven_20.png">
+
+<hr>
+<blockquote>
+<ul>
+<li><h4 id="解释："><a href="#解释：" class="headerlink" title="解释："></a>解释：</h4></li>
+<li>.m2是本地打包的库</li>
+<li>.gradle里面的是远程下载库</li>
+<li>远程库：.gradle/caches/modules-2/files-2.1</li>
+<li>本地库：.m2/repository</li>
+<li><h4 id="理解："><a href="#理解：" class="headerlink" title="理解："></a>理解：</h4></li>
+<li>远程库：不是你自己写的框架，从网络下载的</li>
+<li>本地库，指的是你自己写了框架，打包jar / aar。准备或者已经上传到全球中央仓库</li>
+<li><h4 id="备份："><a href="#备份：" class="headerlink" title="备份："></a>备份：</h4></li>
+<li>远程库：.gradle/caches/modules-2/files-2.1</li>
+</ul>
+</blockquote>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://www.cmonbaby.com/posts/jcenter_maven_02.html" title="地震事件：安卓jenter换源maven，解决方案参考（二）" target="_blank" rel="external">https://www.cmonbaby.com/posts/jcenter_maven_02.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cnmen" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt>
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cnmen" target="_blank"><span class="text-dark">彭锡</span><small class="ml-1x">安卓讲师</small></a></h3>
+        <div>致学无止境！</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/sonatype_maven.html" title="maven中央仓库申请与sonatype操作"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/jcenter_maven_01.html" title="地震事件：安卓jenter换源maven，解决方案参考（一）"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,wechat,facebook"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫">
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class>
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s)
+  })();
+</script>
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cnmen" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://github.com/cnmen" target="_blank" title="Facebook" data-toggle="tooltip" data-placement="top"><i class="icon icon-facebook"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 彭锡
+        
+        <div class="publishby">
+        	<a href="http://icp.chinaz.com/home/info?host=cmonbaby.com" target="_blank"> 湘ICP备14013300号-2
+        </a></div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e60ce0c7fafb1636f574',
+    clientSecret: 'c49b9d4cfd8f9c67cd1971f804e0240d9ad1c21c',
+    repo: 'cnmen.github.io',
+    owner: 'cnmen',
+    admin: ['cnmen'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+    proxy: 'https://gitalk.cmonbaby.workers.dev/?https://github.com/login/oauth/access_token'
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
